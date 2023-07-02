@@ -12,6 +12,7 @@
 		325684CC2A515DB9000AC9E3 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325684CB2A515DB9000AC9E3 /* CartViewController.swift */; };
 		325684CE2A515DCD000AC9E3 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325684CD2A515DCD000AC9E3 /* TabBarController.swift */; };
 		325684D02A515DDF000AC9E3 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325684CF2A515DDF000AC9E3 /* CatalogViewController.swift */; };
+		325684D82A519BF8000AC9E3 /* CatalogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325684D72A519BF8000AC9E3 /* CatalogTableViewCell.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -56,6 +57,7 @@
 		325684CB2A515DB9000AC9E3 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		325684CD2A515DCD000AC9E3 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		325684CF2A515DDF000AC9E3 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
+		325684D72A519BF8000AC9E3 /* CatalogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogTableViewCell.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				325684CF2A515DDF000AC9E3 /* CatalogViewController.swift */,
+				325684D72A519BF8000AC9E3 /* CatalogTableViewCell.swift */,
 			);
 			path = Catalog;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				325684CC2A515DB9000AC9E3 /* CartViewController.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
+				325684D82A519BF8000AC9E3 /* CatalogTableViewCell.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
