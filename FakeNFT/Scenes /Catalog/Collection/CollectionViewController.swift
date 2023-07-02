@@ -2,12 +2,20 @@ import UIKit
 
 final class CollectionViewController: UIViewController {
 
+    enum Section: Int, CaseIterable {
+        case image
+        case description
+        case collection
+    }
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(ImageCollectionCell.self,
                                 forCellWithReuseIdentifier: ImageCollectionCell.identifier)
+        collectionView.register(DescriptionCollectionCell.self,
+                                forCellWithReuseIdentifier: DescriptionCollectionCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -62,14 +70,31 @@ extension CollectionViewController: UICollectionViewDelegate {
 extension CollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionCell.identifier, for: indexPath) as? ImageCollectionCell else {
-            return UICollectionViewCell() }
-        imageCell.configure(image: UIImage(named: "collectionImage"))
-        return imageCell
+        guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
+
+        switch section {
+        case .image:
+            guard let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionCell.identifier, for: indexPath) as? ImageCollectionCell else {
+                return UICollectionViewCell() }
+            imageCell.configure(image: UIImage(named: "collectionImage"))
+            return imageCell
+        case .description:
+            guard let descriptionCell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCollectionCell.identifier, for: indexPath) as? DescriptionCollectionCell else {
+                return UICollectionViewCell() }
+            descriptionCell.configure(
+                title: "Peach",
+                subTitle: "Автор коллекции:",
+                description: "Персиковый — как облака над закатным солнцем в океане. В этой коллекции совмещены трогательная нежность и живая игривость сказочных зефирных зверей.",
+                buttonTitle: "jkjskkml")
+            return descriptionCell
+        case .collection:
+            return UICollectionViewCell()
+        }
+
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
+        Section.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -84,7 +109,18 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: self.collectionView.bounds.width, height: 310)
+        guard let section = Section(rawValue: indexPath.section) else { return .zero }
+
+        switch section {
+
+        case .image:
+            return CGSize(width: self.collectionView.bounds.width, height: 310)
+        case .description:
+            return CGSize(width: self.collectionView.bounds.width, height: 136)
+        case .collection:
+            return .zero
+        }
+
     }
 
     func collectionView(

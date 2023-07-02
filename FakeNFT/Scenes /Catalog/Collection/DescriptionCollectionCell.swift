@@ -26,6 +26,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
+        label.numberOfLines = 0
         label.font = .caption2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -33,6 +34,9 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var creatorCollectionButton: UIButton = {
         let button = UIButton()
+        button.setTitleColor(.textPrimary, for: .normal)
+        button.titleLabel?.font = .caption2
+        button.contentHorizontalAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
 
         return button
@@ -63,9 +67,9 @@ final class DescriptionCollectionCell: UICollectionViewCell {
             creatorCollectionButton.heightAnchor.constraint(equalToConstant: 18),
 
             descriptionCollectionLabel.topAnchor.constraint(equalTo: creatorCollectonLabel.bottomAnchor, constant: 5),
-            descriptionCollectionLabel.leadingAnchor.constraint(equalTo: creatorCollectonLabel.trailingAnchor, constant: 4),
+            descriptionCollectionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             descriptionCollectionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            descriptionCollectionLabel.heightAnchor.constraint(equalToConstant: 18)
+            descriptionCollectionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
@@ -73,7 +77,14 @@ final class DescriptionCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(image: UIImage?) {
-
+    func configure(
+        title: String,
+        subTitle: String,
+        description: String,
+        buttonTitle: String) {
+            collectionNameLabel.text = title
+            creatorCollectonLabel.text = subTitle
+            creatorCollectionButton.setTitle(buttonTitle, for: .normal)
+            descriptionCollectionLabel.text = description
     }
 }

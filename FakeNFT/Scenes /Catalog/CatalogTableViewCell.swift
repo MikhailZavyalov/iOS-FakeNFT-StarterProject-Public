@@ -38,13 +38,11 @@ final class CatalogTableViewCell: UITableViewCell {
             imageCategory.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageCategory.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imageCategory.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            imageCategory.heightAnchor.constraint(equalToConstant: 140),
-            imageCategory.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
 
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             label.topAnchor.constraint(equalTo: imageCategory.bottomAnchor, constant: 4),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -13)
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -17)
         ])
     }
 
