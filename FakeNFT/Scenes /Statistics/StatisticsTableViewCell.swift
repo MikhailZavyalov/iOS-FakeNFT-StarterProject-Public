@@ -1,6 +1,6 @@
 import UIKit
 
-final class StatisticsTableViewCell: UITableViewCell {
+final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
     var profileCellAction: (() -> Void)?
 
     private var number: UILabel = {
