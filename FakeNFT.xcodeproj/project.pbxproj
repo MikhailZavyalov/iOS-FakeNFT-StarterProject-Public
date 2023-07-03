@@ -31,6 +31,10 @@
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
 		3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExampleRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
+		C1C478B52A531D7400CDDD91 /* StatisticsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B42A531D7400CDDD91 /* StatisticsTableViewCell.swift */; };
+		C1C478B72A531F1400CDDD91 /* StatisticsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B62A531F1400CDDD91 /* StatisticsTableViewCellModel.swift */; };
+		C1C478B92A532FC800CDDD91 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B82A532FC800CDDD91 /* ProfileCellView.swift */; };
+		C1C478BC2A53386F00CDDD91 /* UITableViewCell+reuseID.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478BB2A53386F00CDDD91 /* UITableViewCell+reuseID.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,10 @@
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		3FC8C39029D2453B0081F015 /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
+		C1C478B42A531D7400CDDD91 /* StatisticsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewCell.swift; sourceTree = "<group>"; };
+		C1C478B62A531F1400CDDD91 /* StatisticsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewCellModel.swift; sourceTree = "<group>"; };
+		C1C478B82A532FC800CDDD91 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
+		C1C478BB2A53386F00CDDD91 /* UITableViewCell+reuseID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+reuseID.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +142,9 @@
 			isa = PBXGroup;
 			children = (
 				325684C92A515DA5000AC9E3 /* StatisticsViewController.swift */,
+				C1C478B42A531D7400CDDD91 /* StatisticsTableViewCell.swift */,
+				C1C478B82A532FC800CDDD91 /* ProfileCellView.swift */,
+				C1C478B62A531F1400CDDD91 /* StatisticsTableViewCellModel.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -178,6 +189,7 @@
 		3F68069529CBBAF100B4F915 /* FakeNFT */ = {
 			isa = PBXGroup;
 			children = (
+				C1C478BA2A53383F00CDDD91 /* Extensions */,
 				3F68069629CBBAF100B4F915 /* AppDelegate.swift */,
 				3F68069829CBBAF100B4F915 /* SceneDelegate.swift */,
 				3F478ECD29DB473000F6D39E /* DesignSystem */,
@@ -280,6 +292,14 @@
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 			);
 			path = Requests;
+			sourceTree = "<group>";
+		};
+		C1C478BA2A53383F00CDDD91 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C1C478BB2A53386F00CDDD91 /* UITableViewCell+reuseID.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -443,6 +463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
+				C1C478BC2A53386F00CDDD91 /* UITableViewCell+reuseID.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
@@ -450,8 +471,11 @@
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				325684D02A515DDF000AC9E3 /* CatalogViewController.swift in Sources */,
 				325684CE2A515DCD000AC9E3 /* TabBarController.swift in Sources */,
+				C1C478B72A531F1400CDDD91 /* StatisticsTableViewCellModel.swift in Sources */,
 				325684CA2A515DA5000AC9E3 /* StatisticsViewController.swift in Sources */,
+				C1C478B52A531D7400CDDD91 /* StatisticsTableViewCell.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
+				C1C478B92A532FC800CDDD91 /* ProfileCellView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
