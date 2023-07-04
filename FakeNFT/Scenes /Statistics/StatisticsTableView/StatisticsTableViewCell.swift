@@ -12,9 +12,10 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
 
     private let coloredView = ProfileCellView()
 
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
 
         contentView.addSubview(number)
         number.translatesAutoresizingMaskIntoConstraints = false
