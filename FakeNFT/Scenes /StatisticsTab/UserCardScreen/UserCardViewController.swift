@@ -113,6 +113,8 @@ final class UserCardViewController: UIViewController {
 
         NSLayoutConstraint.activate(constraints)
 
+        usersCollectionButton.addTarget(self, action: #selector(usersCollectionButtonTapped), for: .touchUpInside)
+
         let model = UserCardDataModel(
             avatar: UIImage(named: "profileTabBarImageActive")!,
             name: "Peter The Beast",
@@ -142,5 +144,10 @@ final class UserCardViewController: UIViewController {
                 action: #selector(UINavigationController.popViewController(animated:))
             )
         }
+    }
+
+    @objc
+    private func usersCollectionButtonTapped() {
+        navigationController?.pushViewController(UsersCollectionViewController(), animated: true)
     }
 }

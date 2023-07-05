@@ -37,6 +37,10 @@
 		C1C478B52A531D7400CDDD91 /* StatisticsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B42A531D7400CDDD91 /* StatisticsTableViewCell.swift */; };
 		C1C478B72A531F1400CDDD91 /* StatisticsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B62A531F1400CDDD91 /* StatisticsTableViewCellModel.swift */; };
 		C1C478B92A532FC800CDDD91 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C478B82A532FC800CDDD91 /* ProfileCellView.swift */; };
+		C1CA994F2A55A13100094174 /* UsersCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA994E2A55A13000094174 /* UsersCollectionViewController.swift */; };
+		C1CA99552A55A70700094174 /* UsersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA99542A55A70700094174 /* UsersCollectionViewCell.swift */; };
+		C1CA99572A55A72F00094174 /* UsersCollectionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA99562A55A72F00094174 /* UsersCollectionCellModel.swift */; };
+		C1CA99592A55B61400094174 /* GeometricParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA99582A55B61400094174 /* GeometricParams.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +93,10 @@
 		C1C478B42A531D7400CDDD91 /* StatisticsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewCell.swift; sourceTree = "<group>"; };
 		C1C478B62A531F1400CDDD91 /* StatisticsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTableViewCellModel.swift; sourceTree = "<group>"; };
 		C1C478B82A532FC800CDDD91 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
+		C1CA994E2A55A13000094174 /* UsersCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCollectionViewController.swift; sourceTree = "<group>"; };
+		C1CA99542A55A70700094174 /* UsersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCollectionViewCell.swift; sourceTree = "<group>"; };
+		C1CA99562A55A72F00094174 /* UsersCollectionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersCollectionCellModel.swift; sourceTree = "<group>"; };
+		C1CA99582A55B61400094174 /* GeometricParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricParams.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,14 +150,15 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
-		325684C52A515D03000AC9E3 /* Statistics */ = {
+		325684C52A515D03000AC9E3 /* StatisticsTab */ = {
 			isa = PBXGroup;
 			children = (
-				325684C92A515DA5000AC9E3 /* StatisticsViewController.swift */,
-				C1C0548A2A546F91001980B9 /* StatisticsTableView */,
-				C1C0548B2A546FB2001980B9 /* UserCard */,
+				C1CA99522A55A27300094174 /* StatisticsScreen */,
+				C1C0548B2A546FB2001980B9 /* UserCardScreen */,
+				C1CA994D2A55A0FC00094174 /* UsersCollectionScreen */,
+				C1CA99582A55B61400094174 /* GeometricParams.swift */,
 			);
-			path = Statistics;
+			path = StatisticsTab;
 			sourceTree = "<group>";
 		};
 		325684C62A515D0F000AC9E3 /* Profile */ = {
@@ -236,7 +245,7 @@
 			children = (
 				325684C32A515CEB000AC9E3 /* TabBar */,
 				325684C62A515D0F000AC9E3 /* Profile */,
-				325684C52A515D03000AC9E3 /* Statistics */,
+				325684C52A515D03000AC9E3 /* StatisticsTab */,
 				325684C42A515CFC000AC9E3 /* Cart */,
 				325684C22A515C57000AC9E3 /* Catalog */,
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
@@ -307,13 +316,13 @@
 			path = StatisticsTableView;
 			sourceTree = "<group>";
 		};
-		C1C0548B2A546FB2001980B9 /* UserCard */ = {
+		C1C0548B2A546FB2001980B9 /* UserCardScreen */ = {
 			isa = PBXGroup;
 			children = (
 				C1C0548C2A546FCE001980B9 /* UserCardViewController.swift */,
 				C1C0548E2A54712B001980B9 /* UserCardDataModel.swift */,
 			);
-			path = UserCard;
+			path = UserCardScreen;
 			sourceTree = "<group>";
 		};
 		C1C054922A548F67001980B9 /* Extentions */ = {
@@ -322,6 +331,49 @@
 				C1C054932A548F83001980B9 /* UIView+Layout.swift */,
 			);
 			path = Extentions;
+			sourceTree = "<group>";
+		};
+		C1CA994D2A55A0FC00094174 /* UsersCollectionScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C1CA994E2A55A13000094174 /* UsersCollectionViewController.swift */,
+				C1CA99542A55A70700094174 /* UsersCollectionViewCell.swift */,
+				C1CA99562A55A72F00094174 /* UsersCollectionCellModel.swift */,
+			);
+			path = UsersCollectionScreen;
+			sourceTree = "<group>";
+		};
+		C1CA99502A55A22500094174 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				325684C92A515DA5000AC9E3 /* StatisticsViewController.swift */,
+				C1C0548A2A546F91001980B9 /* StatisticsTableView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C1CA99512A55A23B00094174 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C1CA99522A55A27300094174 /* StatisticsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C1CA99502A55A22500094174 /* View */,
+				C1CA99512A55A23B00094174 /* ViewModel */,
+				C1CA99532A55A39500094174 /* Model */,
+			);
+			path = StatisticsScreen;
+			sourceTree = "<group>";
+		};
+		C1CA99532A55A39500094174 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -487,15 +539,19 @@
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
+				C1CA99552A55A70700094174 /* UsersCollectionViewCell.swift in Sources */,
+				C1CA99572A55A72F00094174 /* UsersCollectionCellModel.swift in Sources */,
 				C1C0548D2A546FCE001980B9 /* UserCardViewController.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				325684C82A515D90000AC9E3 /* ProfileViewController.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
+				C1CA994F2A55A13100094174 /* UsersCollectionViewController.swift in Sources */,
 				325684D02A515DDF000AC9E3 /* CatalogViewController.swift in Sources */,
 				C1C054942A548F83001980B9 /* UIView+Layout.swift in Sources */,
 				325684CE2A515DCD000AC9E3 /* TabBarController.swift in Sources */,
 				C1C478B72A531F1400CDDD91 /* StatisticsTableViewCellModel.swift in Sources */,
 				325684CA2A515DA5000AC9E3 /* StatisticsViewController.swift in Sources */,
+				C1CA99592A55B61400094174 /* GeometricParams.swift in Sources */,
 				C1C478B52A531D7400CDDD91 /* StatisticsTableViewCell.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				C1C478B92A532FC800CDDD91 /* ProfileCellView.swift in Sources */,
