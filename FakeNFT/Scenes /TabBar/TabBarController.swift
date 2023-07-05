@@ -26,7 +26,7 @@ class TabBarController: UITabBarController {
             image: UIImage(named: "cartTabBarImageNoActive"),
             selectedImage: UIImage(named: "cartTabBarImageActive"))
 
-        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController())
+        let statisticsVC = assembleStatisticsModule()
         statisticsVC.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage(named: "statisticsTabBarImageNoActive"),
@@ -38,4 +38,13 @@ class TabBarController: UITabBarController {
 
        return tabBarController
     }
+}
+
+private func assembleStatisticsModule() -> UIViewController {
+    let model = StatisticsModel()
+    let viewModel = StatisticsViewModel(model: model)
+    let view = StatisticsViewController(viewModel: viewModel)
+    viewModel.view = view
+
+    return UINavigationController(rootViewController: view)
 }

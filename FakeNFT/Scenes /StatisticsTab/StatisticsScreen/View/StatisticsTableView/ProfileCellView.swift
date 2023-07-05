@@ -1,9 +1,13 @@
 import UIKit
 
 class ProfileCellView: UIView {
-    var image: UIImage? {
+    var imageURL: URL? {
         didSet {
-            profilePhoto.image = image
+            guard let url = imageURL else {
+                return profilePhoto.kf.cancelDownloadTask()
+            }
+
+            profilePhoto.kf.setImage(with: url)
         }
     }
     var text: String? {
@@ -20,6 +24,7 @@ class ProfileCellView: UIView {
     private let profilePhoto: UIImageView = {
         let profilePhoto = UIImageView()
         profilePhoto.layer.cornerRadius = 14
+        profilePhoto.layer.masksToBounds = true
         profilePhoto.backgroundColor = .red
         return profilePhoto
     }()
@@ -55,7 +60,9 @@ class ProfileCellView: UIView {
             hStack.centerYAnchor.constraint(equalTo: centerYAnchor),
             profileNFTCount.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             profileNFTCount.centerYAnchor.constraint(equalTo: centerYAnchor),
-            hStack.trailingAnchor.constraint(lessThanOrEqualTo: profileNFTCount.leadingAnchor)
+            hStack.trailingAnchor.constraint(lessThanOrEqualTo: profileNFTCount.leadingAnchor),
+            profilePhoto.widthAnchor.constraint(equalToConstant: 28),
+            profilePhoto.heightAnchor.constraint(equalToConstant: 28),
         ])
     }
 

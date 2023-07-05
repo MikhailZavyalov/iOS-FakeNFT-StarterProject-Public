@@ -1,8 +1,7 @@
 import UIKit
+import Kingfisher
 
 final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
-    var profileCellAction: (() -> Void)?
-
     private var number: UILabel = {
         var number = UILabel()
         number.font = .systemFont(ofSize: 15, weight: .regular)
@@ -10,7 +9,7 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         return number
     }()
 
-    private let coloredView = ProfileCellView()
+    private let profileView = ProfileCellView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -21,9 +20,9 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         number.translatesAutoresizingMaskIntoConstraints = false
 
 
-        coloredView.translatesAutoresizingMaskIntoConstraints = false
+        profileView.translatesAutoresizingMaskIntoConstraints = false
 
-        let hStack = UIStackView(arrangedSubviews: [number, coloredView])
+        let hStack = UIStackView(arrangedSubviews: [number, profileView])
         hStack.translatesAutoresizingMaskIntoConstraints = false
         hStack.axis = .horizontal
         hStack.spacing = 12
@@ -35,7 +34,7 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
             hStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             hStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.heightAnchor.constraint(equalToConstant: 88),
-            coloredView.heightAnchor.constraint(equalToConstant: 80)
+            profileView.heightAnchor.constraint(equalToConstant: 80)
         ]
 
         constraints.forEach {
@@ -49,14 +48,14 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureWith(model: StatisticsTableViewCellModel) {
-        number.text = model.number.description
-        coloredView.image = model.profilePhoto
-        coloredView.text = model.profileName
-        coloredView.counter = model.profileNFTCount
+    override func prepareForReuse() {
+        profileView.imageURL = nil
     }
 
-    @objc private func profileCellTapped() {
-        profileCellAction?()
+    func configureWith(model: StatisticsTableViewCellModel) {
+        number.text = model.number.description
+        profileView.imageURL = model.profilePhoto
+        profileView.text = model.profileName
+        profileView.counter = model.profileNFTCount
     }
 }

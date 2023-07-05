@@ -1,6 +1,11 @@
 import UIKit
 
-final class StatisticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class StatisticsViewController:
+    UIViewController,
+    UITableViewDelegate,
+    UITableViewDataSource,
+    StatisticsView
+{
     private let sortButton: UIButton = {
         let sortButton = UIButton()
         sortButton.setImage(UIImage(named: "Sort"), for: .normal)
@@ -8,7 +13,23 @@ final class StatisticsViewController: UIViewController, UITableViewDelegate, UIT
     }()
 
     private let tableView = UITableView(frame: .zero)
-    
+
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
+
+    private let viewModel: StatisticsViewModel
+
+    init(viewModel: StatisticsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        viewModel.$userModels.bind(executeInitially: true) { [weak self] _ in
+            self?.tableView.reloadData()
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -19,9 +40,24 @@ final class StatisticsViewController: UIViewController, UITableViewDelegate, UIT
 
         setupConstraints()
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
+
+        viewModel.viewDidLoad()
+    }
+
+    // MARK: - StatisticsView
+
+    func setLoaderIsHidden(_ isHidden: Bool) {
+        if isHidden {
+            activityIndicator.stopAnimating()
+        } else {
+            activityIndicator.startAnimating()
+        }
     }
 
     private func setupConstraints() {
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
         sortButton.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(tableView)
@@ -35,7 +71,10 @@ final class StatisticsViewController: UIViewController, UITableViewDelegate, UIT
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
@@ -50,14 +89,16 @@ final class StatisticsViewController: UIViewController, UITableViewDelegate, UIT
         let nameAction = UIAlertAction(
             title: "По имени",
             style: .default
-        ) { _ in
+        ) { [weak self] _ in
+            self?.viewModel.didSelectSort(.name)
             alert.dismiss(animated: true)
         }
 
         let ratingAction = UIAlertAction(
             title: "По рейтингу",
             style: .default
-        ) { _ in
+        ) { [weak self] _ in
+            self?.viewModel.didSelectSort(.rating)
             alert.dismiss(animated: true)
         }
 
@@ -78,18 +119,14 @@ final class StatisticsViewController: UIViewController, UITableViewDelegate, UIT
 // MARK: - UITableViewDataSource
 extension StatisticsViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        viewModel.userModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: StatisticsTableViewCell = tableView.dequeueReusableCell()
-
         let model = StatisticsTableViewCellModel(
-            number: 1,
-            profilePhoto: UIImage(named: "profileTabBarImageActive")!,
-            profileName: "Peter",
-            profileNFTCount: 999)
-
+            userModel: viewModel.userModels[indexPath.row]
+        )
         cell.configureWith(model: model)
         return cell
     }
@@ -97,6 +134,8 @@ extension StatisticsViewController {
 
 extension StatisticsViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectCell(indexPath: indexPath)
+        // TODO: - Move to the Router
         navigationController?.pushViewController(UserCardViewController(), animated: true)
     }
 }
