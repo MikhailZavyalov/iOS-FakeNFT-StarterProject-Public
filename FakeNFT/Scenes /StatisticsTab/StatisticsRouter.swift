@@ -11,6 +11,8 @@ protocol StatisticsNavigation {
 final class StatisticsRouter: StatisticsNavigation {
     weak var navigationController: UINavigationController?
 
+    private let networkClient = DefaultNetworkClient()
+
     func goBack() {
         navigationController?.popViewController(animated: true)
     }
@@ -33,7 +35,7 @@ final class StatisticsRouter: StatisticsNavigation {
 
 extension StatisticsRouter {
     func assembleStatisticsModule() -> UIViewController {
-        let model = StatisticsModel()
+        let model = StatisticsModel(networkClient: networkClient)
         let viewModel = StatisticsViewModel(model: model, router: self)
         let view = StatisticsViewController(viewModel: viewModel)
         viewModel.view = view
@@ -42,7 +44,7 @@ extension StatisticsRouter {
     }
     
     private func assembleUserCardModule(userID: String) -> UIViewController {
-        let model = StatisticsUserProfileModel()
+        let model = StatisticsUserProfileModel(networkClient: networkClient)
         let viewModel = StatisticsUserProfileViewModel(id: userID, router: self, model: model)
         let view = StatisticsUserProfileViewController(viewModel: viewModel)
 
@@ -50,7 +52,7 @@ extension StatisticsRouter {
     }
 
     private func assembleUserCollectionModule(nftIDs: [String], likes: [String]) -> UIViewController {
-        let model = StatisticsUserNFTCollectionModel()
+        let model = StatisticsUserNFTCollectionModel(networkClient: networkClient)
         let viewModel = StatisticsUserNFTCollectionViewModel(
             model: model,
             router: self,
