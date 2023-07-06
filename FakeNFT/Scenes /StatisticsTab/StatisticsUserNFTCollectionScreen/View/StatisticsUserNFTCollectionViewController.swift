@@ -1,10 +1,10 @@
 import UIKit
 
-final class UsersCollectionViewController:
+final class StatisticsUserNFTCollectionViewController:
     UIViewController,
     UICollectionViewDataSource,
     UICollectionViewDelegateFlowLayout,
-    UsersCollectionView {
+    StatisticsUserNFTCollectionView {
 
     let userCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -12,9 +12,9 @@ final class UsersCollectionViewController:
 
     private let geometricParams = GeometricParams(cellCount: 3, leftInset: 16, rightInset: 16, cellSpacing: 9)
 
-    private let viewModel: UsersCollectionViewModel
+    private let viewModel: StatisticsUserNFTCollectionViewModel
 
-    init(viewModel: UsersCollectionViewModel) {
+    init(viewModel: StatisticsUserNFTCollectionViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         viewModel.$nfts.bind(executeInitially: true) { [weak self] _ in
@@ -31,7 +31,7 @@ final class UsersCollectionViewController:
         view.backgroundColor = .white
         userCollection.delegate = self
         userCollection.dataSource = self
-        userCollection.register(UsersCollectionViewCell.self)
+        userCollection.register(StatisticsUserNFTCollectionViewCell.self)
 
         configureNavigationBar()
         setupConstraints()
@@ -89,20 +89,20 @@ final class UsersCollectionViewController:
 }
 
 // MARK: - UICollectionViewDataSource
-extension UsersCollectionViewController {
+extension StatisticsUserNFTCollectionViewController {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.nfts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: UsersCollectionViewCell = userCollection.dequeueReusableCell(indexPath: indexPath)
+        let cell: StatisticsUserNFTCollectionViewCell = userCollection.dequeueReusableCell(indexPath: indexPath)
         cell.configure(with: viewModel.nfts[indexPath.row])
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension UsersCollectionViewController {
+extension StatisticsUserNFTCollectionViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.frame.width - geometricParams.paddingWidth
         let cellWidth =  availableWidth / CGFloat(geometricParams.cellCount)

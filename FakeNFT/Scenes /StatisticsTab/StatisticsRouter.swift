@@ -42,22 +42,22 @@ extension StatisticsRouter {
     }
     
     private func assembleUserCardModule(userID: String) -> UIViewController {
-        let model = UserCardModel()
-        let viewModel = UserCardViewModel(id: userID, router: self, model: model)
-        let view = UserCardViewController(viewModel: viewModel)
+        let model = StatisticsUserProfileModel()
+        let viewModel = StatisticsUserProfileViewModel(id: userID, router: self, model: model)
+        let view = StatisticsUserProfileViewController(viewModel: viewModel)
 
         return view
     }
 
     private func assembleUserCollectionModule(nftIDs: [String], likes: [String]) -> UIViewController {
-        let model = UsersCollectionModel()
-        let viewModel = UsersCollectionViewModel(
+        let model = StatisticsUserNFTCollectionModel()
+        let viewModel = StatisticsUserNFTCollectionViewModel(
             model: model,
             router: self,
             nftIDs: nftIDs,
             likes: likes
         )
-        let view = UsersCollectionViewController(viewModel: viewModel)
+        let view = StatisticsUserNFTCollectionViewController(viewModel: viewModel)
 
         return view
     }

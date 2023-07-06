@@ -1,21 +1,21 @@
 import Foundation
 
-protocol UsersCollectionView: AnyObject {
+protocol StatisticsUserNFTCollectionView: AnyObject {
     func setLoaderIsHidden(_ isHidden: Bool)
 }
 
-final class UsersCollectionViewModel {
+final class StatisticsUserNFTCollectionViewModel {
     @Observable
-    var nfts: [UsersCollectionCellModel] = []
+    var nfts: [StatisticsUserNFTCollectionCellModel] = []
 
-    weak var view: UsersCollectionView?
+    weak var view: StatisticsUserNFTCollectionView?
 
-    private let model: UsersCollectionModel
+    private let model: StatisticsUserNFTCollectionModel
     private let router: StatisticsNavigation
     private let nftIDs: Set<String>
     private let likes: Set<String>
 
-    init(model: UsersCollectionModel, router: StatisticsNavigation, nftIDs: [String], likes: [String]) {
+    init(model: StatisticsUserNFTCollectionModel, router: StatisticsNavigation, nftIDs: [String], likes: [String]) {
         self.model = model
         self.router = router
         self.nftIDs = Set(nftIDs)
@@ -24,7 +24,7 @@ final class UsersCollectionViewModel {
 
     func viewDidLoad() {
         var nftIDsToLoad = nftIDs
-        var loadedDictionary: [String: UsersCollectionCellModel] = [:]
+        var loadedDictionary: [String: StatisticsUserNFTCollectionCellModel] = [:]
 
         view?.setLoaderIsHidden(false)
 
@@ -38,7 +38,7 @@ final class UsersCollectionViewModel {
 
                 switch result {
                 case .success(let nftModel):
-                    loadedDictionary[id] = UsersCollectionCellModel(
+                    loadedDictionary[id] = StatisticsUserNFTCollectionCellModel(
                         nftModel: nftModel,
                         isLiked: self.likes.contains(id)
                     )

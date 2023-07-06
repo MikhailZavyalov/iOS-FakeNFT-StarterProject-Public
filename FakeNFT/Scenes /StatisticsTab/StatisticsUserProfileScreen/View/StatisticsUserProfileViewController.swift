@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-final class UserCardViewController: UIViewController {
+final class StatisticsUserProfileViewController: UIViewController {
     private let usersAvatar: UIImageView = {
         let usersAvatar = UIImageView()
         usersAvatar.layer.cornerRadius = 35
@@ -54,9 +54,9 @@ final class UserCardViewController: UIViewController {
 
     private let activityIndicator = UIActivityIndicatorView(style: .large)
 
-    private let viewModel: UserCardViewModel
+    private let viewModel: StatisticsUserProfileViewModel
 
-    init(viewModel: UserCardViewModel) {
+    init(viewModel: StatisticsUserProfileViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
 

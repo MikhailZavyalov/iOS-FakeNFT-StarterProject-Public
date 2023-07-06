@@ -1,6 +1,6 @@
 import Foundation
 
-struct UsersCollectionModel {
+struct StatisticsUserNFTCollectionModel {
     private enum NetworkError: Error {
         case someError
     }

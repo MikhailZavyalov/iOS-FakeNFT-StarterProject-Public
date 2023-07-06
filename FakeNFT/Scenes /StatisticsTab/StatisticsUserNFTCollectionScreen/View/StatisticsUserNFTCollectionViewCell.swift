@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-final class UsersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
+final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     private let usersCollectionItemImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
@@ -96,7 +96,7 @@ final class UsersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with model: UsersCollectionCellModel) {
+    func configure(with model: StatisticsUserNFTCollectionCellModel) {
         usersCollectionItemImage.kf.setImage(with: model.icon)
         usersCollectionItemFavoriteButton.tintColor = model.isLiked ? .red : .white
         setRating(rating: model.rating)
@@ -104,7 +104,7 @@ final class UsersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         usersCollectionItemPrice.text = model.price
     }
 
-    private func setRating(rating: StarRating) {
+    private func setRating(rating: StatisticsUserNFTCollectionCellModel.StarRating) {
         switch rating {
         case .zero:
             usersCollectionItemRating.image = UIImage(named: "propertyZero")

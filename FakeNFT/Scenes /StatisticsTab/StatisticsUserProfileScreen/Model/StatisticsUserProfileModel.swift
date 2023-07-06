@@ -20,7 +20,7 @@ struct UserProfileModel: Decodable {
     }
 }
 
-struct UserCardModel {
+struct StatisticsUserProfileModel {
     private enum NetworkError: Error {
         case someError
     }

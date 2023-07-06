@@ -4,7 +4,7 @@ protocol UserCardView: AnyObject {
     func setLoaderIsHidden(_ isHidden: Bool)
 }
 
-final class UserCardViewModel {
+final class StatisticsUserProfileViewModel {
     @Observable
     var profile: UserProfileModel?
 
@@ -12,9 +12,9 @@ final class UserCardViewModel {
 
     private let id: String
     private let router: StatisticsNavigation
-    private let model: UserCardModel
+    private let model: StatisticsUserProfileModel
 
-    init(id: String, router: StatisticsNavigation, model: UserCardModel) {
+    init(id: String, router: StatisticsNavigation, model: StatisticsUserProfileModel) {
         self.id = id
         self.router = router
         self.model = model

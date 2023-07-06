@@ -1,6 +1,15 @@
 import UIKit
 
-struct UsersCollectionCellModel {
+struct StatisticsUserNFTCollectionCellModel {
+    enum StarRating: Int {
+        case zero
+        case one
+        case two
+        case three
+        case four
+        case five
+    }
+
     let icon: URL?
     let rating: StarRating
     let name: String
@@ -8,16 +17,7 @@ struct UsersCollectionCellModel {
     let isLiked: Bool
 }
 
-enum StarRating: Int {
-    case zero
-    case one
-    case two
-    case three
-    case four
-    case five
-}
-
-extension UsersCollectionCellModel {
+extension StatisticsUserNFTCollectionCellModel {
     init(nftModel: NFTModel, isLiked: Bool) {
         icon = nftModel.images.first
         rating = StarRating(rawValue: nftModel.rating) ?? .zero
