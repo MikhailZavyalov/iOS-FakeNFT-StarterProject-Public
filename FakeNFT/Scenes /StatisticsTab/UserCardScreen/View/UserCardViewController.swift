@@ -5,6 +5,7 @@ final class UserCardViewController: UIViewController {
     private let usersAvatar: UIImageView = {
         let usersAvatar = UIImageView()
         usersAvatar.layer.cornerRadius = 35
+        usersAvatar.layer.masksToBounds = true
         return usersAvatar
     }()
 
@@ -51,16 +52,24 @@ final class UserCardViewController: UIViewController {
         return usersCollectionButton
     }()
 
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
+
     private let viewModel: UserCardViewModel
 
     init(viewModel: UserCardViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
 
-        usersAvatar.kf.setImage(with: viewModel.avatar)
-        userName.text = viewModel.name
-        userDescription.text = viewModel.description
-        usersCollectionButton.setTitle("Коллекция NFT (\(viewModel.nfts.count))", for: .normal)
+        viewModel.$profile.bind(executeInitially: true) { [weak self] profile in
+            guard let self, let profile else {
+                return
+            }
+
+            self.usersAvatar.kf.setImage(with: profile.avatar)
+            self.userName.text = profile.name
+            self.userDescription.text = profile.description
+            self.usersCollectionButton.setTitle("Коллекция NFT (\(profile.nfts.count))", for: .normal)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -80,9 +89,23 @@ final class UserCardViewController: UIViewController {
 
         setupConstraints()
         configureNavigationBar()
+
+        viewModel.viewDidLoad()
+    }
+
+    func setLoaderIsHidden(_ isHidden: Bool) {
+        if isHidden {
+            activityIndicator.stopAnimating()
+        } else {
+            activityIndicator.startAnimating()
+        }
     }
 
     private func setupConstraints() {
+        view.addSubview(activityIndicator)
+        activityIndicator.layer.zPosition = 9999
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
         let hStackAvatarAndName = UIStackView(arrangedSubviews: [usersAvatar, userName])
         hStackAvatarAndName.translatesAutoresizingMaskIntoConstraints = false
         hStackAvatarAndName.axis = .horizontal
@@ -108,7 +131,9 @@ final class UserCardViewController: UIViewController {
             vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             usersWebsite.heightAnchor.constraint(equalToConstant: 40),
             usersAvatar.heightAnchor.constraint(equalToConstant: 70),
-            usersAvatar.widthAnchor.constraint(equalToConstant: 70)
+            usersAvatar.widthAnchor.constraint(equalToConstant: 70),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
 
         constraints.forEach {

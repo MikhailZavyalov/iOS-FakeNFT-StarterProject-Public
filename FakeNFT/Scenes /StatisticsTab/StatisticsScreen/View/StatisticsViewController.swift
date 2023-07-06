@@ -56,6 +56,7 @@ final class StatisticsViewController:
 
     private func setupConstraints() {
         view.addSubview(activityIndicator)
+        activityIndicator.layer.zPosition = 9999
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 
         sortButton.translatesAutoresizingMaskIntoConstraints = false
@@ -135,7 +136,5 @@ extension StatisticsViewController {
 extension StatisticsViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectCell(indexPath: indexPath)
-        // TODO: - Move to the Router
-        navigationController?.pushViewController(UserCardViewController(), animated: true)
     }
 }

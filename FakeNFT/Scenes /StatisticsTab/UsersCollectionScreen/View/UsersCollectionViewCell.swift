@@ -1,87 +1,42 @@
 import UIKit
+import Kingfisher
 
 final class UsersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
-
-    var image: UIImage? {
-        didSet {
-            usersCollectionItemImage.image = image
-        }
-    }
-
-    var favorite: UIImage? {
-        didSet {
-            usersCollectionItemFavoriteButton.setImage(favorite, for: .normal)
-            usersCollectionItemFavoriteButton.tintColor = .white
-        }
-    }
-
-    var rating: StarRating = .zero {
-        didSet {
-            switch rating {
-            case .zero:
-                usersCollectionItemRating.image = UIImage(named: "propertyZero")
-            case .one:
-                usersCollectionItemRating.image = UIImage(named: "propertyOne")
-            case .two:
-                usersCollectionItemRating.image = UIImage(named: "propertyTwo")
-            case .three:
-                usersCollectionItemRating.image = UIImage(named: "propertyThree")
-            case .four:
-                usersCollectionItemRating.image = UIImage(named: "propertyFour")
-            case .five:
-                usersCollectionItemRating.image = UIImage(named: "propertyFive")
-            }
-        }
-    }
-
-    var name: String? {
-        didSet {
-            usersCollectionItemName.text = name
-        }
-    }
-
-    var price: String? {
-        didSet {
-            usersCollectionItemPrice.text = price
-        }
-    }
-
-    var card: UIImage? {
-        didSet {
-            usersCollectionItemCard.image = card
-        }
-    }
-
-    let usersCollectionItemImage: UIImageView = {
+    private let usersCollectionItemImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
+        image.layer.masksToBounds = true
+        image.heightAnchor.constraint(equalToConstant: 108).isActive = true
+        image.widthAnchor.constraint(equalToConstant: 108).isActive = true
         return image
     }()
 
-    let usersCollectionItemRating: UIImageView = {
+    private let usersCollectionItemRating: UIImageView = {
         let rating = UIImageView()
         return rating
     }()
 
-    let usersCollectionItemName: UILabel = {
+    private let usersCollectionItemName: UILabel = {
         let name = UILabel()
         name.font = .systemFont(ofSize: 17, weight: .bold)
         return name
     }()
 
-    let usersCollectionItemPrice: UILabel = {
+    private let usersCollectionItemPrice: UILabel = {
         let price = UILabel()
         price.font = .systemFont(ofSize: 10, weight: .medium)
         return price
     }()
 
-    let usersCollectionItemCard: UIImageView = {
+    private let usersCollectionItemCard: UIImageView = {
         let card = UIImageView()
+        card.image = UIImage(named: "EmptyCard")
         return card
     }()
 
-    let usersCollectionItemFavoriteButton: UIButton = {
+    private let usersCollectionItemFavoriteButton: UIButton = {
         let button = UIButton()
+        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         return button
     }()
 
@@ -141,13 +96,28 @@ final class UsersCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func configure(with model: UsersCollectionCellModel) {
+        usersCollectionItemImage.kf.setImage(with: model.icon)
+        usersCollectionItemFavoriteButton.tintColor = model.isLiked ? .red : .white
+        setRating(rating: model.rating)
+        usersCollectionItemName.text = model.name
+        usersCollectionItemPrice.text = model.price
+    }
 
-    func configureWith(model: UsersCollectionCellModel) {
-        self.image = model.icon
-        self.name = model.name
-        self.rating = model.rating
-        self.price = model.price
-        self.card = model.card
-        self.favorite = model.favorive
+    private func setRating(rating: StarRating) {
+        switch rating {
+        case .zero:
+            usersCollectionItemRating.image = UIImage(named: "propertyZero")
+        case .one:
+            usersCollectionItemRating.image = UIImage(named: "propertyOne")
+        case .two:
+            usersCollectionItemRating.image = UIImage(named: "propertyTwo")
+        case .three:
+            usersCollectionItemRating.image = UIImage(named: "propertyThree")
+        case .four:
+            usersCollectionItemRating.image = UIImage(named: "propertyFour")
+        case .five:
+            usersCollectionItemRating.image = UIImage(named: "propertyFive")
+        }
     }
 }

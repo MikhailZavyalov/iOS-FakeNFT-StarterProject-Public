@@ -29,6 +29,7 @@ class TabBarController: UITabBarController {
         let statisticsRouter = StatisticsRouter()
         let statisticsVC = statisticsRouter.assembleStatisticsModule()
         let statisticsNavigationController = UINavigationController(rootViewController: statisticsVC)
+        statisticsRouter.navigationController = statisticsNavigationController
         statisticsVC.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage(named: "statisticsTabBarImageNoActive"),

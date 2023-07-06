@@ -48,7 +48,7 @@ final class StatisticsViewModel {
     }
 
     func didSelectCell(indexPath: IndexPath) {
-        router.goToProfile(user: userModels[indexPath.row])
+        router.goToProfile(userID: userModels[indexPath.row].id)
     }
 
     func didSelectSort(_ sort: SortType) {

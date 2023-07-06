@@ -1,10 +1,11 @@
 import UIKit
+import WebKit
 
 protocol StatisticsNavigation {
     func goBack()
-    func goToProfile(user: UserModel)
+    func goToProfile(userID: String)
     func goToUserWebsite(url: URL)
-    func goToUserNFTCollection(nftIDs: [Int])
+    func goToUserNFTCollection(nftIDs: [String], likes: [String])
 }
 
 final class StatisticsRouter: StatisticsNavigation {
@@ -14,15 +15,19 @@ final class StatisticsRouter: StatisticsNavigation {
         navigationController?.popViewController(animated: true)
     }
 
-    func goToProfile(user: UserModel) {
+    func goToProfile(userID: String) {
+        let profileViewController = assembleUserCardModule(userID: userID)
+        navigationController?.pushViewController(profileViewController, animated: true)
     }
 
     func goToUserWebsite(url: URL) {
-        // TODO: - Push WKWebView
+        let webKitViewController = assembleWKWebView(url: url)
+        navigationController?.pushViewController(webKitViewController, animated: true)
     }
 
-    func goToUserNFTCollection(nftIDs: [Int]) {
-
+    func goToUserNFTCollection(nftIDs: [String], likes: [String]) {
+        let collectionViewController = assembleUserCollectionModule(nftIDs: nftIDs, likes: likes)
+        navigationController?.pushViewController(collectionViewController, animated: true)
     }
 }
 
@@ -34,5 +39,48 @@ extension StatisticsRouter {
         viewModel.view = view
 
         return view
+    }
+    
+    private func assembleUserCardModule(userID: String) -> UIViewController {
+        let model = UserCardModel()
+        let viewModel = UserCardViewModel(id: userID, router: self, model: model)
+        let view = UserCardViewController(viewModel: viewModel)
+
+        return view
+    }
+
+    private func assembleUserCollectionModule(nftIDs: [String], likes: [String]) -> UIViewController {
+        let model = UsersCollectionModel()
+        let viewModel = UsersCollectionViewModel(
+            model: model,
+            router: self,
+            nftIDs: nftIDs,
+            likes: likes
+        )
+        let view = UsersCollectionViewController(viewModel: viewModel)
+
+        return view
+    }
+
+    private func assembleWKWebView(url: URL) -> UIViewController {
+        WebViewController(url: url)
+    }
+}
+
+private final class WebViewController: UIViewController {
+    private let webView = WKWebView()
+
+    init(url: URL) {
+        super.init(nibName: nil, bundle: nil)
+        let request = URLRequest(url: url)
+        _ = webView.load(request)
+    }
+
+    override func loadView() {
+        view = webView
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

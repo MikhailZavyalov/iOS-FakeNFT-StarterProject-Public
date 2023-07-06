@@ -1,35 +1,62 @@
 import Foundation
 
-struct UserCardViewModel {
-    let name: String
-    let avatar: URL
-    let description: String
-    let website: URL
-    let nfts: [Int]
+protocol UserCardView: AnyObject {
+    func setLoaderIsHidden(_ isHidden: Bool)
+}
 
+final class UserCardViewModel {
+    @Observable
+    var profile: UserProfileModel?
+
+    weak var view: UserCardView?
+
+    private let id: String
     private let router: StatisticsNavigation
+    private let model: UserCardModel
+
+    init(id: String, router: StatisticsNavigation, model: UserCardModel) {
+        self.id = id
+        self.router = router
+        self.model = model
+    }
+
+    func viewDidLoad() {
+        view?.setLoaderIsHidden(false)
+        model.loadUser(id: id) { result in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else {
+                    return
+                }
+
+                self.view?.setLoaderIsHidden(true)
+
+                switch result {
+                case .success(let profile):
+                    self.profile = profile
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
 
     func didTapBack() {
         router.goBack()
     }
 
     func didTapWebsite() {
-        router.goToUserWebsite(url: website)
+        guard let url = profile?.website else {
+            return
+        }
+
+        router.goToUserWebsite(url: url)
     }
 
     func didTapNFTsCollection() {
-        router.goToUserNFTCollection(nftIDs: nfts)
-    }
-}
+        guard let profile else {
+            return
+        }
 
-extension UserCardViewModel {
-    init(userModel: UserModel, router: StatisticsNavigation) {
-        name = userModel.name
-        avatar = userModel.avatar
-        description = userModel.description
-        website = userModel.website
-        nfts = userModel.nfts
-
-        self.router = router
+        router.goToUserNFTCollection(nftIDs: profile.nfts, likes: profile.likes)
     }
 }

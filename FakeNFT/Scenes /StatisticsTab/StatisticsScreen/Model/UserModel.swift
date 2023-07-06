@@ -5,9 +5,9 @@ struct UserModel: Decodable {
     let avatar: URL
     let description: String
     let website: URL
-    let nfts: [Int]
+    let nfts: [String]
     let rating: Int
-    let id: Int
+    let id: String
 
     enum CodingKeys: String, CodingKey {
         case name = "name"
@@ -31,27 +31,14 @@ extension UserModel {
         avatar = try container.decode(URL.self, forKey: .avatar)
         description = try container.decode(String.self, forKey: .description)
         website = try container.decode(URL.self, forKey: .website)
-
-        nfts = try (try container.decode([String].self, forKey: .nfts)).map {
-            if let int = Int($0) {
-                return int
-            } else {
-                throw DecodingError.cantConvertStringToInt($0)
-            }
-        }
+        nfts = try container.decode([String].self, forKey: .nfts)
+        id = try container.decode(String.self, forKey: .id)
 
         let strRating = try container.decode(String.self, forKey: .rating)
         if let rating = Int(strRating) {
             self.rating = rating
         } else {
             throw DecodingError.cantConvertStringToInt(strRating)
-        }
-
-        let strID = try container.decode(String.self, forKey: .id)
-        if let id = Int(strID) {
-            self.id = id
-        } else {
-            throw DecodingError.cantConvertStringToInt(strID)
         }
     }
 }
