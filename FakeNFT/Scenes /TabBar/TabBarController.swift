@@ -26,25 +26,18 @@ class TabBarController: UITabBarController {
             image: UIImage(named: "cartTabBarImageNoActive"),
             selectedImage: UIImage(named: "cartTabBarImageActive"))
 
-        let statisticsVC = assembleStatisticsModule()
+        let statisticsRouter = StatisticsRouter()
+        let statisticsVC = statisticsRouter.assembleStatisticsModule()
+        let statisticsNavigationController = UINavigationController(rootViewController: statisticsVC)
         statisticsVC.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage(named: "statisticsTabBarImageNoActive"),
             selectedImage: UIImage(named: "statisticsTabBarImageActive"))
 
         let tabBarController = TabBarController()
-        tabBarController.viewControllers = [profileVC, catalogVC, cartVC, statisticsVC]
+        tabBarController.viewControllers = [profileVC, catalogVC, cartVC, statisticsNavigationController]
         tabBarController.tabBar.unselectedItemTintColor = .black
 
        return tabBarController
     }
-}
-
-private func assembleStatisticsModule() -> UIViewController {
-    let model = StatisticsModel()
-    let viewModel = StatisticsViewModel(model: model)
-    let view = StatisticsViewController(viewModel: viewModel)
-    viewModel.view = view
-
-    return UINavigationController(rootViewController: view)
 }

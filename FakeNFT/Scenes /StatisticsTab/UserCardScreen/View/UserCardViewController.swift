@@ -1,31 +1,7 @@
 import UIKit
+import Kingfisher
 
 final class UserCardViewController: UIViewController {
-    
-    var image: UIImage? {
-        didSet {
-            usersAvatar.image = image
-        }
-    }
-
-    var name: String? {
-        didSet {
-            userName.text = name
-        }
-    }
-
-    var userDescriptionText: String? {
-        didSet {
-            userDescription.text = userDescriptionText
-        }
-    }
-
-    var userNFTCountText: Int? {
-        didSet {
-            usersCollectionButton.setTitle("Коллекция NFT (\(userNFTCountText ?? 0))", for: .normal)
-        }
-    }
-
     private let usersAvatar: UIImageView = {
         let usersAvatar = UIImageView()
         usersAvatar.layer.cornerRadius = 35
@@ -75,10 +51,38 @@ final class UserCardViewController: UIViewController {
         return usersCollectionButton
     }()
 
+    private let viewModel: UserCardViewModel
+
+    init(viewModel: UserCardViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+
+        usersAvatar.kf.setImage(with: viewModel.avatar)
+        userName.text = viewModel.name
+        userDescription.text = viewModel.description
+        usersCollectionButton.setTitle("Коллекция NFT (\(viewModel.nfts.count))", for: .normal)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        usersAvatar.kf.cancelDownloadTask()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
 
+        usersCollectionButton.addTarget(self, action: #selector(usersCollectionButtonTapped), for: .touchUpInside)
+        usersWebsite.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
+
+        setupConstraints()
+        configureNavigationBar()
+    }
+
+    private func setupConstraints() {
         let hStackAvatarAndName = UIStackView(arrangedSubviews: [usersAvatar, userName])
         hStackAvatarAndName.translatesAutoresizingMaskIntoConstraints = false
         hStackAvatarAndName.axis = .horizontal
@@ -112,23 +116,6 @@ final class UserCardViewController: UIViewController {
         }
 
         NSLayoutConstraint.activate(constraints)
-
-        usersCollectionButton.addTarget(self, action: #selector(usersCollectionButtonTapped), for: .touchUpInside)
-
-        let model = UserCardDataModel(
-            avatar: UIImage(named: "profileTabBarImageActive")!,
-            name: "Peter The Beast",
-            description: "Like big donations, simpsons and beer, cocks, asses and drugs7 literally programmer life style bitches fucken fuck you popo papa pipi nanana heeee heeee hello world and good by",
-            usersNFTCount: 69)
-        configureWith(model: model)
-        configureNavigationBar()
-    }
-
-    private func configureWith(model: UserCardDataModel) {
-        self.image = model.avatar
-        self.name = model.name
-        self.userDescriptionText = model.description
-        self.userNFTCountText = model.usersNFTCount
     }
 
     private func configureNavigationBar() {
@@ -140,14 +127,26 @@ final class UserCardViewController: UIViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 image: backImage,
                 style: .plain,
-                target: navigationController,
-                action: #selector(UINavigationController.popViewController(animated:))
+                target: self,
+                action: #selector(backButtonTapped)
             )
         }
     }
 
+    // MARK: - Actions
+
     @objc
     private func usersCollectionButtonTapped() {
-        navigationController?.pushViewController(UsersCollectionViewController(), animated: true)
+        viewModel.didTapNFTsCollection()
+    }
+
+    @objc
+    private func websiteButtonTapped() {
+        viewModel.didTapWebsite()
+    }
+
+    @objc
+    private func backButtonTapped() {
+        viewModel.didTapBack()
     }
 }

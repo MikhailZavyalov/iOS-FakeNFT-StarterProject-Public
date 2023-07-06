@@ -16,14 +16,16 @@ final class StatisticsViewModel {
     weak var view: StatisticsView?
 
     private let model: StatisticsModel
+    private let router: StatisticsNavigation
     private var sorting: SortType = .rating {
         didSet {
             userModels = applySort(sorting, to: userModels)
         }
     }
 
-    init(model: StatisticsModel) {
+    init(model: StatisticsModel, router: StatisticsRouter) {
         self.model = model
+        self.router = router
     }
 
     func viewDidLoad() {
@@ -46,6 +48,7 @@ final class StatisticsViewModel {
     }
 
     func didSelectCell(indexPath: IndexPath) {
+        router.goToProfile(user: userModels[indexPath.row])
     }
 
     func didSelectSort(_ sort: SortType) {
