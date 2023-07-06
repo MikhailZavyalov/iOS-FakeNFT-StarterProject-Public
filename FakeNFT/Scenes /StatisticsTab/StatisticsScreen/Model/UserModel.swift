@@ -5,7 +5,53 @@ struct UserModel: Decodable {
     let avatar: URL
     let description: String
     let website: URL
-    let nfts: [String]
-    let rating: String
-    let id: String
+    let nfts: [Int]
+    let rating: Int
+    let id: Int
+
+    enum CodingKeys: String, CodingKey {
+        case name = "name"
+        case avatar = "avatar"
+        case description = "description"
+        case website = "website"
+        case nfts = "nfts"
+        case rating = "rating"
+        case id = "id"
+    }
+}
+
+private enum DecodingError: Error {
+    case cantConvertStringToInt(String)
+}
+
+extension UserModel {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: UserModel.CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        avatar = try container.decode(URL.self, forKey: .avatar)
+        description = try container.decode(String.self, forKey: .description)
+        website = try container.decode(URL.self, forKey: .website)
+
+        nfts = try (try container.decode([String].self, forKey: .nfts)).map {
+            if let int = Int($0) {
+                return int
+            } else {
+                throw DecodingError.cantConvertStringToInt($0)
+            }
+        }
+
+        let strRating = try container.decode(String.self, forKey: .rating)
+        if let rating = Int(strRating) {
+            self.rating = rating
+        } else {
+            throw DecodingError.cantConvertStringToInt(strRating)
+        }
+
+        let strID = try container.decode(String.self, forKey: .id)
+        if let id = Int(strID) {
+            self.id = id
+        } else {
+            throw DecodingError.cantConvertStringToInt(strID)
+        }
+    }
 }

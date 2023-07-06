@@ -9,7 +9,7 @@ struct StatisticsTableViewCellModel {
 
 extension StatisticsTableViewCellModel {
     init(userModel: UserModel) {
-        number = userModel.rating
+        number = String(userModel.rating)
         profilePhoto = userModel.avatar
         profileName = userModel.name
         profileNFTCount = userModel.nfts.count
