@@ -4,6 +4,9 @@ struct UsersCollectionCellModel {
     let icon: UIImage
     let rating: StarRating
     let name: String
+    let price: String
+    let card: UIImage
+    let favorive: UIImage
 }
 
 enum StarRating: Int {

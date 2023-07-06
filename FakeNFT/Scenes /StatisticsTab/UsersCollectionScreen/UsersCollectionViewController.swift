@@ -57,7 +57,10 @@ extension UsersCollectionViewController {
         let model = UsersCollectionCellModel(
             icon: UIImage(named: "NFTcard")!,
             rating: .three,
-            name: "Daddy"
+            name: "Daddy",
+            price: "1 ETH",
+            card: UIImage(named: "EmptyCard") ?? UIImage(),
+            favorive: UIImage(systemName: "heart.fill") ?? UIImage()
         )
 
         cell.configureWith(model: model)
@@ -70,7 +73,7 @@ extension UsersCollectionViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.frame.width - geometricParams.paddingWidth
         let cellWidth =  availableWidth / CGFloat(geometricParams.cellCount)
-        return CGSize(width: cellWidth, height: cellWidth * 4 / 3)
+        return CGSize(width: cellWidth, height: cellWidth * 1.6)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
