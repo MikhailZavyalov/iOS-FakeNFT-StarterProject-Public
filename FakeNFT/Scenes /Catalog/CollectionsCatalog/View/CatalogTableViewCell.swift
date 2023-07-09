@@ -7,8 +7,9 @@ final class CatalogTableViewCell: UITableViewCell {
     lazy var imageCategory: UIImageView = {
      let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
         return imageView
     }()
 

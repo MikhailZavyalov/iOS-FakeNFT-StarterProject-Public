@@ -1,6 +1,21 @@
 import UIKit
+import Kingfisher
 
-final class CatalogViewController: UIViewController {
+extension String {
+    var encodeUrl: String {
+        return self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
+    }
+    var decodeUrl: String {
+        return self.removingPercentEncoding!
+    }
+}
+
+final class CollectionsCatalogView: UIViewController {
+
+    private var collections: [CollectionsCatalogModel] {
+        viewModel.collections
+    }
+    private let viewModel: CollectionsCatalogViewModel
 
     private lazy var catalogTableView: UITableView = {
         let tableView = UITableView()
@@ -13,6 +28,16 @@ final class CatalogViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+
+    init() {
+        viewModel = CollectionsCatalogViewModel()
+        super.init(nibName: nil, bundle: nil)
+        viewModel.onChange = self.catalogTableView.reloadData
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,9 +94,9 @@ final class CatalogViewController: UIViewController {
     }
 }
 
-extension CatalogViewController: UITableViewDataSource {
+extension CollectionsCatalogView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        collections.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -82,14 +107,19 @@ extension CatalogViewController: UITableViewDataSource {
         guard let categoryCell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.identifier) as? CatalogTableViewCell else {
             return UITableViewCell()
         }
-        categoryCell.imageCategory.image = UIImage(named: "imageCategory")
-        categoryCell.label.text = "Название категории"
+        let collection = collections[indexPath.row]
+        if let imageURLString = collection.cover,
+           let imageURL = URL(string: imageURLString.encodeUrl) {
+            categoryCell.imageCategory.kf.setImage(with: imageURL)
+        }
+
+        categoryCell.label.text = collection.displayName
         categoryCell.selectionStyle = .none
         return categoryCell
     }
 }
 
-extension CatalogViewController: UITableViewDelegate {
+extension CollectionsCatalogView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 183
     }

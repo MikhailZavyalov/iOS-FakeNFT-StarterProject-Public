@@ -14,7 +14,7 @@ class TabBarController: UITabBarController {
             image: UIImage(named: "profileTabBarImageNoActive"),
             selectedImage: UIImage(named: "profileTabBarImageActive"))
 
-        let catalogVC = UINavigationController(rootViewController: CatalogViewController())
+        let catalogVC = UINavigationController(rootViewController: CollectionsCatalogView())
         catalogVC.tabBarItem = UITabBarItem(
             title: "Каталог",
             image: UIImage(named: "catalogTabBarImageNoActive"),

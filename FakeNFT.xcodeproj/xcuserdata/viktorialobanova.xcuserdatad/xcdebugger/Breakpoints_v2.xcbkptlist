@@ -3,4 +3,54 @@
    uuid = "C5E4ABED-3F6D-4533-A609-820E2DD946B0"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DE8F22B7-64ED-48DF-A1FB-72A9B43C89CD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FakeNFT/Scenes /Catalog/CatalogViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DE8F22B7-64ED-48DF-A1FB-72A9B43C89CD - b43df2b679d49139"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FakeNFT.CatalogViewController.tableView(_: __C.UITableView, heightForRowAt: Foundation.IndexPath) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "FakeNFT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/viktorialobanova/Documents/YandexPracticum/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC/NFT/FakeNFT/Scenes%20/Catalog/CatalogViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "DE8F22B7-64ED-48DF-A1FB-72A9B43C89CD - 54cb63260574269a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FakeNFT.CatalogViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
+                  moduleName = "FakeNFT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/viktorialobanova/Documents/YandexPracticum/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC/NFT/FakeNFT/Scenes%20/Catalog/CatalogViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "1052">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
