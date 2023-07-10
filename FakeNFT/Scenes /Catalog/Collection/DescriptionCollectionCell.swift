@@ -51,7 +51,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
         contentView.addSubview(descriptionCollectionLabel)
 
         NSLayoutConstraint.activate([
-            collectionNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            collectionNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             collectionNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             collectionNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             collectionNameLabel.heightAnchor.constraint(equalToConstant: 28),

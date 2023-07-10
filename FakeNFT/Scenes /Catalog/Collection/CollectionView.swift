@@ -16,6 +16,8 @@ final class CollectionView: UIViewController {
                                 forCellWithReuseIdentifier: ImageCollectionCell.identifier)
         collectionView.register(DescriptionCollectionCell.self,
                                 forCellWithReuseIdentifier: DescriptionCollectionCell.identifier)
+        collectionView.register(NFTCollectionCell.self,
+                                forCellWithReuseIdentifier: NFTCollectionCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -88,7 +90,9 @@ extension CollectionView: UICollectionViewDataSource {
                 buttonTitle: "jkjskkml")
             return descriptionCell
         case .collection:
-            return UICollectionViewCell()
+            guard let collectionNFTCell = collectionView.dequeueReusableCell(withReuseIdentifier: NFTCollectionCell.identifier, for: indexPath) as? NFTCollectionCell else {
+                return UICollectionViewCell() }
+            return collectionNFTCell
         }
 
     }
@@ -118,7 +122,7 @@ extension CollectionView: UICollectionViewDelegateFlowLayout {
         case .description:
             return CGSize(width: self.collectionView.bounds.width, height: 136)
         case .collection:
-            return .zero
+            return CGSize(width: self.collectionView.bounds.width, height: 800)
         }
 
     }
