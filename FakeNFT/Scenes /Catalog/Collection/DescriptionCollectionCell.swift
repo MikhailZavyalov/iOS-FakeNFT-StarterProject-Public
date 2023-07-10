@@ -6,7 +6,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var collectionNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .textPrimary
         label.textAlignment = .left
         label.font = .headline3
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -15,7 +15,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var creatorCollectonLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .textPrimary
         label.textAlignment = .left
         label.font = .caption2
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var descriptionCollectionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .textPrimary
         label.textAlignment = .left
         label.numberOfLines = 0
         label.font = .caption2

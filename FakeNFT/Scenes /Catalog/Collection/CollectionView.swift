@@ -1,6 +1,6 @@
 import UIKit
 
-final class CollectionViewController: UIViewController {
+final class CollectionView: UIViewController {
 
     enum Section: Int, CaseIterable {
         case image
@@ -53,7 +53,7 @@ final class CollectionViewController: UIViewController {
                 action: #selector(self.didTapBackButton)
             )
             navigationItem.leftBarButtonItem = leftButton
-            navBar.tintColor = .black
+            navBar.tintColor = .textPrimary
             navBar.isTranslucent = true
         }
     }
@@ -63,11 +63,11 @@ final class CollectionViewController: UIViewController {
     }
 }
 
-extension CollectionViewController: UICollectionViewDelegate {
+extension CollectionView: UICollectionViewDelegate {
 
 }
 
-extension CollectionViewController: UICollectionViewDataSource {
+extension CollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
@@ -102,7 +102,7 @@ extension CollectionViewController: UICollectionViewDataSource {
     }
 }
 
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+extension CollectionView: UICollectionViewDelegateFlowLayout {
 
     func collectionView(
         _ collectionView: UICollectionView,

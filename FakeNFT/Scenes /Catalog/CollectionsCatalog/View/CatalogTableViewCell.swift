@@ -15,7 +15,7 @@ final class CatalogTableViewCell: UITableViewCell {
 
     lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .textPrimary
         label.textAlignment = .left
         label.font = .bodyBold
         label.translatesAutoresizingMaskIntoConstraints = false

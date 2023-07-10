@@ -20,8 +20,8 @@ final class CollectionsCatalogView: UIViewController {
     private lazy var catalogTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(CatalogTableViewCell.self, forCellReuseIdentifier: CatalogTableViewCell.identifier)
-        tableView.backgroundColor = .white
-        tableView.separatorColor = .white
+        tableView.backgroundColor = .background
+        tableView.separatorColor = .background
         tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 8, right: 0)
         tableView.dataSource = self
         tableView.delegate = self
@@ -41,7 +41,7 @@ final class CollectionsCatalogView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         addSubviews()
         setupLayout()
         makeNavBar()
@@ -69,7 +69,7 @@ final class CollectionsCatalogView: UIViewController {
                 action: #selector(self.didTapSortButton)
             )
             navigationItem.rightBarButtonItem = rightButton
-            navBar.tintColor = .black
+            navBar.tintColor = .textPrimary
         }
     }
 
@@ -125,7 +125,7 @@ extension CollectionsCatalogView: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let collectionVC = CollectionViewController()
+        let collectionVC = CollectionView()
         self.navigationController?.pushViewController(collectionVC, animated: true)
 
     }
