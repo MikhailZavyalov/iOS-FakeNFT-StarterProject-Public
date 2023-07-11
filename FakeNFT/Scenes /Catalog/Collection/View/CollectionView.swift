@@ -9,6 +9,32 @@ final class CollectionView: UIViewController {
         case collection
     }
 
+    enum Rating: Int {
+        case zero = 0
+        case one
+        case two
+        case three
+        case four
+        case five
+
+        var image: UIImage? {
+            switch self {
+            case .zero:
+                return UIImage(named: "zeroStar")
+            case .one:
+                return UIImage(named: "1Star")
+            case .two:
+                return UIImage(named: "2Star")
+            case .three:
+                return UIImage(named: "3Star")
+            case .four:
+                return UIImage(named: "4Star")
+            case .five:
+                return UIImage(named: "5Star")
+            }
+        }
+    }
+
     private var model: CollectionModel? {
         viewModel.model
     }
@@ -23,10 +49,17 @@ final class CollectionView: UIViewController {
                                 forCellWithReuseIdentifier: ImageCollectionCell.identifier)
         collectionView.register(DescriptionCollectionCell.self,
                                 forCellWithReuseIdentifier: DescriptionCollectionCell.identifier)
-        collectionView.register(NFTCollectionCell.self,
-                                forCellWithReuseIdentifier: NFTCollectionCell.identifier)
+        collectionView.register(NFTCell.self,
+                                forCellWithReuseIdentifier: NFTCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
+    }()
+
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.color = .textPrimary
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
     }()
 
     init(collection: CollectionsCatalogModel) {
@@ -41,7 +74,7 @@ final class CollectionView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .background
         addSubviews()
         setupLayout()
         makeNavBar()
@@ -87,24 +120,29 @@ extension CollectionView: UICollectionViewDelegate {
 }
 
 extension CollectionView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
 
         guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
         let collection = viewModel.model?.collection
 
         switch section {
         case .image:
-            guard let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionCell.identifier, for: indexPath) as? ImageCollectionCell else {
-                return UICollectionViewCell() }
+            guard let imageCell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ImageCollectionCell.identifier,
+                for: indexPath) as? ImageCollectionCell else { return UICollectionViewCell() }
 
             if let imageURLString = collection?.cover,
                let imageURL = URL(string: imageURLString.encodeUrl) {
-            imageCell.imageView.kf.setImage(with: imageURL)
+                imageCell.imageView.kf.setImage(with: imageURL)
             }
             return imageCell
         case .description:
-            guard let descriptionCell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCollectionCell.identifier, for: indexPath) as? DescriptionCollectionCell else {
-                return UICollectionViewCell() }
+            guard let descriptionCell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: DescriptionCollectionCell.identifier,
+                for: indexPath) as? DescriptionCollectionCell else { return UICollectionViewCell() }
             descriptionCell.configure(
                 title: collection?.name ?? "",
                 subTitle: "Автор коллекции: ",
@@ -112,11 +150,30 @@ extension CollectionView: UICollectionViewDataSource {
                 buttonTitle: model?.user?.name ?? "")
             return descriptionCell
         case .collection:
-            guard let collectionNFTCell = collectionView.dequeueReusableCell(withReuseIdentifier: NFTCollectionCell.identifier, for: indexPath) as? NFTCollectionCell else {
-                return UICollectionViewCell() }
+            guard let collectionNFTCell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: NFTCell.identifier,
+                for: indexPath) as? NFTCell else { return UICollectionViewCell() }
+
+            if let nftId = model?.collection?.nfts[indexPath.row],
+               let imageURLString = model?.nfts(by: nftId)?.images.first,
+               let imageURL = URL(string: imageURLString.encodeUrl),
+               let price = model?.nfts(by: nftId)?.price,
+               let rating = model?.nfts(by: nftId)?.rating,
+               let ratingImage = Rating(rawValue: rating)?.image {
+                collectionNFTCell.nftImageView.kf.setImage(with: imageURL)
+                collectionNFTCell.nameNFTLabel.text = model?.nfts(by: nftId)?.name
+                collectionNFTCell.priceNFTLabel.text = "\(price) ETH"
+                collectionNFTCell.nftRaitingImageView.image = ratingImage
+                collectionNFTCell.cartButton.setImage(
+                    model?.isNFTinOrder(with: nftId) == true ? UIImage(named: "inCart") : UIImage(named: "cart"),
+                    for: .normal)
+                collectionNFTCell.likeOrDislikeButton.setImage(
+                    model?.isNFTLiked(with: nftId) == true ? UIImage(named: "like") : UIImage(named: "disLike"),
+                    for: .normal
+                )
+            }
             return collectionNFTCell
         }
-
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -124,7 +181,15 @@ extension CollectionView: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        guard let section = Section(rawValue: section) else { return 0 }
+        switch section {
+        case .image:
+            return 1
+        case .description:
+            return 1
+        case .collection:
+            return model?.collection?.nfts.count ?? 0
+        }
     }
 }
 
@@ -136,17 +201,14 @@ extension CollectionView: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         guard let section = Section(rawValue: indexPath.section) else { return .zero }
-
         switch section {
-
         case .image:
             return CGSize(width: self.collectionView.bounds.width, height: 310)
         case .description:
             return CGSize(width: self.collectionView.bounds.width, height: 136)
         case .collection:
-            return CGSize(width: self.collectionView.bounds.width, height: 800)
+            return CGSize(width: 108, height: 192)
         }
-
     }
 
     func collectionView(
@@ -163,5 +225,21 @@ extension CollectionView: UICollectionViewDelegateFlowLayout {
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         return 0
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        guard let section = Section(rawValue: section) else { return .zero }
+        switch section {
+        case .image:
+            return .zero
+        case .description:
+            return .zero
+        case .collection:
+            return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
     }
 }

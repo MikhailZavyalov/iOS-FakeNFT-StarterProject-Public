@@ -4,53 +4,47 @@ final class NFTCell: UICollectionViewCell {
 
     static let identifier = "NFTCell"
 
-    private lazy var nftImageView: UIImageView = {
+    lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
-        imageView.backgroundColor = .red
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         return imageView
     }()
 
-    private lazy var likeOrDislikeButton: UIButton = {
+    lazy var likeOrDislikeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "like"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    private lazy var nftRaitingImageView: UIImageView = {
+    lazy var nftRaitingImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "2Star")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
 
-    private lazy var nameNFTLabel: UILabel = {
+    lazy var nameNFTLabel: UILabel = {
         let label = UILabel()
         label.textColor = .textPrimary
         label.textAlignment = .left
-        label.text = "Ruby"
         label.font = .bodyBold
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var priceNFTLabel: UILabel = {
+    lazy var priceNFTLabel: UILabel = {
         let label = UILabel()
         label.textColor = .textPrimary
         label.textAlignment = .left
-        label.text = "1 ETH"
         label.font = .caption3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var cartButton: UIButton = {
+    lazy var cartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "cart"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -103,5 +97,4 @@ final class NFTCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

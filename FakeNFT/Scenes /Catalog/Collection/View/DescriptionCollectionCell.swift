@@ -34,8 +34,9 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var creatorCollectionButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.textPrimary, for: .normal)
+        button.setTitleColor(.linkColor, for: .normal)
         button.titleLabel?.font = .caption2
+        button.titleLabel?.tintColor = .linkColor
         button.contentHorizontalAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
 

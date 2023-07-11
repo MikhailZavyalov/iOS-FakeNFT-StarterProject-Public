@@ -29,6 +29,13 @@ final class CollectionsCatalogView: UIViewController {
         return tableView
     }()
 
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.color = .textPrimary
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    }()
+
     init() {
         viewModel = CollectionsCatalogViewModel()
         super.init(nibName: nil, bundle: nil)
@@ -45,10 +52,14 @@ final class CollectionsCatalogView: UIViewController {
         addSubviews()
         setupLayout()
         makeNavBar()
+        viewModel.onLoadingStarted = self.startAnimating
+        viewModel.onLoadingFinished = self.stopAnimating
+        viewModel.updateData()
     }
 
     private func addSubviews() {
         view.addSubview(catalogTableView)
+        view.addSubview(activityIndicator)
     }
 
     private func setupLayout() {
@@ -56,7 +67,12 @@ final class CollectionsCatalogView: UIViewController {
             catalogTableView.topAnchor.constraint(equalTo: view.topAnchor),
             catalogTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             catalogTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            catalogTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            catalogTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            activityIndicator.widthAnchor.constraint(equalToConstant: 50),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 50),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
@@ -80,10 +96,10 @@ final class CollectionsCatalogView: UIViewController {
             preferredStyle: .actionSheet
         )
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
-          print("sortByNameAction")
+            print("sortByNameAction")
         }
         let sortByNumberOfNFT = UIAlertAction(title: "По количеству NFT", style: .default) { _ in
-          print("sortByNumberOfNFT")
+            print("sortByNumberOfNFT")
         }
         let closeAlert = UIAlertAction(title: "Закрыть", style: .cancel) { _ in
         }
@@ -91,6 +107,14 @@ final class CollectionsCatalogView: UIViewController {
         alertSort.addAction(sortByNumberOfNFT)
         alertSort.addAction(closeAlert)
         self.present(alertSort, animated: true, completion: nil)
+    }
+
+    private func startAnimating() {
+        activityIndicator.startAnimating()
+    }
+
+    private func stopAnimating() {
+        activityIndicator.stopAnimating()
     }
 }
 
@@ -104,7 +128,8 @@ extension CollectionsCatalogView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let categoryCell = tableView.dequeueReusableCell(withIdentifier: CatalogTableViewCell.identifier) as? CatalogTableViewCell else {
+        guard let categoryCell = tableView.dequeueReusableCell(
+            withIdentifier: CatalogTableViewCell.identifier) as? CatalogTableViewCell else {
             return UITableViewCell()
         }
         let collection = collections[indexPath.row]
@@ -112,7 +137,6 @@ extension CollectionsCatalogView: UITableViewDataSource {
            let imageURL = URL(string: imageURLString.encodeUrl) {
             categoryCell.imageCategory.kf.setImage(with: imageURL)
         }
-
         categoryCell.label.text = collection.displayName
         categoryCell.selectionStyle = .none
         return categoryCell
@@ -127,5 +151,5 @@ extension CollectionsCatalogView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let collectionVC = CollectionView(collection: collections[indexPath.row])
         self.navigationController?.pushViewController(collectionVC, animated: true)
-     }
+    }
 }
