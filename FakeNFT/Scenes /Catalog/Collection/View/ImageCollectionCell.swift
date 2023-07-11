@@ -4,7 +4,7 @@ final class ImageCollectionCell: UICollectionViewCell {
 
     static let identifier = "ImageCollectionCell"
 
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -25,9 +25,5 @@ final class ImageCollectionCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func configure(image: UIImage?) {
-        imageView.image = image
     }
 }

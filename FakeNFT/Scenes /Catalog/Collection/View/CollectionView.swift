@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class CollectionView: UIViewController {
 
@@ -7,6 +8,12 @@ final class CollectionView: UIViewController {
         case description
         case collection
     }
+
+    private var model: CollectionModel? {
+        viewModel.model
+    }
+
+    private let viewModel: CollectionViewModel
 
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -21,6 +28,16 @@ final class CollectionView: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+
+    init(collection: CollectionsCatalogModel) {
+        viewModel = CollectionViewModel(collection: collection)
+        super.init(nibName: nil, bundle: nil)
+        viewModel.onChange = self.collectionView.reloadData
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,21 +90,26 @@ extension CollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
+        let collection = viewModel.model?.collection
 
         switch section {
         case .image:
             guard let imageCell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionCell.identifier, for: indexPath) as? ImageCollectionCell else {
                 return UICollectionViewCell() }
-            imageCell.configure(image: UIImage(named: "collectionImage"))
+
+            if let imageURLString = collection?.cover,
+               let imageURL = URL(string: imageURLString.encodeUrl) {
+            imageCell.imageView.kf.setImage(with: imageURL)
+            }
             return imageCell
         case .description:
             guard let descriptionCell = collectionView.dequeueReusableCell(withReuseIdentifier: DescriptionCollectionCell.identifier, for: indexPath) as? DescriptionCollectionCell else {
                 return UICollectionViewCell() }
             descriptionCell.configure(
-                title: "Peach",
-                subTitle: "Автор коллекции:",
-                description: "Персиковый — как облака над закатным солнцем в океане. В этой коллекции совмещены трогательная нежность и живая игривость сказочных зефирных зверей.",
-                buttonTitle: "jkjskkml")
+                title: collection?.name ?? "",
+                subTitle: "Автор коллекции: ",
+                description: collection?.description ?? "",
+                buttonTitle: model?.user?.name ?? "")
             return descriptionCell
         case .collection:
             guard let collectionNFTCell = collectionView.dequeueReusableCell(withReuseIdentifier: NFTCollectionCell.identifier, for: indexPath) as? NFTCollectionCell else {

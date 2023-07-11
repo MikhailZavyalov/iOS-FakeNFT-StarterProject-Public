@@ -125,8 +125,7 @@ extension CollectionsCatalogView: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let collectionVC = CollectionView()
+        let collectionVC = CollectionView(collection: collections[indexPath.row])
         self.navigationController?.pushViewController(collectionVC, animated: true)
-
-    }
+     }
 }
