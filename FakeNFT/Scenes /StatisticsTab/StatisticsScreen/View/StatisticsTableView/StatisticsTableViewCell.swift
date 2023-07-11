@@ -4,8 +4,8 @@ import Kingfisher
 final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
     private var number: UILabel = {
         var number = UILabel()
-        number.font = .systemFont(ofSize: 15, weight: .regular)
-        number.textColor = .black
+        number.font = .caption1
+        number.textColor = .textPrimary
         return number
     }()
 

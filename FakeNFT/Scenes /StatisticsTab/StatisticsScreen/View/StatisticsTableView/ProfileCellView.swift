@@ -10,11 +10,13 @@ class ProfileCellView: UIView {
             profilePhoto.kf.setImage(with: url)
         }
     }
+
     var text: String? {
         didSet {
             profileName.text = text
         }
     }
+
     var counter: Int? {
         didSet {
             profileNFTCount.text = counter.map { "\($0)" } ?? ""
@@ -25,20 +27,22 @@ class ProfileCellView: UIView {
         let profilePhoto = UIImageView()
         profilePhoto.layer.cornerRadius = 14
         profilePhoto.layer.masksToBounds = true
-        profilePhoto.backgroundColor = .red
+        profilePhoto.image = UIImage(systemName: "person.crop.circle.fill")?
+            .withTintColor(.textSecondary)
+            .withRenderingMode(.alwaysOriginal)
         return profilePhoto
     }()
 
     private let profileName: UILabel = {
         let profileName = UILabel()
-        profileName.font = .systemFont(ofSize: 22, weight: .bold)
+        profileName.font = .headline3
         profileName.textColor = .black
         return profileName
     }()
 
     private let profileNFTCount: UILabel = {
         let profileNFTCount = UILabel()
-        profileNFTCount.font = .systemFont(ofSize: 22, weight: .bold)
+        profileNFTCount.font = .headline3
         return profileNFTCount
     }()
 

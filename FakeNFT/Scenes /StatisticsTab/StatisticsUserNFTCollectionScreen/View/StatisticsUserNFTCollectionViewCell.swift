@@ -18,7 +18,7 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
 
     private let usersCollectionItemName: UILabel = {
         let name = UILabel()
-        name.font = .systemFont(ofSize: 17, weight: .bold)
+        name.font = .bodyBold
         return name
     }()
 

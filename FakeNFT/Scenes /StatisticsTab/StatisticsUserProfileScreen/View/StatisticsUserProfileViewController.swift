@@ -11,13 +11,13 @@ final class StatisticsUserProfileViewController: UIViewController {
 
     private let userName: UILabel = {
         let userName = UILabel()
-        userName.font = .systemFont(ofSize: 22, weight: .bold)
+        userName.font = .headline3
         return userName
     }()
 
     private let userDescription: UILabel = {
         let userDescription = UILabel()
-        userDescription.font = .systemFont(ofSize: 13, weight: .regular)
+        userDescription.font = .headline3
         userDescription.numberOfLines = 0
         return userDescription
     }()
@@ -28,7 +28,7 @@ final class StatisticsUserProfileViewController: UIViewController {
         usersWebsite.layer.borderWidth = 1
         usersWebsite.layer.borderColor = UIColor(ciColor: .black).cgColor
         usersWebsite.setTitle("Перейти на сайт пользователя", for: .normal)
-        usersWebsite.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+        usersWebsite.titleLabel?.font = .caption1
         usersWebsite.setTitleColor(.black, for: .normal)
         return usersWebsite
     }()
@@ -36,7 +36,7 @@ final class StatisticsUserProfileViewController: UIViewController {
     private let usersCollectionButton: UIButton = {
         let usersCollectionButton = UIButton()
         usersCollectionButton.setTitleColor(.black, for: .normal)
-        usersCollectionButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        usersCollectionButton.titleLabel?.font = .bodyBold
         let chevron = UIImage(systemName: "chevron.forward")?
             .withTintColor(.textPrimary)
             .withRenderingMode(.alwaysOriginal)
