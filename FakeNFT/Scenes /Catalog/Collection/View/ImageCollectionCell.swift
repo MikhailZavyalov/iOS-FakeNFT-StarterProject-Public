@@ -6,6 +6,8 @@ final class ImageCollectionCell: UICollectionViewCell {
 
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 12
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

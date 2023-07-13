@@ -82,6 +82,7 @@ final class NFTCell: UICollectionViewCell {
             nameNFTLabel.widthAnchor.constraint(equalToConstant: 68),
 
             priceNFTLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            priceNFTLabel.topAnchor.constraint(equalTo: nameNFTLabel.bottomAnchor, constant: 4),
             priceNFTLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             priceNFTLabel.heightAnchor.constraint(equalToConstant: 12),
             priceNFTLabel.widthAnchor.constraint(equalToConstant: 68),
