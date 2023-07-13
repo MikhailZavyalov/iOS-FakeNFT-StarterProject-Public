@@ -96,7 +96,7 @@ final class CartViewController: UIViewController {
         button.layer.masksToBounds = true
         button.setTitle("Удалить", for: .normal)
         button.setTitleColor(.ypRed, for: .normal)
-        button.addTarget(self, action: #selector(deleteNFT), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(deleteNFT), for: .touchUpInside)
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -107,7 +107,7 @@ final class CartViewController: UIViewController {
         button.backgroundColor = .black
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
-        button.addTarget(self, action: #selector(cancelDeletion), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(cancelDeletion), for: .touchUpInside)
         button.setTitle("Вернуться", for: .normal)
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +132,6 @@ final class CartViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         addedNFTs = MockCartData.nfts
         setupView()
     }
@@ -351,6 +350,7 @@ extension CartViewController: UITableViewDataSource {
         }
         let nft = addedNFTs[indexPath.row]
         cell.backgroundColor = .white
+        cell.selectionStyle = .none
         cell.configure(with: nft)
         cell.indexCell = indexPath.row
         cell.delegate = self

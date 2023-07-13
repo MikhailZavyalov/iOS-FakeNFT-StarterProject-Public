@@ -22,7 +22,7 @@ class NFTCell: UITableViewCell {
     private let cartDeleteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "cartImage"), for: .normal)
-        button.addTarget(self, action: #selector(cartDeleteButtonTapped), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(cartDeleteButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
