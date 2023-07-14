@@ -96,10 +96,10 @@ final class CollectionsCatalogView: UIViewController {
             preferredStyle: .actionSheet
         )
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
-            print("sortByNameAction")
+            self.viewModel.sortByName()
         }
         let sortByNumberOfNFT = UIAlertAction(title: "По количеству NFT", style: .default) { _ in
-            print("sortByNumberOfNFT")
+            self.viewModel.sortByNFT()
         }
         let closeAlert = UIAlertAction(title: "Закрыть", style: .cancel) { _ in
         }

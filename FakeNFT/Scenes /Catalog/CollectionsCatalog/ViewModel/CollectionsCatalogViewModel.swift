@@ -24,6 +24,7 @@ final class CollectionsCatalogViewModel: NSObject {
             case .success(let data):
                 self?.collections = data.map { CollectionsCatalogModel(with: $0) }
                 DispatchQueue.main.async {
+                    self?.sortByName()
                     self?.onLoadingFinished?()
                     self?.onChange?()
                 }
@@ -31,5 +32,19 @@ final class CollectionsCatalogViewModel: NSObject {
                 print(error)
             }
         }
+    }
+
+    func sortByName() {
+        collections = collections.sorted {
+            $0.name < $1.name
+        }
+        onChange?()
+    }
+
+    func sortByNFT() {
+        collections = collections.sorted {
+            $0.nfts.count > $1.nfts.count
+        }
+        onChange?()
     }
 }
