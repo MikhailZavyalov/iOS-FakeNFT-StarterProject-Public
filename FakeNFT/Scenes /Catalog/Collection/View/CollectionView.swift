@@ -147,7 +147,8 @@ extension CollectionView: UICollectionViewDataSource {
                 title: collection?.name ?? "",
                 subTitle: "Автор коллекции: ",
                 description: collection?.description ?? "",
-                buttonTitle: model?.user?.name ?? "")
+                buttonTitle: model?.user?.name ?? "",
+                buttonAction: linkAction)
             return descriptionCell
         case .collection:
             guard let collectionNFTCell = collectionView.dequeueReusableCell(
@@ -174,6 +175,13 @@ extension CollectionView: UICollectionViewDataSource {
             }
             return collectionNFTCell
         }
+    }
+
+    private func linkAction() {
+        let webViewVC = WebViewView()
+        guard let url = URL(string: model?.user?.website ?? "") else { return }
+        webViewVC.url = url
+        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

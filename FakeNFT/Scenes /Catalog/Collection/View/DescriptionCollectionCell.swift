@@ -3,6 +3,7 @@ import UIKit
 final class DescriptionCollectionCell: UICollectionViewCell {
 
     static let identifier = "DescriptionCollectionCell"
+    var onTapped: (() -> Void)?
 
     private lazy var collectionNameLabel: UILabel = {
         let label = UILabel()
@@ -37,6 +38,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
         button.setTitleColor(.linkColor, for: .normal)
         button.titleLabel?.font = .caption2
         button.titleLabel?.tintColor = .linkColor
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.contentHorizontalAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -78,14 +80,20 @@ final class DescriptionCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    @objc private func buttonTapped() {
+        onTapped?()
+    }
+
     func configure(
         title: String,
         subTitle: String,
         description: String,
-        buttonTitle: String) {
+        buttonTitle: String,
+        buttonAction: @escaping () -> Void) {
             collectionNameLabel.text = title
             creatorCollectonLabel.text = subTitle
             creatorCollectionButton.setTitle(buttonTitle, for: .normal)
             descriptionCollectionLabel.text = description
+            onTapped = buttonAction
     }
 }
