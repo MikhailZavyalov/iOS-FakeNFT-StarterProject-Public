@@ -1,10 +1,21 @@
 import UIKit
+import Kingfisher
 
 protocol CartCellDelegate {
     func showDeleteView(index: Int)
 }
 
 class NFTCell: UITableViewCell {
+    
+    var imageURL: URL? {
+        didSet {
+            guard let url = imageURL else {
+                return pictureImageView.kf.cancelDownloadTask()
+            }
+            
+            pictureImageView.kf.setImage(with: url)
+        }
+    }
     
     static let reuseIdentifier = "NFTCellReuseIdentifier"
     var delegate: CartCellDelegate?
@@ -15,6 +26,8 @@ class NFTCell: UITableViewCell {
 
     private let pictureImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 16
+        imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -107,9 +120,18 @@ class NFTCell: UITableViewCell {
             cartDeleteButton.widthAnchor.constraint(equalToConstant: 16)
         ])
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        pictureImageView.kf.cancelDownloadTask()
+        
+    }
 
-    func configure(with nft: NFT) {
-        pictureImageView.image = nft.picture
+    func configure(with nft: NFTModel) {
+        //pictureImageView.image = nft.picture
+        imageURL = nft.images.first
+        
         nameLabel.text = nft.name
         priceLabel.text = "\(nft.price)" + " ETH"
         

@@ -18,3 +18,9 @@ extension NetworkRequest {
     var httpMethod: HttpMethod { .get }
     var dto: Encodable? { nil }
 }
+
+// TODO: - Удалить
+
+struct DefaultNetworkRequest: NetworkRequest {
+    let endpoint: URL?
+}

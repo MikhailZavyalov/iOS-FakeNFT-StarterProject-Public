@@ -2,8 +2,9 @@ import UIKit
 
 final class CartViewController: UIViewController {
     
-    private var addedNFTs: [NFT] = []
-    private var totalPrice: Float = 0
+    // Changes
+    
+    private let viewModel: CartViewModel
     
     // Элементы NFT - корзины
     
@@ -36,7 +37,7 @@ final class CartViewController: UIViewController {
     
     private lazy var nftCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(addedNFTs.count)" + " NFT"
+        label.text = "0 NFT"
         label.font = .caption1
         label.textColor = .textOnSecondary
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +46,7 @@ final class CartViewController: UIViewController {
     
     private lazy var totalPriceLabel: UILabel = {
         let label = UILabel()
-        let formattedPrice = String(format: "%.2f", totalPrice)
+        let formattedPrice = String(format: "%.2f", 0.0)
         label.text = formattedPrice + " ETH"
         label.font = .bodyBold
         label.textColor = .ypGreen
@@ -123,28 +124,46 @@ final class CartViewController: UIViewController {
     }()
     
     // Работа экрана
+    
+    init(viewModel: CartViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        viewModel.$NFTmodels.bind(executeInitially: true) { [weak self] nfts in
+            self?.tableView.reloadData()
+            self?.setupView()
+            self?.nftCountLabel.text = "\(nfts.count)" + " NFT"
+            var totalPrice: Float = 0
+            for nft in nfts {
+                totalPrice += nft.price
+            }
+            let formattedPrice = String(format: "%.2f", totalPrice)
+            self?.totalPriceLabel.text = formattedPrice + " ETH"
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addedNFTs = MockCartData.nfts
         view.backgroundColor = .white
+        
+        viewModel.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addedNFTs = MockCartData.nfts
         setupView()
     }
     
     private func setupView() {
         
-        if addedNFTs.isEmpty {
+        if viewModel.NFTmodels.isEmpty {
             setupEmptyView()
             hiddenCorrection()
         } else {
-            tableView.reloadData()
             setupNavBar()
-            totalPrice = countPrice(addedNFTs)
             setupTableView()
             setupPaymentView()
             hiddenCorrection()
@@ -182,6 +201,7 @@ final class CartViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isUserInteractionEnabled = true
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -199,10 +219,6 @@ final class CartViewController: UIViewController {
         paymentView.addSubview(totalPriceLabel)
         paymentView.addSubview(paymentButton)
         
-        nftCountLabel.text = "\(addedNFTs.count)" + " NFT"
-        let formattedPrice = String(format: "%.2f", totalPrice)
-        totalPriceLabel.text = formattedPrice + " ETH"
-        
         NSLayoutConstraint.activate([
             paymentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -83),
             paymentView.heightAnchor.constraint(equalToConstant: 76),
@@ -216,7 +232,7 @@ final class CartViewController: UIViewController {
             
             totalPriceLabel.topAnchor.constraint(equalTo: nftCountLabel.bottomAnchor, constant: 2),
             totalPriceLabel.leadingAnchor.constraint(equalTo: paymentView.leadingAnchor, constant: 16),
-            totalPriceLabel.widthAnchor.constraint(equalToConstant: 79),
+            totalPriceLabel.widthAnchor.constraint(equalToConstant: 90),
             totalPriceLabel.heightAnchor.constraint(equalToConstant: 22),
             
             paymentButton.centerYAnchor.constraint(equalTo: paymentView.centerYAnchor),
@@ -234,34 +250,8 @@ final class CartViewController: UIViewController {
         return totalPrice
     }
     
-    private func sortByPrice() {
-        // Реализация сортировки по цене
-        addedNFTs.sort { $0.price < $1.price }
-        tableView.reloadData()
-    }
-
-    private func sortByRating() {
-        // Реализация сортировки по рейтингу
-        addedNFTs.sort { $0.rating > $1.rating }
-        tableView.reloadData()
-    }
-
-    private func sortByName() {
-        // Реализация сортировки по названию
-        addedNFTs.sort { $0.name < $1.name }
-        tableView.reloadData()
-    }
-    
-    private func reloadViewAfterDelete() {
-        tableView.reloadData()
-        setupView()
-        nftCountLabel.text = "\(addedNFTs.count)" + " NFT"
-        let formattedPrice = String(format: "%.2f", totalPrice)
-        totalPriceLabel.text = formattedPrice + " ETH"
-    }
-    
     private func hiddenCorrection() {
-        if addedNFTs.isEmpty {
+        if viewModel.NFTmodels.isEmpty {
             navigationController?.isNavigationBarHidden = true
             paymentView.isHidden = true
             nftCountLabel.isHidden = true
@@ -283,17 +273,17 @@ final class CartViewController: UIViewController {
         
         let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { _ in
             // Действие для сортировки по цене
-            self.sortByPrice()
+            self.viewModel.sortByPrice()
         }
         
         let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
             // Действие для сортировки по рейтингу
-            self.sortByRating()
+            self.viewModel.sortByRating()
         }
         
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
             // Действие для сортировки по названию
-            self.sortByName()
+            self.viewModel.sortByName()
         }
         
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
@@ -311,14 +301,11 @@ final class CartViewController: UIViewController {
         deleteText.removeFromSuperview()
         deleteButton.removeFromSuperview()
         cancelButton.removeFromSuperview()
-        
-        guard let indexDelete = indexDelete else { return }
-        addedNFTs.remove(at: indexDelete)
-        
-        reloadViewAfterDelete()
-
         navigationController?.navigationBar.isHidden = false
         tabBarController?.tabBar.isHidden = false
+        
+        guard let indexDelete = indexDelete else { return }
+        viewModel.didDeleteNFT(index: indexDelete)
     }
     
     @objc private func cancelDeletion() {
@@ -341,14 +328,18 @@ final class CartViewController: UIViewController {
 // Реализация UITableViewDataSource
 extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return addedNFTs.count
+        //return addedNFTs.count
+        return viewModel.NFTmodels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NFTCell.reuseIdentifier, for: indexPath) as? NFTCell else {
             return UITableViewCell()
         }
-        let nft = addedNFTs[indexPath.row]
+        
+        let nft = viewModel.NFTmodels[indexPath.row]
+                
         cell.backgroundColor = .white
         cell.selectionStyle = .none
         cell.configure(with: nft)
@@ -374,7 +365,7 @@ extension CartViewController: CartCellDelegate {
         cancelButton.isHidden = false
         iconDeleteImageView.isHidden = false
         
-        iconDeleteImageView.image = addedNFTs[index].picture
+        iconDeleteImageView.kf.setImage(with: viewModel.NFTmodels[index].images.first)
         indexDelete = index
         
         navigationController?.isNavigationBarHidden = true
