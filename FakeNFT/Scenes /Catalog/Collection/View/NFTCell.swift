@@ -1,8 +1,11 @@
 import UIKit
+import Kingfisher
 
 final class NFTCell: UICollectionViewCell {
 
     static let identifier = "NFTCell"
+    var onToggleLike: (() -> Void)?
+    var onToggleCart: (() -> Void)?
 
     lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
@@ -15,11 +18,12 @@ final class NFTCell: UICollectionViewCell {
 
     lazy var likeOrDislikeButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    lazy var nftRaitingImageView: UIImageView = {
+    lazy var nftRatingImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -45,6 +49,7 @@ final class NFTCell: UICollectionViewCell {
 
     lazy var cartButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,8 +58,8 @@ final class NFTCell: UICollectionViewCell {
         super.init(frame: frame)
 
         contentView.addSubview(nftImageView)
-        nftImageView.addSubview(likeOrDislikeButton)
-        contentView.addSubview(nftRaitingImageView)
+        contentView.addSubview(likeOrDislikeButton)
+        contentView.addSubview(nftRatingImageView)
         contentView.addSubview(nameNFTLabel)
         contentView.addSubview(priceNFTLabel)
         contentView.addSubview(cartButton)
@@ -71,18 +76,17 @@ final class NFTCell: UICollectionViewCell {
             likeOrDislikeButton.heightAnchor.constraint(equalToConstant: 40),
             likeOrDislikeButton.widthAnchor.constraint(equalToConstant: 40),
 
-            nftRaitingImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            nftRaitingImageView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),
-            nftRaitingImageView.heightAnchor.constraint(equalToConstant: 12),
-            nftRaitingImageView.widthAnchor.constraint(equalToConstant: 68),
+            nftRatingImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nftRatingImageView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),
+            nftRatingImageView.heightAnchor.constraint(equalToConstant: 12),
+            nftRatingImageView.widthAnchor.constraint(equalToConstant: 68),
 
             nameNFTLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            nameNFTLabel.topAnchor.constraint(equalTo: nftRaitingImageView.bottomAnchor, constant: 5),
+            nameNFTLabel.topAnchor.constraint(equalTo: nftRatingImageView.bottomAnchor, constant: 5),
             nameNFTLabel.heightAnchor.constraint(equalToConstant: 22),
             nameNFTLabel.widthAnchor.constraint(equalToConstant: 68),
 
             priceNFTLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            priceNFTLabel.topAnchor.constraint(equalTo: nameNFTLabel.bottomAnchor, constant: 4),
             priceNFTLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             priceNFTLabel.heightAnchor.constraint(equalToConstant: 12),
             priceNFTLabel.widthAnchor.constraint(equalToConstant: 68),
@@ -98,4 +102,32 @@ final class NFTCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    @objc private func likeButtonTapped() {
+        onToggleLike?()
+    }
+
+    @objc private func cartButtonTapped() {
+        onToggleCart?()
+    }
+
+    func configure(
+        nftImage: URL,
+        likeOrDislakeImage: String,
+        ratingImage: UIImage,
+        title: String,
+        price: String,
+        cartImage: String,
+        likeOrDislikeButtonAction: @escaping () -> Void,
+        cartButtonAction: @escaping () -> Void) {
+            nftImageView.kf.setImage(with: nftImage)
+            likeOrDislikeButton.setImage(UIImage(named: likeOrDislakeImage), for: .normal)
+            nftRatingImageView.image =  ratingImage
+            nameNFTLabel.text = title
+            priceNFTLabel.text = price
+            cartButton.setImage(UIImage(named: cartImage), for: .normal)
+            onToggleLike = likeOrDislikeButtonAction
+            onToggleCart = cartButtonAction
+        }
+
 }

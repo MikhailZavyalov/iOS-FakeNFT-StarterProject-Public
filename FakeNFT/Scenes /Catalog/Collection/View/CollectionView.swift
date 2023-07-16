@@ -90,7 +90,7 @@ final class CollectionView: UIViewController {
     private func setupLayout() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -151,6 +151,8 @@ extension CollectionView: UICollectionViewDataSource {
                 buttonAction: linkAction)
             return descriptionCell
         case .collection:
+            var likeOrDislikeButton: String
+            var cartButton: String
             guard let collectionNFTCell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: NFTCell.identifier,
                 for: indexPath) as? NFTCell else { return UICollectionViewCell() }
@@ -161,17 +163,22 @@ extension CollectionView: UICollectionViewDataSource {
                let price = model?.nfts(by: nftId)?.price,
                let rating = model?.nfts(by: nftId)?.rating,
                let ratingImage = Rating(rawValue: rating)?.image {
-                collectionNFTCell.nftImageView.kf.setImage(with: imageURL)
-                collectionNFTCell.nameNFTLabel.text = model?.nfts(by: nftId)?.name
-                collectionNFTCell.priceNFTLabel.text = "\(price) ETH"
-                collectionNFTCell.nftRaitingImageView.image = ratingImage
-                collectionNFTCell.cartButton.setImage(
-                    model?.isNFTinOrder(with: nftId) == true ? UIImage(named: "inCart") : UIImage(named: "cart"),
-                    for: .normal)
-                collectionNFTCell.likeOrDislikeButton.setImage(
-                    model?.isNFTLiked(with: nftId) == true ? UIImage(named: "like") : UIImage(named: "disLike"),
-                    for: .normal
-                )
+
+                likeOrDislikeButton = model?.isNFTLiked(with: nftId) == true ? "like" : "disLike"
+                cartButton = model?.isNFTinOrder(with: nftId) == true ? "inCart" : "cart"
+                collectionNFTCell.configure(
+                    nftImage: imageURL,
+                    likeOrDislakeImage: likeOrDislikeButton,
+                    ratingImage: ratingImage,
+                    title: model?.nfts(by: nftId)?.name ?? "",
+                    price: "\(price) ETH",
+                    cartImage: cartButton,
+                    likeOrDislikeButtonAction: { [weak self] in
+                        self?.likeOrDislikeButtonTapped(idNFT: nftId)
+                    },
+                    cartButtonAction: { [weak self] in
+                    self?.cartButtonTapped(idNFT: nftId)
+                })
             }
             return collectionNFTCell
         }
@@ -182,6 +189,14 @@ extension CollectionView: UICollectionViewDataSource {
         guard let url = URL(string: model?.user?.website ?? "") else { return }
         webViewVC.url = url
         self.navigationController?.pushViewController(webViewVC, animated: true)
+    }
+
+    private func likeOrDislikeButtonTapped(idNFT: String) {
+        viewModel.toggleLikeForNFT(with: idNFT)
+    }
+
+    private func cartButtonTapped(idNFT: String) {
+        viewModel.toggleCartForNFT(with: idNFT)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
