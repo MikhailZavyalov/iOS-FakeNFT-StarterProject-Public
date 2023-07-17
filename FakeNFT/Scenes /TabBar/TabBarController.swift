@@ -38,6 +38,7 @@ class TabBarController: UITabBarController {
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [profileVC, catalogVC, cartVC, statisticsNavigationController]
         tabBarController.tabBar.unselectedItemTintColor = .black
+        tabBarController.tabBar.backgroundColor = .background
 
        return tabBarController
     }

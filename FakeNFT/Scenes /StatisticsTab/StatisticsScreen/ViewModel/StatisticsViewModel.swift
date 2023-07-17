@@ -39,7 +39,8 @@ final class StatisticsViewModel {
                 
                 switch result {
                 case let .success(models):
-                    self.userModels = self.applySort(self.sorting, to: models)
+                    let viewModelModels = models.map(UserModel.init(serverModel:))
+                    self.userModels = self.applySort(self.sorting, to: viewModelModels)
                 case let .failure(error):
                     print(error)
                 }
