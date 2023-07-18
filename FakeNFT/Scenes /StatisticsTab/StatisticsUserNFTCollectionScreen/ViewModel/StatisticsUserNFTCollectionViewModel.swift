@@ -1,14 +1,11 @@
 import Foundation
 
-protocol StatisticsUserNFTCollectionView: AnyObject {
-    func setLoaderIsHidden(_ isHidden: Bool)
-}
-
 final class StatisticsUserNFTCollectionViewModel {
     @Observable
     var nfts: [StatisticsUserNFTCollectionCellModel] = []
 
-    weak var view: StatisticsUserNFTCollectionView?
+    @Observable
+    var isLoading: Bool = false
 
     private let model: StatisticsUserNFTCollectionModel
     private let router: StatisticsNavigation
@@ -22,11 +19,11 @@ final class StatisticsUserNFTCollectionViewModel {
         self.likes = Set(likes)
     }
 
-    func viewDidLoad() {
+    func loadData() {
         var nftIDsToLoad = nftIDs
         var loadedDictionary: [String: StatisticsUserNFTCollectionCellModel] = [:]
 
-        view?.setLoaderIsHidden(false)
+        isLoading = true
 
         nftIDs.forEach { id in
             model.loadNFT(id: id) { [weak self] result in
@@ -48,7 +45,7 @@ final class StatisticsUserNFTCollectionViewModel {
 
                 if nftIDsToLoad.isEmpty {
                     DispatchQueue.main.async {
-                        self.view?.setLoaderIsHidden(true)
+                        self.isLoading = false
                         self.nfts = Array(loadedDictionary.values)
                     }
                 }

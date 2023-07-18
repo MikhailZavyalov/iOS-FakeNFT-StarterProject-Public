@@ -3,8 +3,8 @@ import UIKit
 final class StatisticsUserNFTCollectionViewController:
     UIViewController,
     UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout,
-    StatisticsUserNFTCollectionView {
+    UICollectionViewDelegateFlowLayout
+{
 
     let userCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -36,7 +36,7 @@ final class StatisticsUserNFTCollectionViewController:
         configureNavigationBar()
         setupConstraints()
 
-        viewModel.viewDidLoad()
+        viewModel.loadData()
     }
 
     func setLoaderIsHidden(_ isHidden: Bool) {

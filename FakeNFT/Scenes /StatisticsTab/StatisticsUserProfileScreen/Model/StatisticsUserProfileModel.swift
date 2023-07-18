@@ -25,7 +25,7 @@ struct StatisticsUserProfileModel {
 
     func loadUser(id: String, completion: @escaping (Result<UserProfileModel, Error>) -> Void) {
         let request = DefaultNetworkRequest(
-            endpoint: URL(string: "https://64858e8ba795d24810b71189.mockapi.io/api/v1/profile/\(id)")!
+            endpoint: Endpoint.getProfile(id: id)
         )
         networkClient.send(request: request, type: UserProfileModel.self, onResponse: completion)
     }

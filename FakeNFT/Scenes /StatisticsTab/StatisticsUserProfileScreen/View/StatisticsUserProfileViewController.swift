@@ -90,15 +90,11 @@ final class StatisticsUserProfileViewController: UIViewController {
         setupConstraints()
         configureNavigationBar()
 
-        viewModel.viewDidLoad()
+        viewModel.loadData()
     }
 
     func setLoaderIsHidden(_ isHidden: Bool) {
-        if isHidden {
-            activityIndicator.stopAnimating()
-        } else {
-            activityIndicator.startAnimating()
-        }
+        isHidden ? activityIndicator.stopAnimating() : activityIndicator.startAnimating()
     }
 
     private func setupConstraints() {

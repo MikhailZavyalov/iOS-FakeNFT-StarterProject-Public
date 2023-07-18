@@ -3,8 +3,7 @@ import UIKit
 final class StatisticsViewController:
     UIViewController,
     UITableViewDelegate,
-    UITableViewDataSource,
-    StatisticsView
+    UITableViewDataSource
 {
     private let sortButton: UIButton = {
         let sortButton = UIButton()
@@ -24,6 +23,9 @@ final class StatisticsViewController:
         viewModel.$userModels.bind(executeInitially: true) { [weak self] _ in
             self?.tableView.reloadData()
         }
+        viewModel.$isLoading.bind(executeInitially: true) { [weak self] isLoading in
+            self?.setLoaderIsHidden(!isLoading)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -41,17 +43,13 @@ final class StatisticsViewController:
         setupConstraints()
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
 
-        viewModel.viewDidLoad()
+        viewModel.loadData()
     }
 
     // MARK: - StatisticsView
 
     func setLoaderIsHidden(_ isHidden: Bool) {
-        if isHidden {
-            activityIndicator.stopAnimating()
-        } else {
-            activityIndicator.startAnimating()
-        }
+        isHidden ? activityIndicator.stopAnimating() : activityIndicator.startAnimating()
     }
 
     private func setupConstraints() {
@@ -135,6 +133,6 @@ extension StatisticsViewController {
 
 extension StatisticsViewController {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectCell(indexPath: indexPath)
+        viewModel.didSelectItem(indexPath: indexPath)
     }
 }

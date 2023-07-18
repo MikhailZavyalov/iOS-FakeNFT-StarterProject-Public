@@ -35,10 +35,9 @@ final class StatisticsRouter: StatisticsNavigation {
 
 extension StatisticsRouter {
     func assembleStatisticsModule() -> UIViewController {
-        let model = StatisticsModel(networkClient: networkClient)
+        let model = StatisticsLoader(networkClient: networkClient)
         let viewModel = StatisticsViewModel(model: model, router: self)
         let view = StatisticsViewController(viewModel: viewModel)
-        viewModel.view = view
 
         return view
     }

@@ -1,14 +1,11 @@
 import Foundation
 
-protocol UserCardView: AnyObject {
-    func setLoaderIsHidden(_ isHidden: Bool)
-}
-
 final class StatisticsUserProfileViewModel {
     @Observable
     var profile: UserProfileModel?
 
-    weak var view: UserCardView?
+    @Observable
+    var isLoading: Bool = false
 
     private let id: String
     private let router: StatisticsNavigation
@@ -20,16 +17,15 @@ final class StatisticsUserProfileViewModel {
         self.model = model
     }
 
-    func viewDidLoad() {
-        view?.setLoaderIsHidden(false)
+    func loadData() {
+        isLoading = true
         model.loadUser(id: id) { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else {
                     return
                 }
 
-                self.view?.setLoaderIsHidden(true)
-
+                self.isLoading = false
                 switch result {
                 case .success(let profile):
                     self.profile = profile

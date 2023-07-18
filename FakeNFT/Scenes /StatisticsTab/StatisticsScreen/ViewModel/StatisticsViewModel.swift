@@ -1,21 +1,18 @@
 import UIKit
 
-protocol StatisticsView: AnyObject {
-    func setLoaderIsHidden(_ isHidden: Bool)
-}
-
-enum SortType {
-    case name
-    case rating
-}
-
 final class StatisticsViewModel {
+    enum SortType {
+        case name
+        case rating
+    }
+    
     @Observable
     var userModels: [UserModel] = []
 
-    weak var view: StatisticsView?
+    @Observable
+    var isLoading: Bool = false
 
-    private let model: StatisticsModel
+    private let model: StatisticsLoader
     private let router: StatisticsNavigation
     private var sorting: SortType = .rating {
         didSet {
@@ -23,20 +20,20 @@ final class StatisticsViewModel {
         }
     }
 
-    init(model: StatisticsModel, router: StatisticsRouter) {
+    init(model: StatisticsLoader, router: StatisticsRouter) {
         self.model = model
         self.router = router
     }
 
-    func viewDidLoad() {
-        view?.setLoaderIsHidden(false)
+    func loadData() {
+        isLoading = true
         model.loadUsers { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else {
                     return
                 }
-                self.view?.setLoaderIsHidden(true)
-                
+                self.isLoading = false
+
                 switch result {
                 case let .success(models):
                     let viewModelModels = models.map(UserModel.init(serverModel:))
@@ -48,7 +45,7 @@ final class StatisticsViewModel {
         }
     }
 
-    func didSelectCell(indexPath: IndexPath) {
+    func didSelectItem(indexPath: IndexPath) {
         router.goToProfile(userID: userModels[indexPath.row].id)
     }
 
