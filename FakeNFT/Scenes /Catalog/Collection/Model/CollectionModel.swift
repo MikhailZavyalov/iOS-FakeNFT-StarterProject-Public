@@ -3,20 +3,20 @@ import Foundation
 struct CollectionModel {
     let user: User?
     let collection: CollectionsCatalogModel?
-    let nfts: [NFT]?
+    let nfts: [NFTNetworkModel]?
     let order: Order?
-    let profile: Profile?
+    let profile: ProfileNetworkModel?
 
-    func nfts(by id: String) -> NFT? {
+    func nfts(by id: String) -> NFTNetworkModel? {
         nfts?.first { $0.id == id }
     }
 
     func isNFTinOrder(with nftId: String) -> Bool {
-        order?.nfts.contains(nftId) == true
+        return order?.nfts.contains(nftId) ?? false
     }
 
     func isNFTLiked(with nftId: String) -> Bool {
-        profile?.likes.contains(nftId) == true
+        return profile?.likes.contains(nftId) ?? false
     }
 }
 
@@ -32,22 +32,6 @@ struct User {
     }
 }
 
-struct NFT {
-    let name: String
-    let id: String
-    let images: [String]
-    let price: Float
-    let rating: Int
-
-    init(with nft: NFTNetworkModel) {
-        self.name = nft.name
-        self.images = nft.images
-        self.id = nft.id
-        self.price = nft.price
-        self.rating = nft.rating
-    }
-}
-
 struct Order {
     let nfts: [String]
     let id: String
@@ -55,25 +39,5 @@ struct Order {
     init(with nft: OrderNetworkModel) {
         self.nfts = nft.nfts
         self.id = nft.id
-    }
-}
-
-struct Profile {
-    let name: String
-    let avatar: String
-    let description: String
-    let website: String
-    let nfts: [String]
-    let likes: [String]
-    let id: String
-
-    init(with profile: ProfileNetworkModel) {
-        self.name = profile.name
-        self.avatar = profile.avatar
-        self.description = profile.description
-        self.website = profile.website
-        self.nfts = profile.nfts
-        self.likes = profile.likes
-        self.id = profile.id
     }
 }

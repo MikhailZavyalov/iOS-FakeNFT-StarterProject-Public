@@ -4,6 +4,7 @@ final class CollectionViewModel: NSObject {
     private(set) var model: CollectionModel?
 
     var onChange: (() -> Void)?
+    var onError: (() -> Void)?
 
     init(collection: CollectionsCatalogModel) {
         self.model = CollectionModel(
@@ -15,6 +16,14 @@ final class CollectionViewModel: NSObject {
         )
         super.init()
         loadAuthorData(id: collection.author)
+        loadNFTData()
+        loadOrderData()
+        loadProfileData()
+    }
+
+    func reload() {
+        guard let authorId = model?.collection?.author else { return }
+        loadAuthorData(id: authorId)
         loadNFTData()
         loadOrderData()
         loadProfileData()
@@ -36,8 +45,10 @@ final class CollectionViewModel: NSObject {
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
@@ -49,15 +60,17 @@ final class CollectionViewModel: NSObject {
                 self?.model = CollectionModel(
                     user: self?.model?.user,
                     collection: self?.model?.collection,
-                    nfts: data.map { NFT(with: $0) },
+                    nfts: data.map { $0 },
                     order: self?.model?.order,
                     profile: self?.model?.profile
                 )
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
@@ -76,8 +89,10 @@ final class CollectionViewModel: NSObject {
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
@@ -91,13 +106,15 @@ final class CollectionViewModel: NSObject {
                     collection: self?.model?.collection,
                     nfts: self?.model?.nfts,
                     order: self?.model?.order,
-                    profile: Profile(with: data)
+                    profile: data
                 )
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
@@ -126,13 +143,15 @@ final class CollectionViewModel: NSObject {
                     collection: self?.model?.collection,
                     nfts: self?.model?.nfts,
                     order: self?.model?.order,
-                    profile: Profile(with: data)
+                    profile: data
                 )
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
@@ -166,8 +185,10 @@ final class CollectionViewModel: NSObject {
                 DispatchQueue.main.async {
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }

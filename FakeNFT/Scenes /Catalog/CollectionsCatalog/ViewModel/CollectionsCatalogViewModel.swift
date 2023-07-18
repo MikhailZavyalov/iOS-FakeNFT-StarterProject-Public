@@ -3,6 +3,7 @@ import Foundation
 final class CollectionsCatalogViewModel: NSObject {
     private(set) var collections: [CollectionsCatalogModel] = []
     var onChange: (() -> Void)?
+    var onError: (() -> Void)?
     var onLoadingStarted: (() -> Void)?
     var onLoadingFinished: (() -> Void)?
 
@@ -10,11 +11,12 @@ final class CollectionsCatalogViewModel: NSObject {
         super.init()
     }
 
-    public func updateData() {
+    func updateData() {
         loadData()
     }
 
     private func loadData() {
+        let sort = UserDefaults.standard.string(forKey: "Sort")
         onLoadingStarted?()
         DefaultNetworkClient().send(
             request: CollectionsRequest(),
@@ -24,27 +26,35 @@ final class CollectionsCatalogViewModel: NSObject {
             case .success(let data):
                 self?.collections = data.map { CollectionsCatalogModel(with: $0) }
                 DispatchQueue.main.async {
-                    self?.sortByName()
+                    if sort == "byName" {
+                        self?.sortByName()
+                    } else {
+                        self?.sortByNFT()
+                    }
                     self?.onLoadingFinished?()
                     self?.onChange?()
                 }
-            case .failure(let error):
-                print(error)
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.onError?()
+                }
             }
         }
     }
 
-    func sortByName() {
-        collections = collections.sorted {
-            $0.name < $1.name
+        func sortByName() {
+            collections = collections.sorted {
+                $0.name < $1.name
+            }
+            UserDefaults.standard.set("byName", forKey: "Sort")
+            onChange?()
         }
-        onChange?()
-    }
 
-    func sortByNFT() {
-        collections = collections.sorted {
-            $0.nfts.count > $1.nfts.count
+        func sortByNFT() {
+            collections = collections.sorted {
+                $0.nfts.count > $1.nfts.count
+            }
+            UserDefaults.standard.set("byNFT", forKey: "Sort")
+            onChange?()
         }
-        onChange?()
     }
-}

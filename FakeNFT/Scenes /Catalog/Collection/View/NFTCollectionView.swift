@@ -1,39 +1,7 @@
 import UIKit
 import Kingfisher
 
-final class CollectionView: UIViewController {
-
-    enum Section: Int, CaseIterable {
-        case image
-        case description
-        case collection
-    }
-
-    enum Rating: Int {
-        case zero = 0
-        case one
-        case two
-        case three
-        case four
-        case five
-
-        var image: UIImage? {
-            switch self {
-            case .zero:
-                return UIImage(named: "zeroStar")
-            case .one:
-                return UIImage(named: "1Star")
-            case .two:
-                return UIImage(named: "2Star")
-            case .three:
-                return UIImage(named: "3Star")
-            case .four:
-                return UIImage(named: "4Star")
-            case .five:
-                return UIImage(named: "5Star")
-            }
-        }
-    }
+final class NFTCollectionView: UIViewController {
 
     private var model: CollectionModel? {
         viewModel.model
@@ -62,10 +30,13 @@ final class CollectionView: UIViewController {
         return activityIndicator
     }()
 
-    init(collection: CollectionsCatalogModel) {
-        viewModel = CollectionViewModel(collection: collection)
+    init(viewModel: CollectionViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.collectionView.reloadData
+        viewModel.onError = { [weak self] in
+            self?.showErrorAlert()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -90,7 +61,7 @@ final class CollectionView: UIViewController {
     private func setupLayout() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
@@ -113,13 +84,37 @@ final class CollectionView: UIViewController {
     @objc private func didTapBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
+
+    private func linkAction() {
+        let webViewVC = WebViewView()
+        guard let url = URL(string: model?.user?.website ?? "") else { return }
+        webViewVC.url = url
+        self.navigationController?.pushViewController(webViewVC, animated: true)
+    }
+
+    private func likeOrDislikeButtonTapped(idNFT: String) {
+        viewModel.toggleLikeForNFT(with: idNFT)
+    }
+
+    private func cartButtonTapped(idNFT: String) {
+        viewModel.toggleCartForNFT(with: idNFT)
+    }
+
+    func showErrorAlert() {
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Попробовать еще раз?",
+            preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.reload()
+        }))
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
-extension CollectionView: UICollectionViewDelegate {
-
-}
-
-extension CollectionView: UICollectionViewDataSource {
+extension NFTCollectionView: UICollectionViewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -162,10 +157,12 @@ extension CollectionView: UICollectionViewDataSource {
                let imageURL = URL(string: imageURLString.encodeUrl),
                let price = model?.nfts(by: nftId)?.price,
                let rating = model?.nfts(by: nftId)?.rating,
-               let ratingImage = Rating(rawValue: rating)?.image {
+               let ratingImage = Rating(rawValue: rating)?.image,
+            let isNFTLiked = model?.isNFTLiked(with: nftId),
+            let isNFTinOrder = model?.isNFTinOrder(with: nftId) {
 
-                likeOrDislikeButton = model?.isNFTLiked(with: nftId) == true ? "like" : "disLike"
-                cartButton = model?.isNFTinOrder(with: nftId) == true ? "inCart" : "cart"
+                likeOrDislikeButton = isNFTLiked ? "like" : "disLike"
+                cartButton = isNFTinOrder ? "inCart" : "cart"
                 collectionNFTCell.configure(
                     nftImage: imageURL,
                     likeOrDislakeImage: likeOrDislikeButton,
@@ -177,26 +174,11 @@ extension CollectionView: UICollectionViewDataSource {
                         self?.likeOrDislikeButtonTapped(idNFT: nftId)
                     },
                     cartButtonAction: { [weak self] in
-                    self?.cartButtonTapped(idNFT: nftId)
-                })
+                        self?.cartButtonTapped(idNFT: nftId)
+                    })
             }
             return collectionNFTCell
         }
-    }
-
-    private func linkAction() {
-        let webViewVC = WebViewView()
-        guard let url = URL(string: model?.user?.website ?? "") else { return }
-        webViewVC.url = url
-        self.navigationController?.pushViewController(webViewVC, animated: true)
-    }
-
-    private func likeOrDislikeButtonTapped(idNFT: String) {
-        viewModel.toggleLikeForNFT(with: idNFT)
-    }
-
-    private func cartButtonTapped(idNFT: String) {
-        viewModel.toggleCartForNFT(with: idNFT)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -216,7 +198,7 @@ extension CollectionView: UICollectionViewDataSource {
     }
 }
 
-extension CollectionView: UICollectionViewDelegateFlowLayout {
+extension NFTCollectionView: UICollectionViewDelegateFlowLayout {
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -228,9 +210,11 @@ extension CollectionView: UICollectionViewDelegateFlowLayout {
         case .image:
             return CGSize(width: self.collectionView.bounds.width, height: 310)
         case .description:
-            return CGSize(width: self.collectionView.bounds.width, height: 136)
+            return CGSize(width: self.collectionView.bounds.width, height: 160)
         case .collection:
-            return CGSize(width: 108, height: 192)
+            let bounds = UIScreen.main.bounds
+            let width = (bounds.width - 50) / 3
+            return CGSize(width: width, height: 200)
         }
     }
 
@@ -263,6 +247,40 @@ extension CollectionView: UICollectionViewDelegateFlowLayout {
             return .zero
         case .collection:
             return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
+    }
+}
+
+extension NFTCollectionView {
+    enum Section: Int, CaseIterable {
+        case image
+        case description
+        case collection
+    }
+
+    enum Rating: Int {
+        case zero = 0
+        case one
+        case two
+        case three
+        case four
+        case five
+
+        var image: UIImage? {
+            switch self {
+            case .zero:
+                return UIImage(named: "zeroStar")
+            case .one:
+                return UIImage(named: "1Star")
+            case .two:
+                return UIImage(named: "2Star")
+            case .three:
+                return UIImage(named: "3Star")
+            case .four:
+                return UIImage(named: "4Star")
+            case .five:
+                return UIImage(named: "5Star")
+            }
         }
     }
 }

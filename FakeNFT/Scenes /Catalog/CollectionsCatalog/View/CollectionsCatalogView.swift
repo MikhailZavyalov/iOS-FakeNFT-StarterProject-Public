@@ -3,10 +3,12 @@ import Kingfisher
 
 extension String {
     var encodeUrl: String {
-        return self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
+        guard let adding = self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else { return "" }
+        return adding
     }
     var decodeUrl: String {
-        return self.removingPercentEncoding!
+        guard let removing = self.removingPercentEncoding else { return ""}
+        return removing
     }
 }
 
@@ -40,6 +42,9 @@ final class CollectionsCatalogView: UIViewController {
         viewModel = CollectionsCatalogViewModel()
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.catalogTableView.reloadData
+        viewModel.onError = { [weak self] in
+            self?.showErrorAlert()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -95,14 +100,13 @@ final class CollectionsCatalogView: UIViewController {
             message: nil,
             preferredStyle: .actionSheet
         )
-        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
-            self.viewModel.sortByName()
+        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+            self?.viewModel.sortByName()
         }
-        let sortByNumberOfNFT = UIAlertAction(title: "По количеству NFT", style: .default) { _ in
-            self.viewModel.sortByNFT()
+        let sortByNumberOfNFT = UIAlertAction(title: "По количеству NFT", style: .default) { [weak self] _ in
+            self?.viewModel.sortByNFT()
         }
-        let closeAlert = UIAlertAction(title: "Закрыть", style: .cancel) { _ in
-        }
+        let closeAlert = UIAlertAction(title: "Закрыть", style: .cancel)
         alertSort.addAction(sortByNameAction)
         alertSort.addAction(sortByNumberOfNFT)
         alertSort.addAction(closeAlert)
@@ -115,6 +119,19 @@ final class CollectionsCatalogView: UIViewController {
 
     private func stopAnimating() {
         activityIndicator.stopAnimating()
+    }
+
+    func showErrorAlert() {
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Попробовать еще раз?",
+            preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.updateData()
+        }))
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -149,7 +166,7 @@ extension CollectionsCatalogView: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let collectionVC = CollectionView(collection: collections[indexPath.row])
+        let collectionVC = NFTCollectionView(viewModel: CollectionViewModel(collection: collections[indexPath.row]))
         self.navigationController?.pushViewController(collectionVC, animated: true)
     }
 }
