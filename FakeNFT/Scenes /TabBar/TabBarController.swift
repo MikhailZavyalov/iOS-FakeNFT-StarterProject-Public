@@ -43,7 +43,7 @@ class TabBarController: UITabBarController {
 }
 
 private func assembleCartModule() -> UIViewController {
-    let cartModel: CartModel = CartModel(networkClient: DefaultNetworkClient())
+    let cartModel: CartContentLoader = CartContentLoader(networkClient: DefaultNetworkClient())
     let cartViewModel: CartViewModel = CartViewModel(model: cartModel)
     
     return CartViewController(viewModel: cartViewModel)

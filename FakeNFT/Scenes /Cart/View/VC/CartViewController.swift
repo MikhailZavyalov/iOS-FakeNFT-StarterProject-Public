@@ -128,7 +128,7 @@ final class CartViewController: UIViewController {
     init(viewModel: CartViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.$NFTmodels.bind(executeInitially: true) { [weak self] nfts in
+        viewModel.$NFTModels.bind(executeInitially: true) { [weak self] nfts in
             self?.tableView.reloadData()
             self?.setupView()
             self?.nftCountLabel.text = "\(nfts.count)" + " NFT"
@@ -159,7 +159,7 @@ final class CartViewController: UIViewController {
     
     private func setupView() {
         
-        if viewModel.NFTmodels.isEmpty {
+        if viewModel.NFTModels.isEmpty {
             setupEmptyView()
             hiddenCorrection()
         } else {
@@ -251,7 +251,7 @@ final class CartViewController: UIViewController {
     }
     
     private func hiddenCorrection() {
-        if viewModel.NFTmodels.isEmpty {
+        if viewModel.NFTModels.isEmpty {
             navigationController?.isNavigationBarHidden = true
             paymentView.isHidden = true
             nftCountLabel.isHidden = true
@@ -329,7 +329,7 @@ final class CartViewController: UIViewController {
 extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return addedNFTs.count
-        return viewModel.NFTmodels.count
+        return viewModel.NFTModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -338,7 +338,7 @@ extension CartViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let nft = viewModel.NFTmodels[indexPath.row]
+        let nft = viewModel.NFTModels[indexPath.row]
                 
         cell.backgroundColor = .white
         cell.selectionStyle = .none
@@ -365,7 +365,7 @@ extension CartViewController: CartCellDelegate {
         cancelButton.isHidden = false
         iconDeleteImageView.isHidden = false
         
-        iconDeleteImageView.kf.setImage(with: viewModel.NFTmodels[index].images.first)
+        iconDeleteImageView.kf.setImage(with: viewModel.NFTModels[index].images.first)
         indexDelete = index
         
         navigationController?.isNavigationBarHidden = true

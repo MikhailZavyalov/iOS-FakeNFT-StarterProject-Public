@@ -2,11 +2,11 @@ import UIKit
 
 final class CartViewModel {
     @Observable
-    var NFTmodels: [NFTModel] = []
+    var NFTModels: [NFTModel] = []
     
-    private let model: CartModel
+    private let model: CartContentLoader
     
-    init(model: CartModel) {
+    init(model: CartContentLoader) {
         self.model = model
     }
     
@@ -22,7 +22,7 @@ final class CartViewModel {
                 switch result {
                 case let .success(models):
                     let viewModelModels = models.map(NFTModel.init(serverModel:))
-                    self.NFTmodels = viewModelModels
+                    self.NFTModels = viewModelModels
                 case let .failure(error):
                     print(error)
                 }
@@ -31,22 +31,22 @@ final class CartViewModel {
     }
     
     func didDeleteNFT(index: Int) {
-        NFTmodels.remove(at: index)
+        NFTModels.remove(at: index)
     }
     
     func sortByPrice() {
         // Реализация сортировки по цене
-        NFTmodels.sort { $0.price < $1.price }
+        NFTModels.sort { $0.price < $1.price }
     }
 
     func sortByRating() {
         // Реализация сортировки по рейтингу
-        NFTmodels.sort { $0.rating > $1.rating }
+        NFTModels.sort { $0.rating > $1.rating }
     }
 
     func sortByName() {
         // Реализация сортировки по названию
-        NFTmodels.sort { $0.name < $1.name }
+        NFTModels.sort { $0.name < $1.name }
     }
     
 }

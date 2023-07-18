@@ -159,7 +159,7 @@ class CryptoCurrencyViewController: UIViewController {
 
 extension CryptoCurrencyViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return Cryptocurrency.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -195,7 +195,7 @@ extension CryptoCurrencyViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-enum Cryptocurrency: Int {
+enum Cryptocurrency: Int, CaseIterable {
     case bitcoin
     case dogecoin
     case tether
