@@ -1,6 +1,9 @@
 import Foundation
 
-struct CartModel {
+let ordersAPI: String = "https://64858e8ba795d24810b71189.mockapi.io/api/v1/orders/1"
+let nftAPI: String = "https://64858e8ba795d24810b71189.mockapi.io/api/v1/nft/"
+
+struct CartContentLoader {
     let networkClient: NetworkClient
     
     func loadNFTs(completion: @escaping (Result<[NFTServerModel], Error>) -> Void) {
@@ -38,7 +41,7 @@ struct CartModel {
     
     private func loadNFT(id: String, completion: @escaping (Result<NFTServerModel, Error>) -> Void) {
         let request = DefaultNetworkRequest(
-            endpoint: URL(string: "https://64858e8ba795d24810b71189.mockapi.io/api/v1/nft/\(id)")!
+            endpoint: URL(string: nftAPI + "\(id)")!
         )
         networkClient.send(request: request, type: NFTServerModel.self, onResponse: completion)
     }
