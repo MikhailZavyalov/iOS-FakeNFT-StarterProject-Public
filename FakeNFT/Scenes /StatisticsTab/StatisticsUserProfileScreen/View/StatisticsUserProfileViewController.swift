@@ -6,6 +6,8 @@ final class StatisticsUserProfileViewController: UIViewController {
         let usersAvatar = UIImageView()
         usersAvatar.layer.cornerRadius = 35
         usersAvatar.layer.masksToBounds = true
+        usersAvatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        usersAvatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
         return usersAvatar
     }()
 
@@ -17,7 +19,7 @@ final class StatisticsUserProfileViewController: UIViewController {
 
     private let userDescription: UILabel = {
         let userDescription = UILabel()
-        userDescription.font = .headline3
+        userDescription.font = .caption2
         userDescription.numberOfLines = 0
         return userDescription
     }()

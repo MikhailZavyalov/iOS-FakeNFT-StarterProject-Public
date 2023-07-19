@@ -1,13 +1,21 @@
 import UIKit
 import Kingfisher
 
+private enum Consts {
+    static let largeSpacing: CGFloat = 8
+    static let smallSpacing: CGFloat = 4
+    static let ratingHeight: CGFloat = 12
+    static let nameHeight: CGFloat = 22
+    static let priceHeight: CGFloat = 12
+}
+
 final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     private let usersCollectionItemImage: UIImageView = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.layer.masksToBounds = true
-        image.heightAnchor.constraint(equalToConstant: 108).isActive = true
-        image.widthAnchor.constraint(equalToConstant: 108).isActive = true
+        image.heightAnchor.constraint(equalTo: image.widthAnchor).isActive = true
+        image.contentMode = .scaleAspectFit
         return image
     }()
 
@@ -28,10 +36,12 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
         return price
     }()
 
-    private let usersCollectionItemCard: UIImageView = {
-        let card = UIImageView()
-        card.image = UIImage(named: "EmptyCard")
-        return card
+    private let usersCollectionItemCart: UIImageView = {
+        let cart = UIImageView()
+        cart.image = UIImage(named: "EmptyCard")
+        cart.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        cart.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        return cart
     }()
 
     private let usersCollectionItemFavoriteButton: UIButton = {
@@ -58,16 +68,17 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
         contentView.addSubview(usersCollectionItemPrice)
         usersCollectionItemPrice.translatesAutoresizingMaskIntoConstraints = false
 
-        contentView.addSubview(usersCollectionItemCard)
-        usersCollectionItemCard.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(usersCollectionItemCart)
+        usersCollectionItemCart.translatesAutoresizingMaskIntoConstraints = false
 
         let constraints = [
             usersCollectionItemImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             usersCollectionItemImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             usersCollectionItemImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            usersCollectionItemImage.widthAnchor.constraint(equalTo: contentView.widthAnchor),
 
-            usersCollectionItemFavoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            usersCollectionItemFavoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            usersCollectionItemFavoriteButton.topAnchor.constraint(equalTo: usersCollectionItemImage.topAnchor, constant: 10),
+            usersCollectionItemFavoriteButton.trailingAnchor.constraint(equalTo: usersCollectionItemImage.trailingAnchor, constant: -10),
 
             usersCollectionItemRating.topAnchor.constraint(equalTo: usersCollectionItemImage.bottomAnchor, constant: 8),
             usersCollectionItemRating.heightAnchor.constraint(equalToConstant: 12),
@@ -76,13 +87,14 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
             usersCollectionItemName.topAnchor.constraint(equalTo: usersCollectionItemRating.bottomAnchor, constant: 4),
             usersCollectionItemName.heightAnchor.constraint(equalToConstant: 22),
             usersCollectionItemName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            usersCollectionItemName.trailingAnchor.constraint(lessThanOrEqualTo: usersCollectionItemCart.leadingAnchor, constant: -8),
 
             usersCollectionItemPrice.topAnchor.constraint(equalTo: usersCollectionItemName.bottomAnchor, constant: 4),
             usersCollectionItemPrice.heightAnchor.constraint(equalToConstant: 12),
             usersCollectionItemPrice.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 
-            usersCollectionItemCard.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            usersCollectionItemCard.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
+            usersCollectionItemCart.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            usersCollectionItemCart.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
         ]
 
         constraints.forEach {
@@ -119,5 +131,11 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
         case .five:
             usersCollectionItemRating.image = UIImage(named: "propertyFive")
         }
+    }
+}
+
+extension StatisticsUserNFTCollectionViewCell {
+    static func heightForWidth(_ width: CGFloat) -> CGFloat {
+        return width + Consts.largeSpacing + 2 * Consts.smallSpacing + Consts.ratingHeight + Consts.nameHeight + Consts.priceHeight
     }
 }

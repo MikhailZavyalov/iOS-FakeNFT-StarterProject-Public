@@ -10,7 +10,7 @@ final class StatisticsUserNFTCollectionViewController:
 
     private let activityIndicator = UIActivityIndicatorView(style: .large)
 
-    private let geometricParams = GeometricParams(cellCount: 3, leftInset: 16, rightInset: 16, cellSpacing: 9)
+    private let geometricParams = GeometricParams(cellCount: 3, leftInset: 16, rightInset: 16, cellSpacing: CGSize(width: 9, height: 28))
 
     private let viewModel: StatisticsUserNFTCollectionViewModel
 
@@ -105,19 +105,20 @@ extension StatisticsUserNFTCollectionViewController {
 extension StatisticsUserNFTCollectionViewController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.frame.width - geometricParams.paddingWidth
-        let cellWidth =  availableWidth / CGFloat(geometricParams.cellCount)
-        return CGSize(width: cellWidth, height: cellWidth * 1.6)
+        let cellWidth = floor(availableWidth / CGFloat(geometricParams.cellCount))
+        let cellHeight = StatisticsUserNFTCollectionViewCell.heightForWidth(cellWidth)
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: geometricParams.leftInset, bottom: 10, right: geometricParams.rightInset)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return geometricParams.cellSpacing
+    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return geometricParams.cellSpacing.height
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return geometricParams.cellSpacing
+    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return geometricParams.cellSpacing.width
     }
 }
