@@ -42,6 +42,7 @@
 		EDB0A0B72A54481B0019D61F /* CryptoCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0A0B62A54481B0019D61F /* CryptoCurrencyViewController.swift */; };
 		EDB0A0B92A544ED50019D61F /* PaymentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0A0B82A544ED50019D61F /* PaymentCell.swift */; };
 		EDB0A0BB2A548CC20019D61F /* PurchaseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0A0BA2A548CC20019D61F /* PurchaseResultViewController.swift */; };
+		EDC537FA2A68127900D514E5 /* WebKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC537F92A68127900D514E5 /* WebKit.swift */; };
 		EDF96FEE2A61907300D2B9A3 /* CartServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF96FED2A61907300D2B9A3 /* CartServerModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		EDB0A0B62A54481B0019D61F /* CryptoCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoCurrencyViewController.swift; sourceTree = "<group>"; };
 		EDB0A0B82A544ED50019D61F /* PaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCell.swift; sourceTree = "<group>"; };
 		EDB0A0BA2A548CC20019D61F /* PurchaseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseResultViewController.swift; sourceTree = "<group>"; };
+		EDC537F92A68127900D514E5 /* WebKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKit.swift; sourceTree = "<group>"; };
 		EDF96FED2A61907300D2B9A3 /* CartServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartServerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -316,6 +318,7 @@
 				ED6A6E242A6171DB00FDDB07 /* NFTServerModel.swift */,
 				EDF96FED2A61907300D2B9A3 /* CartServerModel.swift */,
 				ED6A6E222A616D3000FDDB07 /* CartContentLoader.swift */,
+				EDC537F92A68127900D514E5 /* WebKit.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				325684CE2A515DCD000AC9E3 /* TabBarController.swift in Sources */,
 				EDB0A0B92A544ED50019D61F /* PaymentCell.swift in Sources */,
 				325684CA2A515DA5000AC9E3 /* StatisticsViewController.swift in Sources */,
+				EDC537FA2A68127900D514E5 /* WebKit.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				EDF96FEE2A61907300D2B9A3 /* CartServerModel.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,

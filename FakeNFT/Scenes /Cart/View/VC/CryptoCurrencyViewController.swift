@@ -2,8 +2,9 @@ import UIKit
 
 class CryptoCurrencyViewController: UIViewController {
     
-    // TopBar
+    private var selectedCryptocurrency: Cryptocurrency?
     
+    // TopBar
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Выберите способ оплаты"
@@ -22,7 +23,6 @@ class CryptoCurrencyViewController: UIViewController {
     }()
     
     // Payment View
-    
     private lazy var paymentView: UIView = {
         let view = UIView()
         view.backgroundColor = .ypLightGrey
@@ -59,11 +59,14 @@ class CryptoCurrencyViewController: UIViewController {
         label.font = .caption2
         label.textColor = .ypBlue
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(lowerPaymentTextTapped))
+        label.addGestureRecognizer(tapGesture)
         return label
     }()
     
     // CollectionView
-    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -73,7 +76,6 @@ class CryptoCurrencyViewController: UIViewController {
     }()
     
     // ViewDidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -150,11 +152,35 @@ class CryptoCurrencyViewController: UIViewController {
         dismiss(animated: true)
     }
     
+//    @objc private func paymentProceed() {
+//        let purchaseResultViewController = PurchaseResultViewController()
+//        purchaseResultViewController.modalPresentationStyle = .fullScreen
+//        present(purchaseResultViewController, animated: true, completion: nil)
+//    }
+    
     @objc private func paymentProceed() {
-        let purchaseResultViewController = PurchaseResultViewController()
+        let purchaseResultViewController: PurchaseResultViewController
+        if selectedCryptocurrency != nil {
+            purchaseResultViewController = PurchaseResultViewController(purchaseWasCompleted: true)
+        } else {
+            purchaseResultViewController = PurchaseResultViewController(purchaseWasCompleted: false)
+        }
         purchaseResultViewController.modalPresentationStyle = .fullScreen
         present(purchaseResultViewController, animated: true, completion: nil)
     }
+
+    
+    @objc private func lowerPaymentTextTapped() {
+        guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") else {
+            return
+        }
+
+        let webViewController = WebViewController(url: url)
+        let navController = UINavigationController(rootViewController: webViewController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
+
 }
 
 extension CryptoCurrencyViewController: UICollectionViewDataSource {
@@ -192,6 +218,14 @@ extension CryptoCurrencyViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 7
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedCryptocurrency = Cryptocurrency(rawValue: indexPath.item)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        selectedCryptocurrency = nil
     }
 }
 

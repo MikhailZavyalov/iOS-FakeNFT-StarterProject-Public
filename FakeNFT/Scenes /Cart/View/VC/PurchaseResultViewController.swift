@@ -2,7 +2,16 @@ import UIKit
 
 class PurchaseResultViewController: UIViewController {
     
-    var purchaseWasCompleted = true
+    var purchaseWasCompleted: Bool
+    
+    init(purchaseWasCompleted: Bool) {
+        self.purchaseWasCompleted = purchaseWasCompleted
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var resultButton: UIButton = {
         let button = UIButton()
@@ -48,9 +57,11 @@ class PurchaseResultViewController: UIViewController {
         if purchaseWasCompleted == true {
             centreImage.image = UIImage(named: "purchaseTrue")
             centreLabel.text = "Успех! Оплата прошла, \n поздравляем с покупкой!"
+            resultButton.setTitle("Вернуться в каталог", for: .normal)
         } else {
             centreImage.image = UIImage(named: "purchaseFalse")
             centreLabel.text = "Упс! Что-то пошло не так :( \n Попробуйте ещё раз!"
+            resultButton.setTitle("Попробовать еще раз", for: .normal)
         }
     }
     
@@ -88,7 +99,11 @@ class PurchaseResultViewController: UIViewController {
     }
     
     @objc func paymentResultTapped() {
-        dismiss(animated: true)
+        
+        if let tabBarController = presentingViewController?.presentingViewController as? UITabBarController {
+            tabBarController.selectedIndex = 1
+        }
+        presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
     
 }
