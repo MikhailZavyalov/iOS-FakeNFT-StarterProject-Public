@@ -1,9 +1,14 @@
 import UIKit
 
+protocol StatisticsView: AnyObject {
+    func setLoaderIsHidden(_ isHidden: Bool)
+}
+
 final class CartViewModel {
     @Observable
     var NFTModels: [NFTModel] = []
     
+    weak var view: StatisticsView?
     private let model: CartContentLoader
     
     init(model: CartContentLoader) {
@@ -11,13 +16,14 @@ final class CartViewModel {
     }
     
     func viewDidLoad() {
-        
+        view?.setLoaderIsHidden(false)
         model.loadNFTs { result in
             DispatchQueue.main.async { [weak self] in
                 guard let self else {
                     return
                 }
                 // loader
+                self.view?.setLoaderIsHidden(true)
                 
                 switch result {
                 case let .success(models):

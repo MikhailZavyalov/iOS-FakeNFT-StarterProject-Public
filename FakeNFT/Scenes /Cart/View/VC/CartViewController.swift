@@ -1,10 +1,9 @@
 import UIKit
 
-final class CartViewController: UIViewController {
-    
-    // Changes
+final class CartViewController: UIViewController, StatisticsView {
     
     private let viewModel: CartViewModel
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
     // Элементы NFT - корзины
     
@@ -158,7 +157,6 @@ final class CartViewController: UIViewController {
     }
     
     private func setupView() {
-        
         if viewModel.NFTModels.isEmpty {
             setupEmptyView()
             hiddenCorrection()
@@ -167,6 +165,7 @@ final class CartViewController: UIViewController {
             setupTableView()
             setupPaymentView()
             hiddenCorrection()
+            setupLoader()
         }
     }
     
@@ -242,6 +241,17 @@ final class CartViewController: UIViewController {
         ])
     }
     
+    private func setupLoader() {
+        view.addSubview(activityIndicator)
+        activityIndicator.layer.zPosition = 99
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
     private func countPrice(_ nftArray: [NFT]) -> Float {
         var totalPrice: Float = 0
         for nft in nftArray {
@@ -265,6 +275,14 @@ final class CartViewController: UIViewController {
             totalPriceLabel.isHidden = false
             paymentButton.isHidden = false
             emptyLabel.isHidden = true
+        }
+    }
+    
+    func setLoaderIsHidden(_ isHidden: Bool) {
+        if isHidden {
+            activityIndicator.stopAnimating()
+        } else {
+            activityIndicator.startAnimating()
         }
     }
     
