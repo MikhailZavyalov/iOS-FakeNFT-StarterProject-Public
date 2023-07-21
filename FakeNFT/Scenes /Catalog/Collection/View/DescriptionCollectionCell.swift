@@ -5,8 +5,6 @@ final class DescriptionCollectionCell: UICollectionViewCell {
     static let identifier = "DescriptionCollectionCell"
     var onTapped: (() -> Void)?
 
-    private let gorizontalStackView = UIStackView()
-
     private lazy var collectionNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .textPrimary
@@ -38,7 +36,7 @@ final class DescriptionCollectionCell: UICollectionViewCell {
     private lazy var creatorCollectionButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.linkColor, for: .normal)
-        button.titleLabel?.font = .caption2
+        button.titleLabel?.font = .caption1
         button.titleLabel?.tintColor = .linkColor
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.contentHorizontalAlignment = .left
@@ -50,40 +48,31 @@ final class DescriptionCollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        gorizontalStackView.axis = .horizontal
-        gorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(gorizontalStackView)
-        gorizontalStackView.addSubview(collectionNameLabel)
-        gorizontalStackView.addSubview(creatorCollectonLabel)
-        gorizontalStackView.addSubview(creatorCollectionButton)
-        gorizontalStackView.addSubview(descriptionCollectionLabel)
+        contentView.addSubview(collectionNameLabel)
+        contentView.addSubview(creatorCollectonLabel)
+        contentView.addSubview(creatorCollectionButton)
+        contentView.addSubview(descriptionCollectionLabel)
 
         NSLayoutConstraint.activate([
 
-            gorizontalStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            gorizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            gorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            gorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-
-            collectionNameLabel.topAnchor.constraint(equalTo: gorizontalStackView.topAnchor, constant: 16),
-            collectionNameLabel.leadingAnchor.constraint(equalTo: gorizontalStackView.leadingAnchor, constant: 16),
-            collectionNameLabel.trailingAnchor.constraint(equalTo: gorizontalStackView.trailingAnchor, constant: -16),
-            collectionNameLabel.heightAnchor.constraint(equalToConstant: 28),
+            collectionNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            collectionNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            collectionNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
             creatorCollectonLabel.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 13),
-            creatorCollectonLabel.leadingAnchor.constraint(equalTo: gorizontalStackView.leadingAnchor, constant: 16),
+            creatorCollectonLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             creatorCollectonLabel.widthAnchor.constraint(equalToConstant: 112),
-            creatorCollectonLabel.heightAnchor.constraint(equalToConstant: 18),
+            creatorCollectonLabel.bottomAnchor.constraint(equalTo: descriptionCollectionLabel.topAnchor, constant: 5),
 
-            creatorCollectionButton.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 13),
-            creatorCollectionButton.leadingAnchor.constraint(equalTo: gorizontalStackView.leadingAnchor, constant: 132),
-            creatorCollectionButton.trailingAnchor.constraint(equalTo: gorizontalStackView.trailingAnchor, constant: -16),
-            creatorCollectionButton.heightAnchor.constraint(equalToConstant: 18),
+            creatorCollectionButton.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 12),
+            creatorCollectionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 132),
+            creatorCollectionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            creatorCollectionButton.bottomAnchor.constraint(equalTo: descriptionCollectionLabel.topAnchor, constant: 4),
 
-            descriptionCollectionLabel.topAnchor.constraint(equalTo: creatorCollectonLabel.bottomAnchor, constant: 5),
-            descriptionCollectionLabel.leadingAnchor.constraint(equalTo: gorizontalStackView.leadingAnchor, constant: 16),
-            descriptionCollectionLabel.trailingAnchor.constraint(equalTo: gorizontalStackView.trailingAnchor, constant: -16),
-            descriptionCollectionLabel.bottomAnchor.constraint(equalTo: gorizontalStackView.bottomAnchor)
+            descriptionCollectionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            descriptionCollectionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            descriptionCollectionLabel.bottomAnchor.constraint(
+                lessThanOrEqualTo: contentView.bottomAnchor, constant: -24)
         ])
     }
 

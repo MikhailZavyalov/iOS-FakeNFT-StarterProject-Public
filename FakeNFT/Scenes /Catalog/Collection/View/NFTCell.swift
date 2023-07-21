@@ -4,12 +4,9 @@ import Kingfisher
 final class NFTCell: UICollectionViewCell {
 
     static let identifier = "NFTCell"
+    let ratingMax = 5
     var onToggleLike: (() -> Void)?
     var onToggleCart: (() -> Void)?
-
-    private let mainStackView = UIStackView()
-    private let verticalStackView = UIStackView()
-    private let informationStackView = UIStackView()
 
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
@@ -27,10 +24,13 @@ final class NFTCell: UICollectionViewCell {
         return button
     }()
 
-    private lazy var nftRatingImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    private lazy var nftRatingStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.alignment = .leading
+        return stackView
     }()
 
     private lazy var nameNFTLabel: UILabel = {
@@ -60,73 +60,49 @@ final class NFTCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        mainStackView.axis = .horizontal
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(nftImageView)
+        contentView.addSubview(likeOrDislikeButton)
+        contentView.addSubview(nftRatingStackView)
+        contentView.addSubview(cartButton)
+        contentView.addSubview(nameNFTLabel)
+        contentView.addSubview(priceNFTLabel)
 
-        verticalStackView.axis = .vertical
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        informationStackView.axis = .horizontal
-        informationStackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(mainStackView)
-
-        mainStackView.addSubview(nftImageView)
-        mainStackView.addSubview(likeOrDislikeButton)
-        mainStackView.addSubview(verticalStackView)
-
-        verticalStackView.addSubview(informationStackView)
-        verticalStackView.addSubview(cartButton)
-
-        informationStackView.addSubview(nftRatingImageView)
-        informationStackView.addSubview(nameNFTLabel)
-        informationStackView.addSubview(priceNFTLabel)
+        for _ in 0..<ratingMax {
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: "star")
+            nftRatingStackView.addArrangedSubview(imageView)
+        }
 
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
-            nftImageView.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            nftImageView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            nftImageView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            nftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nftImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             nftImageView.heightAnchor.constraint(equalToConstant: 108),
 
-            likeOrDislikeButton.topAnchor.constraint(equalTo: mainStackView.topAnchor),
-            likeOrDislikeButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            likeOrDislikeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+            likeOrDislikeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             likeOrDislikeButton.heightAnchor.constraint(equalToConstant: 40),
             likeOrDislikeButton.widthAnchor.constraint(equalToConstant: 40),
 
-            verticalStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
-            verticalStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
-            verticalStackView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor),
-            verticalStackView.heightAnchor.constraint(equalToConstant: 92),
+            nftRatingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nftRatingStackView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),
+            nftRatingStackView.heightAnchor.constraint(equalToConstant: 12),
+            nftRatingStackView.widthAnchor.constraint(equalToConstant: 68),
 
-            cartButton.trailingAnchor.constraint(equalTo: verticalStackView.trailingAnchor),
-            cartButton.bottomAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: -28),
+            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -28),
             cartButton.heightAnchor.constraint(equalToConstant: 40),
             cartButton.widthAnchor.constraint(equalToConstant: 40),
 
-            informationStackView.trailingAnchor.constraint(equalTo: cartButton.leadingAnchor),
-            informationStackView.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor),
-            informationStackView.topAnchor.constraint(equalTo: verticalStackView.topAnchor),
-            informationStackView.bottomAnchor.constraint(equalTo: verticalStackView.bottomAnchor),
+            nameNFTLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nameNFTLabel.widthAnchor.constraint(equalToConstant: 68),
+            nameNFTLabel.topAnchor.constraint(equalTo: nftRatingStackView.bottomAnchor, constant: 5),
+            nameNFTLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -45),
 
-            nftRatingImageView.leadingAnchor.constraint(equalTo: informationStackView.leadingAnchor),
-            nftRatingImageView.topAnchor.constraint(equalTo: informationStackView.topAnchor, constant: 8),
-            nftRatingImageView.heightAnchor.constraint(equalToConstant: 12),
-            nftRatingImageView.widthAnchor.constraint(equalToConstant: 68),
-
-            nameNFTLabel.leadingAnchor.constraint(equalTo: informationStackView.leadingAnchor),
-            nameNFTLabel.trailingAnchor.constraint(equalTo: informationStackView.trailingAnchor),
-            nameNFTLabel.topAnchor.constraint(equalTo: nftRatingImageView.bottomAnchor, constant: 5),
-            nameNFTLabel.heightAnchor.constraint(equalToConstant: 22),
-
-            priceNFTLabel.leadingAnchor.constraint(equalTo: informationStackView.leadingAnchor),
-            priceNFTLabel.bottomAnchor.constraint(equalTo: informationStackView.bottomAnchor, constant: -29),
             priceNFTLabel.topAnchor.constraint(equalTo: nameNFTLabel.bottomAnchor, constant: 4),
-            priceNFTLabel.trailingAnchor.constraint(equalTo: informationStackView.trailingAnchor),
-            priceNFTLabel.heightAnchor.constraint(equalToConstant: 12)
+            priceNFTLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            priceNFTLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -29),
+            priceNFTLabel.widthAnchor.constraint(equalToConstant: 68)
         ])
     }
 
@@ -142,10 +118,11 @@ final class NFTCell: UICollectionViewCell {
         onToggleCart?()
     }
 
+    // swiftlint:disable function_parameter_count
     func configure(
         nftImage: URL,
         likeOrDislakeImage: String,
-        ratingImage: UIImage,
+        rating: Int,
         title: String,
         price: String,
         cartImage: String,
@@ -153,11 +130,21 @@ final class NFTCell: UICollectionViewCell {
         cartButtonAction: @escaping () -> Void) {
             nftImageView.kf.setImage(with: nftImage)
             likeOrDislikeButton.setImage(UIImage(named: likeOrDislakeImage), for: .normal)
-            nftRatingImageView.image =  ratingImage
+            setupRatingStackView(with: rating)
             nameNFTLabel.text = title
             priceNFTLabel.text = price
             cartButton.setImage(UIImage(named: cartImage), for: .normal)
             onToggleLike = likeOrDislikeButtonAction
             onToggleCart = cartButtonAction
         }
+    // swiftlint:enable function_parameter_count
+
+    func setupRatingStackView(with rating: Int) {
+        for index in 0..<rating {
+            guard let imageView = nftRatingStackView.subviews[index] as? UIImageView else {
+                return
+            }
+            imageView.image = UIImage(named: "star_yellow")
+        }
+    }
 }

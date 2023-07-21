@@ -1,19 +1,18 @@
 import Foundation
 
 final class CollectionViewModel: NSObject {
-    private(set) var model: CollectionModel?
+    let collection: CollectionNetworkModel
+
+    var user: User?
+    var nfts: [NFTNetworkModel]?
+    var order: Order?
+    var profile: ProfileNetworkModel?
 
     var onChange: (() -> Void)?
-    var onError: (() -> Void)?
+    var onError: ((String) -> Void)?
 
-    init(collection: CollectionsCatalogModel) {
-        self.model = CollectionModel(
-            user: self.model?.user,
-            collection: collection,
-            nfts: self.model?.nfts,
-            order: self.model?.order,
-            profile: self.model?.profile
-        )
+    init(collection: CollectionNetworkModel) {
+        self.collection = collection
         super.init()
         loadAuthorData(id: collection.author)
         loadNFTData()
@@ -22,7 +21,7 @@ final class CollectionViewModel: NSObject {
     }
 
     func reload() {
-        guard let authorId = model?.collection?.author else { return }
+        let authorId = collection.author
         loadAuthorData(id: authorId)
         loadNFTData()
         loadOrderData()
@@ -30,166 +29,167 @@ final class CollectionViewModel: NSObject {
     }
 
     private func loadAuthorData(id: String) {
-        DefaultNetworkClient().send(
-            request: UserByIdRequest(userId: id),
-            type: UserNetworkModel.self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: User(with: data),
-                    collection: self?.model?.collection,
-                    nfts: self?.model?.nfts,
-                    order: self?.model?.order,
-                    profile: self?.model?.profile
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(
+                request: UserByIdRequest(userId: id),
+                type: UserNetworkModel.self) { [weak self] result in
+                    switch result {
+                    case .success(let data):
+                        self?.user = User(with: data)
+                        DispatchQueue.main.async {
+                            self?.onChange?()
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self?.onError?(error.localizedDescription)
+                        }
+                    }
                 }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
-                }
-            }
         }
     }
 
     private func loadNFTData() {
-        DefaultNetworkClient().send(request: NFTRequest(), type: [NFTNetworkModel].self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: self?.model?.user,
-                    collection: self?.model?.collection,
-                    nfts: data.map { $0 },
-                    order: self?.model?.order,
-                    profile: self?.model?.profile
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
-                }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(request: NFTRequest(), type: [NFTNetworkModel].self) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.nfts = data.map { $0 }
+                    DispatchQueue.main.async {
+                        self?.onChange?()
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.onError?(error.localizedDescription)
+                    }
                 }
             }
         }
     }
 
     private func loadOrderData() {
-        DefaultNetworkClient().send(request: OrderRequest(), type: OrderNetworkModel.self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: self?.model?.user,
-                    collection: self?.model?.collection,
-                    nfts: self?.model?.nfts,
-                    order: Order(with: data),
-                    profile: self?.model?.profile
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
-                }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(request: OrderRequest(), type: OrderNetworkModel.self) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.order = Order(with: data)
+                    DispatchQueue.main.async {
+                        self?.onChange?()
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.onError?(error.localizedDescription)
+                    }
                 }
             }
         }
     }
 
     private func loadProfileData() {
-        DefaultNetworkClient().send(request: ProfileRequest(), type: ProfileNetworkModel.self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: self?.model?.user,
-                    collection: self?.model?.collection,
-                    nfts: self?.model?.nfts,
-                    order: self?.model?.order,
-                    profile: data
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
-                }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(
+                request: ProfileRequest(),
+                type: ProfileNetworkModel.self) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.profile = data
+                    DispatchQueue.main.async {
+                        self?.onChange?()
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.onError?(error.localizedDescription)
+                    }
                 }
             }
         }
     }
 
     func toggleLikeForNFT(with id: String) {
-        var likes = model?.profile?.likes
+        var likes = profile?.likes
         if let index = likes?.firstIndex(of: id) {
             likes?.remove(at: index)
         } else {
             likes?.append(id)
         }
         guard let likes = likes,
-              let id = model?.profile?.id else { return }
+              let id = profile?.id else { return }
         let dto = ProfileUpdateDTO(likes: likes, id: id)
         updateProfileData(with: dto)
     }
 
     private func updateProfileData(with dto: ProfileUpdateDTO) {
-        DefaultNetworkClient().send(
-            request: ProfileUpdateRequest(profileUpdateDTO: dto),
-            type: ProfileNetworkModel.self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: self?.model?.user,
-                    collection: self?.model?.collection,
-                    nfts: self?.model?.nfts,
-                    order: self?.model?.order,
-                    profile: data
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(
+                request: ProfileUpdateRequest(profileUpdateDTO: dto),
+                type: ProfileNetworkModel.self) { [weak self] result in
+                    switch result {
+                    case .success(let data):
+                        self?.profile = data
+                        DispatchQueue.main.async {
+                            self?.onChange?()
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self?.onError?(error.localizedDescription)
+                        }
+                    }
                 }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
-                }
-            }
         }
     }
 
     func toggleCartForNFT(with id: String) {
-        var order = model?.order?.nfts
-        if let index = order?.firstIndex(of: id) {
-            order?.remove(at: index)
+        var ntfs = order?.nfts
+        if let index = ntfs?.firstIndex(of: id) {
+            ntfs?.remove(at: index)
         } else {
-            order?.append(id)
+            ntfs?.append(id)
         }
-        guard let order = order,
-              let id = model?.order?.id else { return }
-        let dto = OrderUpdateDTO(nfts: order, id: id)
+        guard let ntfs = ntfs,
+              let id = order?.id else { return }
+        let dto = OrderUpdateDTO(nfts: ntfs, id: id)
         updateOrderData(with: dto)
     }
 
     private func updateOrderData(with dto: OrderUpdateDTO) {
-        DefaultNetworkClient().send(
-            request: OrderUpdateRequest(orderUpdateDTO: dto),
-            type: OrderNetworkModel.self) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.model = CollectionModel(
-                    user: self?.model?.user,
-                    collection: self?.model?.collection,
-                    nfts: self?.model?.nfts,
-                    order: Order(with: data),
-                    profile: self?.model?.profile
-                )
-                DispatchQueue.main.async {
-                    self?.onChange?()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(
+                request: OrderUpdateRequest(orderUpdateDTO: dto),
+                type: OrderNetworkModel.self) { [weak self] result in
+                    switch result {
+                    case .success(let data):
+                        self?.order = Order(with: data)
+                        DispatchQueue.main.async {
+                            self?.onChange?()
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self?.onError?(error.localizedDescription)
+                        }
+                    }
                 }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
-                }
-            }
         }
+    }
+}
+
+extension CollectionViewModel {
+    func nfts(by id: String) -> NFTNetworkModel? {
+        nfts?.first { $0.id == id }
+    }
+
+    func isNFTinOrder(with nftId: String) -> Bool {
+        return order?.nfts.contains(nftId) ?? false
+    }
+
+    func isNFTLiked(with nftId: String) -> Bool {
+        return profile?.likes.contains(nftId) ?? false
+    }
+}
+
+extension Float {
+    var asETHCurrency: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = "ETH"
+        return formatter.string(from: NSNumber(value: self)) ?? ""
     }
 }

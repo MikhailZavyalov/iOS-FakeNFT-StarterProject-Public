@@ -8,4 +8,8 @@ struct CollectionNetworkModel: Codable {
     let description: String
     let author: String
     let id: String
+
+    var displayName: String {
+        name + " (\(nfts.count))"
+    }
 }

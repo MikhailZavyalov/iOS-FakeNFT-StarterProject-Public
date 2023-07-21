@@ -1,9 +1,10 @@
 import Foundation
 
 final class CollectionsCatalogViewModel: NSObject {
-    private(set) var collections: [CollectionsCatalogModel] = []
+    private let sortManager = SortManager()
+    private(set) var collections: [CollectionNetworkModel] = []
     var onChange: (() -> Void)?
-    var onError: (() -> Void)?
+    var onError: ((String) -> Void)?
     var onLoadingStarted: (() -> Void)?
     var onLoadingFinished: (() -> Void)?
 
@@ -16,45 +17,47 @@ final class CollectionsCatalogViewModel: NSObject {
     }
 
     private func loadData() {
-        let sort = UserDefaults.standard.string(forKey: "Sort")
+        let sort = sortManager.getSortValue()
         onLoadingStarted?()
-        DefaultNetworkClient().send(
-            request: CollectionsRequest(),
-            type: [CollectionNetworkModel].self
-        ) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.collections = data.map { CollectionsCatalogModel(with: $0) }
-                DispatchQueue.main.async {
-                    if sort == "byName" {
-                        self?.sortByName()
-                    } else {
-                        self?.sortByNFT()
+        DispatchQueue.global(qos: .background).async {
+            DefaultNetworkClient().send(
+                request: CollectionsRequest(),
+                type: [CollectionNetworkModel].self
+            ) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    self?.collections = data
+                    DispatchQueue.main.async {
+                        if sort == SortType.byName.rawValue {
+                            self?.sortByName()
+                        } else {
+                            self?.sortByNFT()
+                        }
+                        self?.onLoadingFinished?()
+                        self?.onChange?()
                     }
-                    self?.onLoadingFinished?()
-                    self?.onChange?()
-                }
-            case .failure:
-                DispatchQueue.main.async {
-                    self?.onError?()
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self?.onError?(error.localizedDescription)
+                    }
                 }
             }
         }
     }
 
-        func sortByName() {
-            collections = collections.sorted {
-                $0.name < $1.name
-            }
-            UserDefaults.standard.set("byName", forKey: "Sort")
-            onChange?()
+    func sortByName() {
+        collections = collections.sorted {
+            $0.name < $1.name
         }
-
-        func sortByNFT() {
-            collections = collections.sorted {
-                $0.nfts.count > $1.nfts.count
-            }
-            UserDefaults.standard.set("byNFT", forKey: "Sort")
-            onChange?()
-        }
+        sortManager.setSortValue(value: SortType.byName.rawValue)
+        onChange?()
     }
+
+    func sortByNFT() {
+        collections = collections.sorted {
+            $0.nfts.count > $1.nfts.count
+        }
+        sortManager.setSortValue(value: SortType.byNft.rawValue)
+        onChange?()
+    }
+}

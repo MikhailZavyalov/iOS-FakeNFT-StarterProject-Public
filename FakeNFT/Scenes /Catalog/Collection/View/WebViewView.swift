@@ -6,16 +6,9 @@ final class WebViewView: UIViewController {
     var url: URL?
 
     private lazy var webView: WKWebView = {
-       let webView = WKWebView()
+        let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
-    }()
-
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.color = .textPrimary
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        return activityIndicator
     }()
 
     override func viewDidLoad() {
@@ -25,7 +18,6 @@ final class WebViewView: UIViewController {
         setupLayout()
         makeNavBar()
         loadWebView()
-
     }
 
     private func loadWebView() {
@@ -36,7 +28,6 @@ final class WebViewView: UIViewController {
 
     private func addSubviews() {
         view.addSubview(webView)
-        view.addSubview(activityIndicator)
     }
 
     private func setupLayout() {
@@ -44,12 +35,7 @@ final class WebViewView: UIViewController {
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-
-            activityIndicator.widthAnchor.constraint(equalToConstant: 50),
-            activityIndicator.heightAnchor.constraint(equalToConstant: 50),
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 

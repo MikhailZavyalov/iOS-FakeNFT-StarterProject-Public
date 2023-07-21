@@ -9,10 +9,6 @@ struct CollectionsCatalogModel {
     let author: String
     let id: String
 
-    var displayName: String {
-        name + " (\(nfts.count))"
-    }
-
     init(with collection: CollectionNetworkModel) {
         self.createdAt = collection.createdAt
         self.name = collection.name

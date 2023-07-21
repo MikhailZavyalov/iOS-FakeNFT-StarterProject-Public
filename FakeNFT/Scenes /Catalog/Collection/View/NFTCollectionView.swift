@@ -1,11 +1,6 @@
 import UIKit
-import Kingfisher
 
 final class NFTCollectionView: UIViewController {
-
-    private var model: CollectionModel? {
-        viewModel.model
-    }
 
     private let viewModel: CollectionViewModel
 
@@ -23,19 +18,12 @@ final class NFTCollectionView: UIViewController {
         return collectionView
     }()
 
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.color = .textPrimary
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        return activityIndicator
-    }()
-
     init(viewModel: CollectionViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.collectionView.reloadData
-        viewModel.onError = { [weak self] in
-            self?.showErrorAlert()
+        viewModel.onError = {[weak self] error in
+            self?.showErrorAlert(error: error)
         }
     }
 
@@ -87,7 +75,7 @@ final class NFTCollectionView: UIViewController {
 
     private func linkAction() {
         let webViewVC = WebViewView()
-        guard let url = URL(string: model?.user?.website ?? "") else { return }
+        guard let url = URL(string: viewModel.user?.website ?? "") else { return }
         webViewVC.url = url
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
@@ -100,10 +88,10 @@ final class NFTCollectionView: UIViewController {
         viewModel.toggleCartForNFT(with: idNFT)
     }
 
-    func showErrorAlert() {
+    func showErrorAlert(error: String) {
         let alertController = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Попробовать еще раз?",
+            title: "Ошибка",
+            message: error,
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
         alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] _ in
@@ -115,13 +103,13 @@ final class NFTCollectionView: UIViewController {
 }
 
 extension NFTCollectionView: UICollectionViewDataSource {
+    // swiftlint:disable function_body_length
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-
         guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
-        let collection = viewModel.model?.collection
+        let collection = viewModel.collection
 
         switch section {
         case .image:
@@ -129,7 +117,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
                 withReuseIdentifier: ImageCollectionCell.identifier,
                 for: indexPath) as? ImageCollectionCell else { return UICollectionViewCell() }
 
-            if let imageURLString = collection?.cover,
+            if let imageURLString = viewModel.collection.cover,
                let imageURL = URL(string: imageURLString.encodeUrl) {
                 imageCell.imageView.kf.setImage(with: imageURL)
             }
@@ -139,10 +127,10 @@ extension NFTCollectionView: UICollectionViewDataSource {
                 withReuseIdentifier: DescriptionCollectionCell.identifier,
                 for: indexPath) as? DescriptionCollectionCell else { return UICollectionViewCell() }
             descriptionCell.configure(
-                title: collection?.name ?? "",
+                title: viewModel.collection.name,
                 subTitle: "Автор коллекции: ",
-                description: collection?.description ?? "",
-                buttonTitle: model?.user?.name ?? "",
+                description: viewModel.collection.description,
+                buttonTitle: viewModel.user?.name ?? "",
                 buttonAction: linkAction)
             return descriptionCell
         case .collection:
@@ -151,24 +139,22 @@ extension NFTCollectionView: UICollectionViewDataSource {
             guard let collectionNFTCell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: NFTCell.identifier,
                 for: indexPath) as? NFTCell else { return UICollectionViewCell() }
+            let nftId = viewModel.collection.nfts[indexPath.row]
 
-            if let nftId = model?.collection?.nfts[indexPath.row],
-               let imageURLString = model?.nfts(by: nftId)?.images.first,
+            if let imageURLString = viewModel.nfts(by: nftId)?.images.first,
                let imageURL = URL(string: imageURLString.encodeUrl),
-               let price = model?.nfts(by: nftId)?.price,
-               let rating = model?.nfts(by: nftId)?.rating,
-               let ratingImage = Rating(rawValue: rating)?.image,
-            let isNFTLiked = model?.isNFTLiked(with: nftId),
-            let isNFTinOrder = model?.isNFTinOrder(with: nftId) {
-
+               let price = viewModel.nfts(by: nftId)?.price.asETHCurrency,
+               let rating = viewModel.nfts(by: nftId)?.rating {
+                let isNFTLiked = viewModel.isNFTLiked(with: nftId)
+                let isNFTinOrder = viewModel.isNFTinOrder(with: nftId)
                 likeOrDislikeButton = isNFTLiked ? "like" : "disLike"
                 cartButton = isNFTinOrder ? "inCart" : "cart"
                 collectionNFTCell.configure(
                     nftImage: imageURL,
                     likeOrDislakeImage: likeOrDislikeButton,
-                    ratingImage: ratingImage,
-                    title: model?.nfts(by: nftId)?.name ?? "",
-                    price: "\(price) ETH",
+                    rating: rating,
+                    title: viewModel.nfts(by: nftId)?.name ?? "",
+                    price: price,
                     cartImage: cartButton,
                     likeOrDislikeButtonAction: { [weak self] in
                         self?.likeOrDislikeButtonTapped(idNFT: nftId)
@@ -180,6 +166,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
             return collectionNFTCell
         }
     }
+    // swiftlint:enable function_body_length
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         Section.allCases.count
@@ -193,7 +180,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
         case .description:
             return 1
         case .collection:
-            return model?.collection?.nfts.count ?? 0
+            return viewModel.collection.nfts.count
         }
     }
 }
@@ -256,31 +243,5 @@ extension NFTCollectionView {
         case image
         case description
         case collection
-    }
-
-    enum Rating: Int {
-        case zero = 0
-        case one
-        case two
-        case three
-        case four
-        case five
-
-        var image: UIImage? {
-            switch self {
-            case .zero:
-                return UIImage(named: "zeroStar")
-            case .one:
-                return UIImage(named: "1Star")
-            case .two:
-                return UIImage(named: "2Star")
-            case .three:
-                return UIImage(named: "3Star")
-            case .four:
-                return UIImage(named: "4Star")
-            case .five:
-                return UIImage(named: "5Star")
-            }
-        }
     }
 }

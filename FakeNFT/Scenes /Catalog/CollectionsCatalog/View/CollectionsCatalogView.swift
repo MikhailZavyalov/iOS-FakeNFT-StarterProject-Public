@@ -1,20 +1,8 @@
 import UIKit
-import Kingfisher
-
-extension String {
-    var encodeUrl: String {
-        guard let adding = self.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else { return "" }
-        return adding
-    }
-    var decodeUrl: String {
-        guard let removing = self.removingPercentEncoding else { return ""}
-        return removing
-    }
-}
 
 final class CollectionsCatalogView: UIViewController {
 
-    private var collections: [CollectionsCatalogModel] {
+    private var collections: [CollectionNetworkModel] {
         viewModel.collections
     }
     private let viewModel: CollectionsCatalogViewModel
@@ -38,12 +26,12 @@ final class CollectionsCatalogView: UIViewController {
         return activityIndicator
     }()
 
-    init() {
-        viewModel = CollectionsCatalogViewModel()
+    init(viewModel: CollectionsCatalogViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         viewModel.onChange = self.catalogTableView.reloadData
-        viewModel.onError = { [weak self] in
-            self?.showErrorAlert()
+        viewModel.onError = { [weak self] error in
+            self?.showErrorAlert(error: error)
         }
     }
 
@@ -121,10 +109,10 @@ final class CollectionsCatalogView: UIViewController {
         activityIndicator.stopAnimating()
     }
 
-    func showErrorAlert() {
+    func showErrorAlert(error: String) {
         let alertController = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Попробовать еще раз?",
+            title: "Ошибка",
+            message: error,
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
         alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] _ in
@@ -152,9 +140,8 @@ extension CollectionsCatalogView: UITableViewDataSource {
         let collection = collections[indexPath.row]
         if let imageURLString = collection.cover,
            let imageURL = URL(string: imageURLString.encodeUrl) {
-            categoryCell.imageCategory.kf.setImage(with: imageURL)
+            categoryCell.cofigure(image: imageURL, title: collection.displayName)
         }
-        categoryCell.label.text = collection.displayName
         categoryCell.selectionStyle = .none
         return categoryCell
     }
@@ -168,5 +155,17 @@ extension CollectionsCatalogView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let collectionVC = NFTCollectionView(viewModel: CollectionViewModel(collection: collections[indexPath.row]))
         self.navigationController?.pushViewController(collectionVC, animated: true)
+    }
+}
+
+extension String {
+    var encodeUrl: String {
+        guard let adding = self.addingPercentEncoding(
+            withAllowedCharacters: NSCharacterSet.urlQueryAllowed) else { return "" }
+        return adding
+    }
+    var decodeUrl: String {
+        guard let removing = self.removingPercentEncoding else { return ""}
+        return removing
     }
 }
