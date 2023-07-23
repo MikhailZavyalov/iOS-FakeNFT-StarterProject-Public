@@ -109,7 +109,7 @@ final class CollectionsCatalogView: UIViewController {
         activityIndicator.stopAnimating()
     }
 
-    func showErrorAlert(error: String) {
+    private func showErrorAlert(error: String) {
         let alertController = UIAlertController(
             title: "Ошибка",
             message: error,

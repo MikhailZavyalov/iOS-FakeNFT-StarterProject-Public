@@ -4,7 +4,7 @@ import Kingfisher
 final class NFTCell: UICollectionViewCell {
 
     static let identifier = "NFTCell"
-    let ratingMax = 5
+    private let ratingMax = 5
     var onToggleLike: (() -> Void)?
     var onToggleCart: (() -> Void)?
 
@@ -139,8 +139,22 @@ final class NFTCell: UICollectionViewCell {
         }
     // swiftlint:enable function_parameter_count
 
+    func clearRating() {
+        for index in 0..<ratingMax {
+            guard let imageView = nftRatingStackView.subviews[index] as? UIImageView else {
+                return
+            }
+            imageView.image = UIImage(named: "star")
+        }
+    }
+
     func setupRatingStackView(with rating: Int) {
+        clearRating()
         for index in 0..<rating {
+            if index > ratingMax {
+                assertionFailure("Wrong rating value")
+                return
+            }
             guard let imageView = nftRatingStackView.subviews[index] as? UIImageView else {
                 return
             }
