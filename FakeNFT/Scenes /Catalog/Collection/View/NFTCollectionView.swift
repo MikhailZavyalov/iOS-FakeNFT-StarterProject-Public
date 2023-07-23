@@ -88,7 +88,7 @@ final class NFTCollectionView: UIViewController {
         viewModel.toggleCartForNFT(with: idNFT)
     }
 
-    func showErrorAlert(error: String) {
+    private func showErrorAlert(error: String) {
         let alertController = UIAlertController(
             title: "Ошибка",
             message: error,
@@ -109,8 +109,6 @@ extension NFTCollectionView: UICollectionViewDataSource {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
-        let collection = viewModel.collection
-
         switch section {
         case .image:
             guard let imageCell = collectionView.dequeueReusableCell(
@@ -147,7 +145,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
                let rating = viewModel.nfts(by: nftId)?.rating {
                 let isNFTLiked = viewModel.isNFTLiked(with: nftId)
                 let isNFTinOrder = viewModel.isNFTinOrder(with: nftId)
-                likeOrDislikeButton = isNFTLiked ? "like" : "disLike"
+                likeOrDislikeButton = isNFTLiked ? "like" : "dislike"
                 cartButton = isNFTinOrder ? "inCart" : "cart"
                 collectionNFTCell.configure(
                     nftImage: imageURL,
