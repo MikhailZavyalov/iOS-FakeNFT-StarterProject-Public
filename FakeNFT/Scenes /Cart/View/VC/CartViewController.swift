@@ -1,19 +1,19 @@
 import UIKit
 
 final class CartViewController: UIViewController, StatisticsView {
-    
+
     private let viewModel: CartViewModel
     private let activityIndicator = UIActivityIndicatorView(style: .large)
-    
+
     // Элементы NFT - корзины
-    
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(NFTCell.self, forCellReuseIdentifier: NFTCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    
+
     private lazy var emptyLabel: UILabel = {
         let label = UILabel()
         label.text = "Корзина пуста"
@@ -22,9 +22,9 @@ final class CartViewController: UIViewController, StatisticsView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // Элементы для нижней панели оплаты
-    
+
     private lazy var paymentView: UIView = {
         let view = UIView()
         view.backgroundColor = .ypLightGrey
@@ -33,7 +33,7 @@ final class CartViewController: UIViewController, StatisticsView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var nftCountLabel: UILabel = {
         let label = UILabel()
         label.text = "0 NFT"
@@ -42,7 +42,7 @@ final class CartViewController: UIViewController, StatisticsView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var totalPriceLabel: UILabel = {
         let label = UILabel()
         let formattedPrice = String(format: "%.2f", 0.0)
@@ -52,7 +52,7 @@ final class CartViewController: UIViewController, StatisticsView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
         button.setTitle("К оплате", for: .normal)
@@ -64,11 +64,11 @@ final class CartViewController: UIViewController, StatisticsView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     // Удаление НФТ
-    
+
     private var indexDelete: Int? // Выбранный NFT для удаления
-    
+
     lazy var blurView: UIVisualEffectView = {
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -77,7 +77,7 @@ final class CartViewController: UIViewController, StatisticsView {
         blurView.translatesAutoresizingMaskIntoConstraints = false
         return blurView
     }()
-    
+
     let deleteText: UILabel = {
         let label = UILabel()
         label.font = .caption2
@@ -88,7 +88,7 @@ final class CartViewController: UIViewController, StatisticsView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     let deleteButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .black
@@ -101,7 +101,7 @@ final class CartViewController: UIViewController, StatisticsView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     let cancelButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .black
@@ -113,7 +113,7 @@ final class CartViewController: UIViewController, StatisticsView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     lazy var iconDeleteImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "NFT1")
@@ -121,9 +121,9 @@ final class CartViewController: UIViewController, StatisticsView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
+
     // Работа экрана
-    
+
     init(viewModel: CartViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -139,7 +139,7 @@ final class CartViewController: UIViewController, StatisticsView {
             self?.totalPriceLabel.text = formattedPrice + " ETH"
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -147,15 +147,17 @@ final class CartViewController: UIViewController, StatisticsView {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+
         viewModel.viewDidLoad()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupView()
+
+        viewModel.viewDidLoad()
     }
-    
+
     private func setupView() {
         if viewModel.NFTModels.isEmpty {
             setupEmptyView()
@@ -168,7 +170,7 @@ final class CartViewController: UIViewController, StatisticsView {
             setupLoader()
         }
     }
-    
+
     private func setupNavBar() {
         if let navBar = navigationController?.navigationBar {
             // Creating a button with a picture
@@ -186,13 +188,13 @@ final class CartViewController: UIViewController, StatisticsView {
     private func setupEmptyView() {
         emptyLabel.isHidden = false
         view.addSubview(emptyLabel)
-        
+
         NSLayoutConstraint.activate([
             emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
-    
+
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -202,7 +204,7 @@ final class CartViewController: UIViewController, StatisticsView {
         tableView.isUserInteractionEnabled = true
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
         view.addSubview(tableView)
-        
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 108),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -210,48 +212,48 @@ final class CartViewController: UIViewController, StatisticsView {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
         ])
     }
-    
+
     private func setupPaymentView() {
         // Adding elements for the lower payment panel
         view.addSubview(paymentView)
         paymentView.addSubview(nftCountLabel)
         paymentView.addSubview(totalPriceLabel)
         paymentView.addSubview(paymentButton)
-        
+
         NSLayoutConstraint.activate([
             paymentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -83),
             paymentView.heightAnchor.constraint(equalToConstant: 76),
             paymentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
+
             nftCountLabel.topAnchor.constraint(equalTo: paymentView.topAnchor, constant: 16),
             nftCountLabel.leadingAnchor.constraint(equalTo: paymentView.leadingAnchor, constant: 16),
             nftCountLabel.widthAnchor.constraint(equalToConstant: 79),
             nftCountLabel.heightAnchor.constraint(equalToConstant: 20),
-            
+
             totalPriceLabel.topAnchor.constraint(equalTo: nftCountLabel.bottomAnchor, constant: 2),
             totalPriceLabel.leadingAnchor.constraint(equalTo: paymentView.leadingAnchor, constant: 16),
             totalPriceLabel.widthAnchor.constraint(equalToConstant: 90),
             totalPriceLabel.heightAnchor.constraint(equalToConstant: 22),
-            
+
             paymentButton.centerYAnchor.constraint(equalTo: paymentView.centerYAnchor),
             paymentButton.trailingAnchor.constraint(equalTo: paymentView.trailingAnchor, constant: -16),
             paymentButton.heightAnchor.constraint(equalToConstant: 44),
             paymentButton.widthAnchor.constraint(equalToConstant: 240)
         ])
     }
-    
+
     private func setupLoader() {
         view.addSubview(activityIndicator)
         activityIndicator.layer.zPosition = 99
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-    
+
     private func countPrice(_ nftArray: [NFT]) -> Float {
         var totalPrice: Float = 0
         for nft in nftArray {
@@ -259,7 +261,7 @@ final class CartViewController: UIViewController, StatisticsView {
         }
         return totalPrice
     }
-    
+
     private func hiddenCorrection() {
         if viewModel.NFTModels.isEmpty {
             navigationController?.isNavigationBarHidden = true
@@ -277,7 +279,7 @@ final class CartViewController: UIViewController, StatisticsView {
             emptyLabel.isHidden = true
         }
     }
-    
+
     func setLoaderIsHidden(_ isHidden: Bool) {
         if isHidden {
             activityIndicator.stopAnimating()
@@ -285,35 +287,35 @@ final class CartViewController: UIViewController, StatisticsView {
             activityIndicator.startAnimating()
         }
     }
-    
+
     @objc private func showSortingOptions() {
         let actionSheet = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
-        
+
         let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { _ in
             // Действие для сортировки по цене
             self.viewModel.sortByPrice()
         }
-        
+
         let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
             // Действие для сортировки по рейтингу
             self.viewModel.sortByRating()
         }
-        
+
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
             // Действие для сортировки по названию
             self.viewModel.sortByName()
         }
-        
+
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-        
+
         actionSheet.addAction(sortByPriceAction)
         actionSheet.addAction(sortByRatingAction)
         actionSheet.addAction(sortByNameAction)
         actionSheet.addAction(cancelAction)
-        
+
         present(actionSheet, animated: true, completion: nil)
     }
-    
+
     @objc private func deleteNFT() {
         blurView.removeFromSuperview()
         deleteText.removeFromSuperview()
@@ -321,21 +323,21 @@ final class CartViewController: UIViewController, StatisticsView {
         cancelButton.removeFromSuperview()
         navigationController?.navigationBar.isHidden = false
         tabBarController?.tabBar.isHidden = false
-        
+
         guard let indexDelete = indexDelete else { return }
         viewModel.didDeleteNFT(index: indexDelete)
     }
-    
+
     @objc private func cancelDeletion() {
         blurView.removeFromSuperview()
         deleteText.removeFromSuperview()
         deleteButton.removeFromSuperview()
         cancelButton.removeFromSuperview()
-        
+
         navigationController?.navigationBar.isHidden = false
         tabBarController?.tabBar.isHidden = false
     }
-    
+
     @objc private func toPaymentMethod() {
         let cryptoCurrencyViewController = CryptoCurrencyViewController()
         cryptoCurrencyViewController.modalPresentationStyle = .fullScreen
@@ -346,18 +348,18 @@ final class CartViewController: UIViewController, StatisticsView {
 // Реализация UITableViewDataSource
 extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return addedNFTs.count
+        // return addedNFTs.count
         return viewModel.NFTModels.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NFTCell.reuseIdentifier, for: indexPath) as? NFTCell else {
             return UITableViewCell()
         }
-        
+
         let nft = viewModel.NFTModels[indexPath.row]
-                
+
         cell.backgroundColor = .white
         cell.selectionStyle = .none
         cell.configure(with: nft)
@@ -370,25 +372,25 @@ extension CartViewController: UITableViewDataSource {
 // Реализация UITableViewDelegate
 extension CartViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140 
+        return 140
     }
 }
 
 extension CartViewController: CartCellDelegate {
-    
+
     func showDeleteView(index: Int) {
         blurView.isHidden = false
         deleteText.isHidden = false
         deleteButton.isHidden = false
         cancelButton.isHidden = false
         iconDeleteImageView.isHidden = false
-        
+
         iconDeleteImageView.kf.setImage(with: viewModel.NFTModels[index].images.first)
         indexDelete = index
-        
+
         navigationController?.isNavigationBarHidden = true
         tabBarController?.tabBar.isHidden = true
-        
+
         blurView.isUserInteractionEnabled = true
 
         view.addSubview(blurView)
@@ -402,27 +404,27 @@ extension CartViewController: CartCellDelegate {
             blurView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             blurView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             blurView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+
             iconDeleteImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iconDeleteImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 244),
             iconDeleteImageView.widthAnchor.constraint(equalToConstant: 108),
             iconDeleteImageView.heightAnchor.constraint(equalToConstant: 108),
-            
+
             deleteText.topAnchor.constraint(equalTo: iconDeleteImageView.bottomAnchor, constant: 12),
             deleteText.centerXAnchor.constraint(equalTo: blurView.contentView.centerXAnchor),
             deleteText.widthAnchor.constraint(equalToConstant: 180),
             deleteText.heightAnchor.constraint(equalToConstant: 36),
-            
+
             deleteButton.topAnchor.constraint(equalTo: deleteText.bottomAnchor, constant: 20),
             deleteButton.leadingAnchor.constraint(equalTo: blurView.contentView.leadingAnchor, constant: 56),
             deleteButton.trailingAnchor.constraint(equalTo: blurView.contentView.centerXAnchor, constant: -4),
             deleteButton.heightAnchor.constraint(equalToConstant: 44),
-            
+
             cancelButton.topAnchor.constraint(equalTo: deleteButton.topAnchor),
             cancelButton.leadingAnchor.constraint(equalTo: blurView.contentView.centerXAnchor, constant: 4),
             cancelButton.trailingAnchor.constraint(equalTo: blurView.contentView.trailingAnchor, constant: -57),
             cancelButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
-    
+
 }

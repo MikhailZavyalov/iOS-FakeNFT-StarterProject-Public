@@ -1,9 +1,9 @@
 import UIKit
 
 class CryptoCurrencyViewController: UIViewController {
-    
+
     private var selectedCryptocurrency: Cryptocurrency?
-    
+
     // TopBar
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -13,7 +13,7 @@ class CryptoCurrencyViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "backButton"), for: .normal)
@@ -21,7 +21,7 @@ class CryptoCurrencyViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     // Payment View
     private lazy var paymentView: UIView = {
         let view = UIView()
@@ -31,7 +31,7 @@ class CryptoCurrencyViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
         button.setTitle("Оплатить", for: .normal)
@@ -43,7 +43,7 @@ class CryptoCurrencyViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var upperPaymentText: UILabel = {
         let label = UILabel()
         label.text = "Совершая покупку, вы соглашаетесь с условиями"
@@ -52,20 +52,20 @@ class CryptoCurrencyViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var lowerPaymentText: UILabel = {
         let label = UILabel()
         label.text = "Пользовательского соглашения"
         label.font = .caption2
         label.textColor = .ypBlue
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         label.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(lowerPaymentTextTapped))
         label.addGestureRecognizer(tapGesture)
         return label
     }()
-    
+
     // CollectionView
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -74,7 +74,7 @@ class CryptoCurrencyViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
+
     // ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,62 +83,62 @@ class CryptoCurrencyViewController: UIViewController {
         setupCollectionView()
         setupPaymentView()
     }
-    
+
     private func setupTopLine() {
         view.addSubview(titleLabel)
         view.addSubview(backButton)
-        
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
+
             backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
             backButton.widthAnchor.constraint(equalToConstant: 24),
             backButton.heightAnchor.constraint(equalToConstant: 24),
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 9)
         ])
     }
-    
+
     private func setupPaymentView() {
         view.addSubview(paymentView)
         view.addSubview(paymentButton)
         view.addSubview(upperPaymentText)
         view.addSubview(lowerPaymentText)
-        
+
         NSLayoutConstraint.activate([
-            
+
             paymentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             paymentView.heightAnchor.constraint(equalToConstant: 186),
             paymentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
+
             paymentButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             paymentButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             paymentButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             paymentButton.heightAnchor.constraint(equalToConstant: 60),
-            
+
             upperPaymentText.topAnchor.constraint(equalTo: paymentView.topAnchor, constant: 16),
             upperPaymentText.heightAnchor.constraint(equalToConstant: 18),
             upperPaymentText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             upperPaymentText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
+
             lowerPaymentText.topAnchor.constraint(equalTo: upperPaymentText.bottomAnchor, constant: 0),
             lowerPaymentText.bottomAnchor.constraint(equalTo: paymentButton.topAnchor, constant: -16),
             lowerPaymentText.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             lowerPaymentText.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-            
+
         ])
     }
-    
+
     // Setup CollectionView
-    
+
     private func setupCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
-        
+
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 108),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -147,17 +147,16 @@ class CryptoCurrencyViewController: UIViewController {
         ])
     }
 
-    
     @objc private func backButtonTapped() {
         dismiss(animated: true)
     }
-    
+
 //    @objc private func paymentProceed() {
 //        let purchaseResultViewController = PurchaseResultViewController()
 //        purchaseResultViewController.modalPresentationStyle = .fullScreen
 //        present(purchaseResultViewController, animated: true, completion: nil)
 //    }
-    
+
     @objc private func paymentProceed() {
         let purchaseResultViewController: PurchaseResultViewController
         if selectedCryptocurrency != nil {
@@ -169,7 +168,6 @@ class CryptoCurrencyViewController: UIViewController {
         present(purchaseResultViewController, animated: true, completion: nil)
     }
 
-    
     @objc private func lowerPaymentTextTapped() {
         guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") else {
             return
@@ -187,23 +185,22 @@ extension CryptoCurrencyViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Cryptocurrency.allCases.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PaymentCell.reuseIdentifier, for: indexPath) as? PaymentCell else {
             return UICollectionViewCell()
         }
-        
+
         let cryptocurrency = Cryptocurrency(rawValue: indexPath.item)
-        
+
         cell.topTextLabel.text = cryptocurrency?.fullName
         cell.bottomTextLabel.text = cryptocurrency?.abbreviation
         cell.iconImageView.image = UIImage(named: cryptocurrency!.fullName)
-        
+
         // Configure the cell
         return cell
     }
-    
-    
+
 }
 
 extension CryptoCurrencyViewController: UICollectionViewDelegateFlowLayout {
@@ -211,15 +208,15 @@ extension CryptoCurrencyViewController: UICollectionViewDelegateFlowLayout {
         let itemSpacing = 7
         return CGSize(width: (Int(collectionView.bounds.width) - itemSpacing) / 2, height: 46)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 7
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 7
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedCryptocurrency = Cryptocurrency(rawValue: indexPath.item)
     }
@@ -238,7 +235,7 @@ enum Cryptocurrency: Int, CaseIterable {
     case ethereum
     case cardano
     case shibaInu
-    
+
     var fullName: String {
         switch self {
         case .bitcoin:
@@ -259,7 +256,7 @@ enum Cryptocurrency: Int, CaseIterable {
             return "Shiba Inu"
         }
     }
-    
+
     var abbreviation: String {
         switch self {
         case .bitcoin:

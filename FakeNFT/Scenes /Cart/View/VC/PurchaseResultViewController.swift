@@ -1,18 +1,18 @@
 import UIKit
 
 class PurchaseResultViewController: UIViewController {
-    
+
     var purchaseWasCompleted: Bool
-    
+
     init(purchaseWasCompleted: Bool) {
         self.purchaseWasCompleted = purchaseWasCompleted
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private lazy var resultButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вернуться в каталог", for: .normal)
@@ -24,14 +24,14 @@ class PurchaseResultViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+
     private lazy var centreImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "purchaseTrue")
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
-    
+
     private lazy var centreLabel: UILabel = {
         let label = UILabel()
         label.text = "Успех! Оплата прошла, \n поздравляем с покупкой!"
@@ -42,17 +42,17 @@ class PurchaseResultViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+
         setupResults()
         setupButton()
         setupCentre()
 
     }
-    
+
     func setupResults() {
         if purchaseWasCompleted == true {
             centreImage.image = UIImage(named: "purchaseTrue")
@@ -64,32 +64,32 @@ class PurchaseResultViewController: UIViewController {
             resultButton.setTitle("Попробовать еще раз", for: .normal)
         }
     }
-    
+
     func setupCentre() {
         view.addSubview(centreImage)
         view.addSubview(centreLabel)
-        
+
         NSLayoutConstraint.activate([
             centreImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 152),
             centreImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             centreImage.heightAnchor.constraint(equalToConstant: 278),
             centreImage.widthAnchor.constraint(equalToConstant: 278),
-            
+
             centreImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 152),
             centreImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             centreImage.heightAnchor.constraint(equalToConstant: 278),
             centreImage.widthAnchor.constraint(equalToConstant: 278),
-            
+
             centreLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             centreLabel.topAnchor.constraint(equalTo: centreImage.bottomAnchor, constant: 20),
             centreLabel.heightAnchor.constraint(equalToConstant: 100)
         ])
-        
+
     }
-    
+
     func setupButton() {
         view.addSubview(resultButton)
-        
+
         NSLayoutConstraint.activate([
             resultButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             resultButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -97,13 +97,13 @@ class PurchaseResultViewController: UIViewController {
             resultButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+
     @objc func paymentResultTapped() {
-        
+
         if let tabBarController = presentingViewController?.presentingViewController as? UITabBarController {
             tabBarController.selectedIndex = 1
         }
         presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
-    
+
 }
