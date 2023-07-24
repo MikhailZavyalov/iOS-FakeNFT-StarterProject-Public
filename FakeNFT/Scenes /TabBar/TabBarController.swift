@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
             image: UIImage(named: "catalogTabBarImageNoActive"),
             selectedImage: UIImage(named: "catalogTabBarImageActive"))
 
-        let cartVC = UINavigationController(rootViewController: CartViewController())
+        let cartVC = UINavigationController(rootViewController: assembleCartModule())
         cartVC.tabBarItem = UITabBarItem(
             title: "Корзина",
             image: UIImage(named: "cartTabBarImageNoActive"),
@@ -35,8 +35,17 @@ class TabBarController: UITabBarController {
 
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [profileVC, catalogVC, cartVC, statisticsVC]
-        tabBarController.tabBar.unselectedItemTintColor = .textPrimary
+        tabBarController.tabBar.unselectedItemTintColor = .black
+        tabBarController.tabBar.backgroundColor = .background
 
        return tabBarController
     }
+
+}
+
+private func assembleCartModule() -> UIViewController {
+    let cartModel: CartContentLoader = CartContentLoader(networkClient: DefaultNetworkClient())
+    let cartViewModel: CartViewModel = CartViewModel(model: cartModel)
+
+    return CartViewController(viewModel: cartViewModel)
 }

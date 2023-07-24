@@ -1,9 +1,9 @@
 import UIKit
 import Kingfisher
 
-final class NFTCell: UICollectionViewCell {
+final class CatalogNFTCell: UICollectionViewCell {
 
-    static let identifier = "NFTCell"
+    static let identifier = "CatalogNFTCell"
     private let ratingMax = 5
     var onToggleLike: (() -> Void)?
     var onToggleCart: (() -> Void)?

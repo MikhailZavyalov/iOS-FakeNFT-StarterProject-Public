@@ -12,8 +12,8 @@ final class NFTCollectionView: UIViewController {
                                 forCellWithReuseIdentifier: ImageCollectionCell.identifier)
         collectionView.register(DescriptionCollectionCell.self,
                                 forCellWithReuseIdentifier: DescriptionCollectionCell.identifier)
-        collectionView.register(NFTCell.self,
-                                forCellWithReuseIdentifier: NFTCell.identifier)
+        collectionView.register(CatalogNFTCell.self,
+                                forCellWithReuseIdentifier: CatalogNFTCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -42,6 +42,11 @@ final class NFTCollectionView: UIViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reload()
+    }
+    
     private func addSubviews() {
         view.addSubview(collectionView)
     }
@@ -135,8 +140,8 @@ extension NFTCollectionView: UICollectionViewDataSource {
             var likeOrDislikeButton: String
             var cartButton: String
             guard let collectionNFTCell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: NFTCell.identifier,
-                for: indexPath) as? NFTCell else { return UICollectionViewCell() }
+                withReuseIdentifier: CatalogNFTCell.identifier,
+                for: indexPath) as? CatalogNFTCell else { return UICollectionViewCell() }
             let nftId = viewModel.collection.nfts[indexPath.row]
 
             if let imageURLString = viewModel.nfts(by: nftId)?.images.first,

@@ -50,6 +50,11 @@ final class CollectionsCatalogView: UIViewController {
         viewModel.updateData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.updateData()
+    }
+
     private func addSubviews() {
         view.addSubview(catalogTableView)
         view.addSubview(activityIndicator)
