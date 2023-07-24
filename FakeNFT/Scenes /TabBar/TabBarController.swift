@@ -14,13 +14,14 @@ class TabBarController: UITabBarController {
             image: UIImage(named: "profileTabBarImageNoActive"),
             selectedImage: UIImage(named: "profileTabBarImageActive"))
 
-        let catalogVC = UINavigationController(rootViewController: CatalogViewController())
+        let catalogVC = UINavigationController(
+            rootViewController: CollectionsCatalogView(viewModel: CollectionsCatalogViewModel()))
         catalogVC.tabBarItem = UITabBarItem(
             title: "Каталог",
             image: UIImage(named: "catalogTabBarImageNoActive"),
             selectedImage: UIImage(named: "catalogTabBarImageActive"))
 
-        let cartVC = UINavigationController(rootViewController: CartViewController())
+        let cartVC = UINavigationController(rootViewController: assembleCartModule())
         cartVC.tabBarItem = UITabBarItem(
             title: "Корзина",
             image: UIImage(named: "cartTabBarImageNoActive"),
@@ -42,4 +43,12 @@ class TabBarController: UITabBarController {
 
        return tabBarController
     }
+
+}
+
+private func assembleCartModule() -> UIViewController {
+    let cartModel: CartContentLoader = CartContentLoader(networkClient: DefaultNetworkClient())
+    let cartViewModel: CartViewModel = CartViewModel(model: cartModel)
+
+    return CartViewController(viewModel: cartViewModel)
 }
