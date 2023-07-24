@@ -19,8 +19,6 @@ extension NetworkRequest {
     var dto: Encodable? { nil }
 }
 
-// TODO: - Удалить
-
 struct DefaultNetworkRequest: NetworkRequest {
     let endpoint: URL?
     let dto: Encodable?

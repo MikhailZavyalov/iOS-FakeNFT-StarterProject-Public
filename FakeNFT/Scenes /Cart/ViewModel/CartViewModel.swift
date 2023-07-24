@@ -6,7 +6,7 @@ protocol StatisticsView: AnyObject {
 
 final class CartViewModel {
     @Observable
-    var NFTModels: [NFTModel] = []
+    var NFTModels: [CartNFTModel] = []
 
     weak var view: StatisticsView?
     private let model: CartContentLoader
@@ -27,7 +27,7 @@ final class CartViewModel {
 
                 switch result {
                 case let .success(models):
-                    let viewModelModels = models.map(NFTModel.init(serverModel:))
+                    let viewModelModels = models.map(CartNFTModel.init(serverModel:))
                     self.NFTModels = viewModelModels
                 case let .failure(error):
                     print(error)

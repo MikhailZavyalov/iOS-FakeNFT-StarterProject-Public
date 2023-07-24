@@ -1,6 +1,6 @@
 import UIKit
 
-struct NFTModel: Hashable {
+struct CartNFTModel: Hashable {
     let id: String
     let name: String
     let images: [URL]
@@ -8,7 +8,7 @@ struct NFTModel: Hashable {
     let rating: Int
 }
 
-extension NFTModel {
+extension CartNFTModel {
     init(serverModel: NFTServerModel) {
         id = serverModel.id
         name = serverModel.name
