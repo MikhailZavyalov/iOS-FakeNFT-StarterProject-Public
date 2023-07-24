@@ -21,4 +21,6 @@ extension NetworkRequest {
 
 struct DefaultNetworkRequest: NetworkRequest {
     let endpoint: URL?
+    let dto: Encodable?
+    let httpMethod: HttpMethod
 }

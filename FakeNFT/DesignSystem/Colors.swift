@@ -41,7 +41,7 @@ extension UIColor {
     static let ypRed = UIColor(named: "ypRed")
 
     // Text Colors
-    static let textPrimary = UIColor(named: "ypBlack")
+    static let textPrimary = UIColor(named: "ypBlack") ?? UIColor.black
     static let textSecondary = UIColor.gray
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black

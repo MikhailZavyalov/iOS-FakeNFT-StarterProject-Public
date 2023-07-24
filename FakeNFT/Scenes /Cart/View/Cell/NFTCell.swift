@@ -127,7 +127,7 @@ class NFTCell: UITableViewCell {
 
     }
 
-    func configure(with nft: NFTModel) {
+    func configure(with nft: CartNFTModel) {
         // pictureImageView.image = nft.picture
         imageURL = nft.images.first
 

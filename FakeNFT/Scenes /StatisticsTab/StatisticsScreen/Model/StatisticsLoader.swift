@@ -8,9 +8,7 @@ class StatisticsLoader {
     }
 
     func loadUsers(completion: @escaping (Result<[ServerUserModel], Error>) -> Void) {
-        let request = DefaultNetworkRequest(
-            endpoint: Endpoint.getUsers()
-        )
+        let request = DefaultNetworkRequest(endpoint: Endpoint.getUsers(), dto: nil, httpMethod: .get)
         networkClient.send(request: request, type: [ServerUserModel].self, onResponse: completion)
     }
 }

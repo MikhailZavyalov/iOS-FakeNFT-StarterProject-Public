@@ -18,7 +18,7 @@ struct StatisticsUserNFTCollectionCellModel {
 }
 
 extension StatisticsUserNFTCollectionCellModel {
-    init(nftModel: NFTModel, isLiked: Bool) {
+    init(nftModel: StatisticsNFTModel, isLiked: Bool) {
         icon = nftModel.images.first
         rating = StarRating(rawValue: nftModel.rating) ?? .zero
         name = nftModel.name

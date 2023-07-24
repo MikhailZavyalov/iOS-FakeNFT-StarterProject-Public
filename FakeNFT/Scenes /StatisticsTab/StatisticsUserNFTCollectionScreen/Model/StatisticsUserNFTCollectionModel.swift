@@ -7,10 +7,8 @@ struct StatisticsUserNFTCollectionModel {
 
     let networkClient: NetworkClient
 
-    func loadNFT(id: String, completion: @escaping (Result<NFTModel, Error>) -> Void) {
-        let request = DefaultNetworkRequest(
-            endpoint: Endpoint.getNFT(id: id)
-        )
-        networkClient.send(request: request, type: NFTModel.self, onResponse: completion)
+    func loadNFT(id: String, completion: @escaping (Result<StatisticsNFTModel, Error>) -> Void) {
+        let request = DefaultNetworkRequest(endpoint: Endpoint.getNFT(id: id), dto: nil, httpMethod: .get)
+        networkClient.send(request: request, type: StatisticsNFTModel.self, onResponse: completion)
     }
 }

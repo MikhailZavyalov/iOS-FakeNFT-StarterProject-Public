@@ -67,21 +67,3 @@ extension StatisticsRouter {
         WebViewController(url: url)
     }
 }
-
-private final class WebViewController: UIViewController {
-    private let webView = WKWebView()
-
-    init(url: URL) {
-        super.init(nibName: nil, bundle: nil)
-        let request = URLRequest(url: url)
-        _ = webView.load(request)
-    }
-
-    override func loadView() {
-        view = webView
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
