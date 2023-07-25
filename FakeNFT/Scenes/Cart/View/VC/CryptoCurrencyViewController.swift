@@ -7,7 +7,7 @@ class CryptoCurrencyViewController: UIViewController {
     // TopBar
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Выберите способ оплаты"
+        label.text = "choosePayment".localized
         label.font = .bodyBold
         label.textColor = .textOnSecondary
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ class CryptoCurrencyViewController: UIViewController {
 
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Оплатить", for: .normal)
+        button.setTitle("pay".localized, for: .normal)
         button.backgroundColor = .ypBlack
         button.tintColor = .white
         button.layer.cornerRadius = 16
@@ -46,7 +46,7 @@ class CryptoCurrencyViewController: UIViewController {
 
     private lazy var upperPaymentText: UILabel = {
         let label = UILabel()
-        label.text = "Совершая покупку, вы соглашаетесь с условиями"
+        label.text = "agreement".localized
         label.font = .caption2
         label.textColor = .textOnSecondary
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,7 +55,7 @@ class CryptoCurrencyViewController: UIViewController {
 
     private lazy var lowerPaymentText: UILabel = {
         let label = UILabel()
-        label.text = "Пользовательского соглашения"
+        label.text = "agreementLink".localized
         label.font = .caption2
         label.textColor = .ypBlue
         label.translatesAutoresizingMaskIntoConstraints = false

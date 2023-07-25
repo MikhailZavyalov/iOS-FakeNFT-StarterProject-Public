@@ -29,7 +29,7 @@ final class StatisticsUserProfileViewController: UIViewController {
         usersWebsite.layer.cornerRadius = 16
         usersWebsite.layer.borderWidth = 1
         usersWebsite.layer.borderColor = UIColor(ciColor: .black).cgColor
-        usersWebsite.setTitle("Перейти на сайт пользователя", for: .normal)
+        usersWebsite.setTitle("goWebsite".localized, for: .normal)
         usersWebsite.titleLabel?.font = .caption1
         usersWebsite.setTitleColor(.black, for: .normal)
         return usersWebsite
@@ -70,7 +70,7 @@ final class StatisticsUserProfileViewController: UIViewController {
             self.usersAvatar.kf.setImage(with: profile.avatar)
             self.userName.text = profile.name
             self.userDescription.text = profile.description
-            self.usersCollectionButton.setTitle("Коллекция NFT (\(profile.nfts.count))", for: .normal)
+            self.usersCollectionButton.setTitle("nftCollection".localized   + " (\(profile.nfts.count))", for: .normal)
         }
     }
 

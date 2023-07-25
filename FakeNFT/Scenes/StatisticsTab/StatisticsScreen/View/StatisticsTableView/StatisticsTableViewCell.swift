@@ -19,7 +19,6 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         contentView.addSubview(number)
         number.translatesAutoresizingMaskIntoConstraints = false
 
-
         profileView.translatesAutoresizingMaskIntoConstraints = false
 
         let hStack = UIStackView(arrangedSubviews: [number, profileView])

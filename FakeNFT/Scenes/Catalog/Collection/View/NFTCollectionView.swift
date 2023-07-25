@@ -46,7 +46,7 @@ final class NFTCollectionView: UIViewController {
         super.viewWillAppear(animated)
         viewModel.reload()
     }
-    
+
     private func addSubviews() {
         view.addSubview(collectionView)
     }
@@ -131,7 +131,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
                 for: indexPath) as? DescriptionCollectionCell else { return UICollectionViewCell() }
             descriptionCell.configure(
                 title: viewModel.collection.name,
-                subTitle: "Автор коллекции: ",
+                subTitle: "authorOfTheCollection".localized,
                 description: viewModel.collection.description,
                 buttonTitle: viewModel.user?.name ?? "",
                 buttonAction: linkAction)

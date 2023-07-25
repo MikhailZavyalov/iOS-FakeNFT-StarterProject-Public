@@ -5,7 +5,7 @@ final class StatisticsViewModel {
         case name
         case rating
     }
-    
+
     @Observable
     var userModels: [UserModel] = []
 

@@ -1,8 +1,7 @@
 import UIKit
 
 class TabBarController: UITabBarController {
-
-    override func viewDidLoad() {
+     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
@@ -10,20 +9,20 @@ class TabBarController: UITabBarController {
 
         let profileVC = UINavigationController(rootViewController: ProfileViewController())
         profileVC.tabBarItem = UITabBarItem(
-            title: "Профиль",
+            title: "tabBarProfile".localized,
             image: UIImage(named: "profileTabBarImageNoActive"),
             selectedImage: UIImage(named: "profileTabBarImageActive"))
 
         let catalogVC = UINavigationController(
             rootViewController: CollectionsCatalogView(viewModel: CollectionsCatalogViewModel()))
         catalogVC.tabBarItem = UITabBarItem(
-            title: "Каталог",
+            title: "tabBarCatalog".localized,
             image: UIImage(named: "catalogTabBarImageNoActive"),
             selectedImage: UIImage(named: "catalogTabBarImageActive"))
 
         let cartVC = UINavigationController(rootViewController: assembleCartModule())
         cartVC.tabBarItem = UITabBarItem(
-            title: "Корзина",
+            title: "tabBarCart".localized,
             image: UIImage(named: "cartTabBarImageNoActive"),
             selectedImage: UIImage(named: "cartTabBarImageActive"))
 
@@ -32,7 +31,7 @@ class TabBarController: UITabBarController {
         let statisticsNavigationController = UINavigationController(rootViewController: statisticsVC)
         statisticsRouter.navigationController = statisticsNavigationController
         statisticsVC.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: "tabBarStatistics".localized,
             image: UIImage(named: "statisticsTabBarImageNoActive"),
             selectedImage: UIImage(named: "statisticsTabBarImageActive"))
 

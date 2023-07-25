@@ -66,7 +66,7 @@ class ProfileCellView: UIView {
             profileNFTCount.centerYAnchor.constraint(equalTo: centerYAnchor),
             hStack.trailingAnchor.constraint(lessThanOrEqualTo: profileNFTCount.leadingAnchor),
             profilePhoto.widthAnchor.constraint(equalToConstant: 28),
-            profilePhoto.heightAnchor.constraint(equalToConstant: 28),
+            profilePhoto.heightAnchor.constraint(equalToConstant: 28)
         ])
     }
 

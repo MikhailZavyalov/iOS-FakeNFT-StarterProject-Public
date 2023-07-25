@@ -3,8 +3,7 @@ import UIKit
 final class StatisticsViewController:
     UIViewController,
     UITableViewDelegate,
-    UITableViewDataSource
-{
+    UITableViewDataSource {
     private let sortButton: UIButton = {
         let sortButton = UIButton()
         sortButton.setImage(UIImage(named: "Sort"), for: .normal)
@@ -81,12 +80,12 @@ final class StatisticsViewController:
     private func statisticsFilter() {
         let alert = UIAlertController(
             title: nil,
-            message: "Cортировка",
+            message: "alertSortTitle".localized,
             preferredStyle: .actionSheet
         )
 
         let nameAction = UIAlertAction(
-            title: "По имени",
+            title: "alertStatSortByName".localized,
             style: .default
         ) { [weak self] _ in
             self?.viewModel.didSelectSort(.name)
@@ -94,7 +93,7 @@ final class StatisticsViewController:
         }
 
         let ratingAction = UIAlertAction(
-            title: "По рейтингу",
+            title: "alertSortByRating".localized,
             style: .default
         ) { [weak self] _ in
             self?.viewModel.didSelectSort(.rating)
@@ -102,7 +101,7 @@ final class StatisticsViewController:
         }
 
         let closeAction = UIAlertAction(
-            title: "Закрыть",
+            title: "close".localized,
             style: .cancel) { _ in
                 alert.dismiss(animated: true)
             }

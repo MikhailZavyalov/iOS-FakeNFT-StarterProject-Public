@@ -41,7 +41,7 @@ extension StatisticsRouter {
 
         return view
     }
-    
+
     private func assembleUserCardModule(userID: String) -> UIViewController {
         let model = StatisticsUserProfileModel(networkClient: networkClient)
         let viewModel = StatisticsUserProfileViewModel(id: userID, router: self, model: model)
