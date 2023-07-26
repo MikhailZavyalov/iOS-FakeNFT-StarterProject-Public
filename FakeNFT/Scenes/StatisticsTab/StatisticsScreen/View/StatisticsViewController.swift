@@ -3,11 +3,10 @@ import UIKit
 final class StatisticsViewController:
     UIViewController,
     UITableViewDelegate,
-    UITableViewDataSource
-{
+    UITableViewDataSource {
     private let sortButton: UIButton = {
         let sortButton = UIButton()
-        sortButton.setImage(UIImage(named: "Sort"), for: .normal)
+        sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
         return sortButton
     }()
 
@@ -34,7 +33,7 @@ final class StatisticsViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         tableView.register(StatisticsTableViewCell.self)
         tableView.delegate = self
         tableView.dataSource = self

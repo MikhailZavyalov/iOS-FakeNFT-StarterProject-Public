@@ -36,7 +36,7 @@ class ProfileCellView: UIView {
     private let profileName: UILabel = {
         let profileName = UILabel()
         profileName.font = .headline3
-        profileName.textColor = .black
+        profileName.textColor = .ypBlack
         return profileName
     }()
 
@@ -48,7 +48,7 @@ class ProfileCellView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(hexString: "F7F7F8")
+        backgroundColor = .ypLightGrey
         layer.cornerRadius = 12
 
         let hStack = UIStackView(arrangedSubviews: [profilePhoto, profileName])
@@ -66,7 +66,7 @@ class ProfileCellView: UIView {
             profileNFTCount.centerYAnchor.constraint(equalTo: centerYAnchor),
             hStack.trailingAnchor.constraint(lessThanOrEqualTo: profileNFTCount.leadingAnchor),
             profilePhoto.widthAnchor.constraint(equalToConstant: 28),
-            profilePhoto.heightAnchor.constraint(equalToConstant: 28),
+            profilePhoto.heightAnchor.constraint(equalToConstant: 28)
         ])
     }
 

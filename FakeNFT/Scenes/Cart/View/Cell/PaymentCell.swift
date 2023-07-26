@@ -52,7 +52,7 @@ class PaymentCell: UICollectionViewCell {
         didSet {
             layer.cornerRadius = 12
             layer.borderWidth = isSelected ? 1.0 : 0.0
-            layer.borderColor = UIColor.black.cgColor
+            layer.borderColor = UIColor.ypBlack?.cgColor
         }
     }
 

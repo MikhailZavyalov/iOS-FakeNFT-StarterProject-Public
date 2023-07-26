@@ -15,10 +15,9 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-
+        contentView.backgroundColor = .background
         contentView.addSubview(number)
         number.translatesAutoresizingMaskIntoConstraints = false
-
 
         profileView.translatesAutoresizingMaskIntoConstraints = false
 
