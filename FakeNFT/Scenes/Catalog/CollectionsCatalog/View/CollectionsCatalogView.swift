@@ -89,17 +89,17 @@ final class CollectionsCatalogView: UIViewController {
 
     @objc private func didTapSortButton() {
         let alertSort = UIAlertController(
-            title: "Сортировка",
+            title: "alertSortTitle".localized,
             message: nil,
             preferredStyle: .actionSheet
         )
-        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+        let sortByNameAction = UIAlertAction(title: "alertSortByName".localized, style: .default) { [weak self] _ in
             self?.viewModel.sortByName()
         }
-        let sortByNumberOfNFT = UIAlertAction(title: "По количеству NFT", style: .default) { [weak self] _ in
+        let sortByNumberOfNFT = UIAlertAction(title: "alertSortByNFT".localized, style: .default) { [weak self] _ in
             self?.viewModel.sortByNFT()
         }
-        let closeAlert = UIAlertAction(title: "Закрыть", style: .cancel)
+        let closeAlert = UIAlertAction(title: "close".localized, style: .cancel)
         alertSort.addAction(sortByNameAction)
         alertSort.addAction(sortByNumberOfNFT)
         alertSort.addAction(closeAlert)
@@ -116,11 +116,11 @@ final class CollectionsCatalogView: UIViewController {
 
     private func showErrorAlert(error: String) {
         let alertController = UIAlertController(
-            title: "Ошибка",
+            title: "alertErrorTitle".localized,
             message: error,
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
-        alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: "no".localized, style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "repeat".localized, style: .default, handler: { [weak self] _ in
             guard let self = self else { return }
             self.viewModel.updateData()
         }))

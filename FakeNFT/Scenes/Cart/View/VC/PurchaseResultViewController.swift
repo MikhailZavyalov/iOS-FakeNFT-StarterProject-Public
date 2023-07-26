@@ -15,7 +15,7 @@ class PurchaseResultViewController: UIViewController {
 
     private lazy var resultButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Вернуться в каталог", for: .normal)
+        button.setTitle("returnCatalog".localized, for: .normal)
         button.backgroundColor = .ypBlack
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
@@ -34,7 +34,7 @@ class PurchaseResultViewController: UIViewController {
 
     private lazy var centreLabel: UILabel = {
         let label = UILabel()
-        label.text = "Успех! Оплата прошла, \n поздравляем с покупкой!"
+        label.text = "successfulPurchase".localized
         label.font = .headline3
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -56,12 +56,12 @@ class PurchaseResultViewController: UIViewController {
     func setupResults() {
         if purchaseWasCompleted == true {
             centreImage.image = UIImage(named: "purchaseTrue")
-            centreLabel.text = "Успех! Оплата прошла, \n поздравляем с покупкой!"
-            resultButton.setTitle("Вернуться в каталог", for: .normal)
+            centreLabel.text = "successfulPurchase".localized
+            resultButton.setTitle("returnCatalog".localized, for: .normal)
         } else {
             centreImage.image = UIImage(named: "purchaseFalse")
-            centreLabel.text = "Упс! Что-то пошло не так :( \n Попробуйте ещё раз!"
-            resultButton.setTitle("Попробовать еще раз", for: .normal)
+            centreLabel.text = "unsuccessfulPurchase".localized
+            resultButton.setTitle("tryAgain".localized, for: .normal)
         }
     }
 

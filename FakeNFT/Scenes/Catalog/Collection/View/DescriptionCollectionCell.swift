@@ -61,12 +61,12 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
             creatorCollectonLabel.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 13),
             creatorCollectonLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            creatorCollectonLabel.widthAnchor.constraint(equalToConstant: 112),
             creatorCollectonLabel.bottomAnchor.constraint(equalTo: descriptionCollectionLabel.topAnchor, constant: 5),
 
             creatorCollectionButton.topAnchor.constraint(equalTo: collectionNameLabel.bottomAnchor, constant: 12),
-            creatorCollectionButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 132),
-            creatorCollectionButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            creatorCollectionButton.leadingAnchor.constraint(equalTo: creatorCollectonLabel.trailingAnchor),
+            creatorCollectionButton.trailingAnchor.constraint(
+                lessThanOrEqualTo: contentView.trailingAnchor, constant: -16),
             creatorCollectionButton.bottomAnchor.constraint(equalTo: descriptionCollectionLabel.topAnchor, constant: 4),
 
             descriptionCollectionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

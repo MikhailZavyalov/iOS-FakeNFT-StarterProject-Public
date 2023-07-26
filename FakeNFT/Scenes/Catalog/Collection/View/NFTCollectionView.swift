@@ -134,7 +134,7 @@ extension NFTCollectionView: UICollectionViewDataSource {
                 for: indexPath) as? DescriptionCollectionCell else { return UICollectionViewCell() }
             descriptionCell.configure(
                 title: viewModel.collection.name,
-                subTitle: "Автор коллекции: ",
+                subTitle: "authorOfTheCollection".localized,
                 description: viewModel.collection.description,
                 buttonTitle: viewModel.user?.name ?? "",
                 buttonAction: linkAction)

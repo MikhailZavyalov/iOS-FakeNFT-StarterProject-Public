@@ -55,7 +55,7 @@ final class CartViewController: UIViewController, StatisticsView {
 
     private lazy var paymentButton: UIButton = {
         let button = UIButton()
-        button.setTitle("К оплате", for: .normal)
+        button.setTitle("forPayment".localized, for: .normal)
         button.backgroundColor = .ypBlack
         button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
@@ -84,7 +84,7 @@ final class CartViewController: UIViewController, StatisticsView {
         label.numberOfLines = 0
         label.isHidden = true
         label.textAlignment = .center
-        label.text = "Вы уверены, что хотите удалить объект из корзины?"
+        label.text = "alertDeleteMessage".localized
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -94,7 +94,7 @@ final class CartViewController: UIViewController, StatisticsView {
         button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
-        button.setTitle("Удалить", for: .normal)
+        button.setTitle("delete".localized, for: .normal)
         button.setTitleColor(.ypRed, for: .normal)
         button.addTarget(nil, action: #selector(deleteNFT), for: .touchUpInside)
         button.isHidden = true
@@ -108,7 +108,7 @@ final class CartViewController: UIViewController, StatisticsView {
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.addTarget(nil, action: #selector(cancelDeletion), for: .touchUpInside)
-        button.setTitle("Вернуться", for: .normal)
+        button.setTitle("return".localized, for: .normal)
         button.setTitleColor(.ypWhite, for: .normal)
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -290,24 +290,26 @@ final class CartViewController: UIViewController, StatisticsView {
     }
 
     @objc private func showSortingOptions() {
-        let actionSheet = UIAlertController(title: nil, message: "Сортировка", preferredStyle: .actionSheet)
 
-        let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { _ in
+        let actionSheet = UIAlertController(
+            title: nil, message: "alertSortTitle".localized, preferredStyle: .actionSheet)
+
+        let sortByPriceAction = UIAlertAction(title: "alertSortByPrice".localized, style: .default) { _ in
             // Действие для сортировки по цене
             self.viewModel.sortByPrice()
         }
 
-        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+        let sortByRatingAction = UIAlertAction(title: "alertSortByRating".localized, style: .default) { _ in
             // Действие для сортировки по рейтингу
             self.viewModel.sortByRating()
         }
 
-        let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { _ in
+        let sortByNameAction = UIAlertAction(title: "alertSortByName".localized, style: .default) { _ in
             // Действие для сортировки по названию
             self.viewModel.sortByName()
         }
 
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "close".localized, style: .cancel, handler: nil)
 
         actionSheet.addAction(sortByPriceAction)
         actionSheet.addAction(sortByRatingAction)
@@ -413,7 +415,7 @@ extension CartViewController: CartCellDelegate {
 
             deleteText.topAnchor.constraint(equalTo: iconDeleteImageView.bottomAnchor, constant: 12),
             deleteText.centerXAnchor.constraint(equalTo: blurView.contentView.centerXAnchor),
-            deleteText.widthAnchor.constraint(equalToConstant: 180),
+            deleteText.widthAnchor.constraint(equalToConstant: 220),
             deleteText.heightAnchor.constraint(equalToConstant: 36),
 
             deleteButton.topAnchor.constraint(equalTo: deleteText.bottomAnchor, constant: 20),
