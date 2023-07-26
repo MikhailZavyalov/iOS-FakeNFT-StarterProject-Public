@@ -57,7 +57,7 @@ final class CartViewController: UIViewController, StatisticsView {
         let button = UIButton()
         button.setTitle("forPayment".localized, for: .normal)
         button.backgroundColor = .ypBlack
-        button.tintColor = .white
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .bodyBold
         button.addTarget(self, action: #selector(toPaymentMethod), for: .touchUpInside)
@@ -91,7 +91,7 @@ final class CartViewController: UIViewController, StatisticsView {
 
     let deleteButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.setTitle("delete".localized, for: .normal)
@@ -104,11 +104,12 @@ final class CartViewController: UIViewController, StatisticsView {
 
     let cancelButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.addTarget(nil, action: #selector(cancelDeletion), for: .touchUpInside)
         button.setTitle("return".localized, for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -146,7 +147,7 @@ final class CartViewController: UIViewController, StatisticsView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
 
         viewModel.viewDidLoad()
     }
@@ -175,7 +176,7 @@ final class CartViewController: UIViewController, StatisticsView {
         if let navBar = navigationController?.navigationBar {
             // Creating a button with a picture
             let sortButton = UIButton(type: .custom)
-            sortButton.setImage(UIImage(named: "navSortButton"), for: .normal)
+            sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
             sortButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
             sortButton.addTarget(self, action: #selector(showSortingOptions), for: .touchUpInside)
 
@@ -198,7 +199,7 @@ final class CartViewController: UIViewController, StatisticsView {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .background
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isUserInteractionEnabled = true
@@ -221,7 +222,7 @@ final class CartViewController: UIViewController, StatisticsView {
         paymentView.addSubview(paymentButton)
 
         NSLayoutConstraint.activate([
-            paymentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -83),
+            paymentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             paymentView.heightAnchor.constraint(equalToConstant: 76),
             paymentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paymentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -362,7 +363,7 @@ extension CartViewController: UITableViewDataSource {
 
         let nft = viewModel.NFTModels[indexPath.row]
 
-        cell.backgroundColor = .white
+        cell.backgroundColor = .background
         cell.selectionStyle = .none
         cell.configure(with: nft)
         cell.indexCell = indexPath.row

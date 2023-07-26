@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "sortButton.pdf",
+      "filename" : "inCard.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Light.pdf",
+      "filename" : "Frame.pdf",
       "idiom" : "universal"
     }
   ],

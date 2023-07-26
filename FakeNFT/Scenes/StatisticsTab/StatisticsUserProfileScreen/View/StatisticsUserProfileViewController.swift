@@ -28,16 +28,17 @@ final class StatisticsUserProfileViewController: UIViewController {
         let usersWebsite = UIButton()
         usersWebsite.layer.cornerRadius = 16
         usersWebsite.layer.borderWidth = 1
-        usersWebsite.layer.borderColor = UIColor(ciColor: .black).cgColor
         usersWebsite.setTitle("goWebsite".localized, for: .normal)
+        usersWebsite.layer.borderColor = UIColor.ypBlack?.cgColor
         usersWebsite.titleLabel?.font = .caption1
-        usersWebsite.setTitleColor(.black, for: .normal)
+        usersWebsite.setTitleColor(.ypBlack, for: .normal)
+
         return usersWebsite
     }()
 
     private let usersCollectionButton: UIButton = {
         let usersCollectionButton = UIButton()
-        usersCollectionButton.setTitleColor(.black, for: .normal)
+        usersCollectionButton.setTitleColor(.ypBlack, for: .normal)
         usersCollectionButton.titleLabel?.font = .bodyBold
         let chevron = UIImage(systemName: "chevron.forward")?
             .withTintColor(.textPrimary)
@@ -84,7 +85,7 @@ final class StatisticsUserProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
 
         usersCollectionButton.addTarget(self, action: #selector(usersCollectionButtonTapped), for: .touchUpInside)
         usersWebsite.addTarget(self, action: #selector(websiteButtonTapped), for: .touchUpInside)
@@ -120,7 +121,7 @@ final class StatisticsUserProfileViewController: UIViewController {
         ])
         vStack.translatesAutoresizingMaskIntoConstraints = false
         vStack.axis = .vertical
-        vStack.backgroundColor = .white
+        vStack.backgroundColor = .background
         view.addSubview(vStack)
 
         let constraints = [
@@ -143,7 +144,7 @@ final class StatisticsUserProfileViewController: UIViewController {
 
     private func configureNavigationBar() {
         let backImage = UIImage(systemName: "chevron.backward")?
-            .withTintColor(.black)
+            .withTintColor(.ypBlack ?? .black)
             .withRenderingMode(.alwaysOriginal)
 
         if self !== navigationController?.viewControllers.first {
@@ -171,5 +172,9 @@ final class StatisticsUserProfileViewController: UIViewController {
     @objc
     private func backButtonTapped() {
         viewModel.didTapBack()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        usersWebsite.layer.borderColor = UIColor.ypBlack?.cgColor
     }
 }

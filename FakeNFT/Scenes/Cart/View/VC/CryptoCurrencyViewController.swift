@@ -16,7 +16,10 @@ class CryptoCurrencyViewController: UIViewController {
 
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "backButton"), for: .normal)
+        let imageButton = UIImage(systemName: "chevron.backward")?
+            .withTintColor(.ypBlack ?? .black)
+            .withRenderingMode(.alwaysOriginal)
+        button.setImage(imageButton, for: .normal)
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -36,7 +39,7 @@ class CryptoCurrencyViewController: UIViewController {
         let button = UIButton()
         button.setTitle("pay".localized, for: .normal)
         button.backgroundColor = .ypBlack
-        button.tintColor = .white
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .bodyBold
         button.addTarget(self, action: #selector(paymentProceed), for: .touchUpInside)
@@ -78,7 +81,7 @@ class CryptoCurrencyViewController: UIViewController {
     // ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         setupTopLine()
         setupCollectionView()
         setupPaymentView()

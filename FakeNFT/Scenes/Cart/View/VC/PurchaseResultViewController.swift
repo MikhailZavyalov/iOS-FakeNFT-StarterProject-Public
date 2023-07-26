@@ -17,7 +17,7 @@ class PurchaseResultViewController: UIViewController {
         let button = UIButton()
         button.setTitle("returnCatalog".localized, for: .normal)
         button.backgroundColor = .ypBlack
-        button.tintColor = .white
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .bodyBold
         button.addTarget(self, action: #selector(paymentResultTapped), for: .touchUpInside)
@@ -45,7 +45,7 @@ class PurchaseResultViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
 
         setupResults()
         setupButton()

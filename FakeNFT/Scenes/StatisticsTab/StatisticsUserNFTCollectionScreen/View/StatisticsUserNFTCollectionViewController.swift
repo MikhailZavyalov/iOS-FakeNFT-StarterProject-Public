@@ -27,7 +27,7 @@ final class StatisticsUserNFTCollectionViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         userCollection.delegate = self
         userCollection.dataSource = self
         userCollection.register(StatisticsUserNFTCollectionViewCell.self)
@@ -48,7 +48,7 @@ final class StatisticsUserNFTCollectionViewController:
 
     private func configureNavigationBar() {
         let backImage = UIImage(systemName: "chevron.backward")?
-            .withTintColor(.black)
+            .withTintColor(.ypBlack ?? .black)
             .withRenderingMode(.alwaysOriginal)
         navigationItem.title = "nftCollection".localized
 

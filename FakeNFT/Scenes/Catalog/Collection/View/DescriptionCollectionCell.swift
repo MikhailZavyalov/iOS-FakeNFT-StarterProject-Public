@@ -35,9 +35,9 @@ final class DescriptionCollectionCell: UICollectionViewCell {
 
     private lazy var creatorCollectionButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.linkColor, for: .normal)
+        button.setTitleColor(.ypBlue, for: .normal)
         button.titleLabel?.font = .caption1
-        button.titleLabel?.tintColor = .linkColor
+        button.titleLabel?.tintColor = .ypBlue
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.contentHorizontalAlignment = .left
         button.translatesAutoresizingMaskIntoConstraints = false
