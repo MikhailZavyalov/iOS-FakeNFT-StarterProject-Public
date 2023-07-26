@@ -3,8 +3,7 @@ import UIKit
 final class StatisticsUserNFTCollectionViewController:
     UIViewController,
     UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout
-{
+    UICollectionViewDelegateFlowLayout {
 
     let userCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -28,7 +27,7 @@ final class StatisticsUserNFTCollectionViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         userCollection.delegate = self
         userCollection.dataSource = self
         userCollection.register(StatisticsUserNFTCollectionViewCell.self)
@@ -49,7 +48,7 @@ final class StatisticsUserNFTCollectionViewController:
 
     private func configureNavigationBar() {
         let backImage = UIImage(systemName: "chevron.backward")?
-            .withTintColor(.black)
+            .withTintColor(.ypBlack ?? .black)
             .withRenderingMode(.alwaysOriginal)
         navigationItem.title = "Коллекция NFT"
 
@@ -67,7 +66,7 @@ final class StatisticsUserNFTCollectionViewController:
         view.addSubview(activityIndicator)
         activityIndicator.layer.zPosition = 9999
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        
+
         view.addSubview(userCollection)
         userCollection.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -110,15 +109,15 @@ extension StatisticsUserNFTCollectionViewController {
         return CGSize(width: cellWidth, height: cellHeight)
     }
 
-    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: geometricParams.leftInset, bottom: 10, right: geometricParams.rightInset)
     }
 
-    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return geometricParams.cellSpacing.height
     }
 
-    func collectionView(_ : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return geometricParams.cellSpacing.width
     }
 }

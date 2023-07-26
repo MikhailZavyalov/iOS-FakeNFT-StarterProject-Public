@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 class TabBarController: UITabBarController {
 
@@ -38,12 +39,12 @@ class TabBarController: UITabBarController {
 
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [profileVC, catalogVC, cartVC, statisticsNavigationController]
-        tabBarController.tabBar.unselectedItemTintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .ypBlack
         tabBarController.tabBar.backgroundColor = .background
-
-       return tabBarController
+        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.clipsToBounds = true
+        return tabBarController
     }
-
 }
 
 private func assembleCartModule() -> UIViewController {

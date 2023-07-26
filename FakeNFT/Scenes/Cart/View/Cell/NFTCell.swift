@@ -33,7 +33,7 @@ class NFTCell: UITableViewCell {
 
     private let cartDeleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "cartImage"), for: .normal)
+        button.setImage(UIImage(named: "inCart"), for: .normal)
         button.addTarget(nil, action: #selector(cartDeleteButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -113,10 +113,10 @@ class NFTCell: UITableViewCell {
             priceLabel.heightAnchor.constraint(equalToConstant: 22),
             priceLabel.widthAnchor.constraint(equalToConstant: 100),
 
-            cartDeleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -28),
+            cartDeleteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cartDeleteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            cartDeleteButton.heightAnchor.constraint(equalToConstant: 19),
-            cartDeleteButton.widthAnchor.constraint(equalToConstant: 16)
+            cartDeleteButton.heightAnchor.constraint(equalToConstant: 40),
+            cartDeleteButton.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -141,14 +141,14 @@ class NFTCell: UITableViewCell {
 
         // Создаем новые звездочки в соответствии с рейтингом
         for _ in 0..<nft.rating {
-            let starImageView = UIImageView(image: UIImage(named: "starActive"))
+            let starImageView = UIImageView(image: UIImage(named: "star_yellow"))
             ratingStackView.addArrangedSubview(starImageView)
             starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
             starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
         }
 
         for _ in nft.rating..<5 {
-            let starImageView = UIImageView(image: UIImage(named: "starInactive"))
+            let starImageView = UIImageView(image: UIImage(named: "star"))
             ratingStackView.addArrangedSubview(starImageView)
             starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
             starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true

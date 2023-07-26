@@ -46,7 +46,7 @@ final class NFTCollectionView: UIViewController {
         super.viewWillAppear(animated)
         viewModel.reload()
     }
-    
+
     private func addSubviews() {
         view.addSubview(collectionView)
     }
@@ -62,8 +62,11 @@ final class NFTCollectionView: UIViewController {
 
     private func makeNavBar() {
         if let navBar = navigationController?.navigationBar {
+            let imageButton = UIImage(systemName: "chevron.backward")?
+                .withTintColor(.ypBlack ?? .black)
+                .withRenderingMode(.alwaysOriginal)
             let leftButton = UIBarButtonItem(
-                image: UIImage(named: "chevronBackward"),
+                image: imageButton,
                 style: .plain,
                 target: self,
                 action: #selector(self.didTapBackButton)

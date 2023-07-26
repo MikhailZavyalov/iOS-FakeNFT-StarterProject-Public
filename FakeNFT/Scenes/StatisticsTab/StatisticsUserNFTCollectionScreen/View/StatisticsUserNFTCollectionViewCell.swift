@@ -38,9 +38,9 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
 
     private let usersCollectionItemCart: UIImageView = {
         let cart = UIImageView()
-        cart.image = UIImage(named: "EmptyCard")
-        cart.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        cart.widthAnchor.constraint(equalToConstant: 16).isActive = true
+        cart.image = UIImage(named: "cart")
+        cart.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        cart.widthAnchor.constraint(equalToConstant: 40).isActive = true
         return cart
     }()
 
@@ -93,8 +93,8 @@ final class StatisticsUserNFTCollectionViewCell: UICollectionViewCell, ReuseIden
             usersCollectionItemPrice.heightAnchor.constraint(equalToConstant: 12),
             usersCollectionItemPrice.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 
-            usersCollectionItemCart.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            usersCollectionItemCart.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
+            usersCollectionItemCart.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            usersCollectionItemCart.topAnchor.constraint(equalTo: usersCollectionItemImage.bottomAnchor, constant: 24)
         ]
 
         constraints.forEach {

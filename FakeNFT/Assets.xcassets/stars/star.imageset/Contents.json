@@ -3,6 +3,16 @@
     {
       "filename" : "star.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "No Active.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
