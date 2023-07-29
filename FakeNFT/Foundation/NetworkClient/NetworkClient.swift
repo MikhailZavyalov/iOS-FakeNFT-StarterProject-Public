@@ -1,5 +1,19 @@
 import Foundation
 
+enum Endpoint {
+    static func getUsers() -> URL {
+        URL(string: "https://64858e8ba795d24810b71189.mockapi.io/api/v1/users")!
+    }
+
+    static func getProfile(id: String) -> URL {
+        URL(string: "https://64858e8ba795d24810b71189.mockapi.io/api/v1/profile/\(id)")!
+    }
+
+    static func getNFT(id: String) -> URL {
+        URL(string: "https://64858e8ba795d24810b71189.mockapi.io/api/v1/nft/\(id)")!
+    }
+}
+
 enum NetworkClientError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
@@ -64,7 +78,11 @@ struct DefaultNetworkClient: NetworkClient {
     }
 
     @discardableResult
-    func send<T: Decodable>(request: NetworkRequest, type: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) -> NetworkTask? {
+    func send<T: Decodable>(
+        request: NetworkRequest,
+        type: T.Type,
+        onResponse: @escaping (Result<T, Error>
+        ) -> Void) -> NetworkTask? {
         return send(request: request) { result in
             switch result {
             case let .success(data):
