@@ -22,4 +22,6 @@
 - Добавить экран профиля
 
 # Стек технологий
-- Svift, MVVM, Code layout, Observable, Extentions, WebView, CollectionView, TableView, TabBar, UITests, UnitTests
+- Swift, MVVM, Code layout, Observable, Extentions, WebView, CollectionView, TableView, TabBar, UITests, UnitTests,
+JSON, DispatchQueue, Delegate
+
